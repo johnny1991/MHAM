@@ -12,7 +12,7 @@ class DefaultController extends Controller
 
 		$user=`cat $mha | grep user | awk '{print $3}'`;
 		$password=`cat $mha | grep password | awk '{print $3}'`;
-		$ip_bdd=explode(' ', (`cat $mha | grep hostname | awk '{print $3}'`));
+		$ip_bdd=explode('\n', (`cat $mha | grep hostname | awk '{print $3}'`));
 		 
 		echo $user; 
 		echo $password;
