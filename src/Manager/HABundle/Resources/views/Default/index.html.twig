@@ -1,0 +1,68 @@
+<html>
+    <head>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/manager/css/style.css') }}">
+    {% endblock %}
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row header">
+                <div class="col-sm-12">
+                    <h1>Gestionnaire de Base de données</h1>
+                </div>
+            </div>
+            <div class="row main">
+                <div class="col-sm-12">
+                    <div id="bdd_state">
+                        <h2>Etat des Bases de données</h2>
+                        <div class="row head">
+                            <div class="col-sm-2">IP</div>
+                            <div class="col-sm-2">Status</div>
+                            <div class="col-sm-2">Log Binaire</div>
+                            <div class="col-sm-2">Position Binaire</div>
+                            <div class="col-sm-2">IO Running</div>
+                            <div class="col-sm-2">SQL Running</div>
+                        </div>
+                        {% for item in bdd %}
+                            <div class="row">
+                                <div class="col-sm-2">{{ item.ip }}</div>
+                                <div class="col-sm-2">{{ item.status }}</div>
+                                <div class="col-sm-2">{{ item.log_binaire }}</div>
+                                <div class="col-sm-2">{{ item.pos_binaire }}</div>
+                                <div class="col-sm-2">{{ item.io_running  | default("&nbsp;")}}</div>
+                                <div class="col-sm-2">{{ item.sql_running  | default("&nbsp;")}}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div id="mha_state">
+                        <h2>Etat du Manager MHA</h2>
+                        {% if true %}
+                            <span class="glyphicon glyphicon-ok"></span>
+                            <span>Le manager MHA est en cours d'éxecution</span>
+                        {% else %}
+                            <span class="glyphicon glyphicon-remove"></span>
+                            <span>Le manager MHA n'est pas en cours d'éxecution</span>
+                        {% endif %}
+                        <div class="log">
+                            En cours de chargement ...
+                        </div>
+                        <div class="time">Date du Log : <span id="refresh_time"></span></div>
+                        <script>
+                            setInterval(function (){
+                                $('#mha_state .log').load("{{ path('manager_ha_log')}}").fadeIn("slow");
+                                $('#mha_state #refresh_time').html(new Date($.now()));
+                            }, 500);
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <div class="row footer">
+                <div class="col-sm-12">
+                    Developped by Johnny Cottereau
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

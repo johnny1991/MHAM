@@ -1,0 +1,4 @@
+manager_ha:
+    resource: "@ManagerHABundle/Resources/config/routing.yml"
+    prefix:   /
+

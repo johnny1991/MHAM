@@ -1,0 +1,7 @@
+manager_ha_homepage:
+    pattern:  /
+    defaults: { _controller: ManagerHABundle:Default:index }
+    
+manager_ha_log:
+    pattern:  /log
+    defaults: { _controller: ManagerHABundle:Default:log }
