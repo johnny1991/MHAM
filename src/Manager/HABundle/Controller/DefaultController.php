@@ -28,7 +28,7 @@ class DefaultController extends Controller
     }
     
     public function logAction(){
-		$html = nl2br(shell_exec('sudo tail -n 15 /var/log/masterha/MHA.log'));
+		$html = nl2br(shell_exec('tail -n 15 /var/log/masterha/MHA.log'));
     	$response = new Response(json_encode($html));
     	$response->headers->set('Content-Type', 'application/json');
     	return $response;
