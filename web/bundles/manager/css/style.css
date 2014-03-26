@@ -11,7 +11,7 @@
 #bdd_state .row:last-child > div{border-width:1px 0px 1px 1px;}
 #bdd_state .row:last-child > div:last-child{border-width:1px 1px 1px 1px;}
 
-#mha_state .log{margin: 20px 0 5px; border: 1px solid #D5D5D5; padding: 10px; height: 250px; overflow: auto;}
+#mha_state .log{margin: 20px 0 5px; border: 1px solid #D5D5D5; padding: 10px; height: 400px; overflow: auto;}
 #mha_state .time{float: right}
 
 .glyphicon-ok{color:green}

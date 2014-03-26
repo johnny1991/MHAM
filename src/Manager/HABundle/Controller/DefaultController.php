@@ -10,36 +10,36 @@ class DefaultController extends Controller
 	public function indexAction(){
 		$mha = '/etc/mha.conf';
 
-		$user = `cat $mha | grep user | awk '{print $3}'`;
-		$password = `cat $mha | grep password | awk '{print $3}'`;
+		$user = trim(`cat $mha | grep user | awk '{print $3}'`);
+		$password = trim(`cat $mha | grep password | awk '{print $3}'`);
 		$ip_bdd = explode("\n", `cat $mha | grep hostname | awk '{print $3}'`);
 		$ip_bdd = array_filter($ip_bdd);
 		$data =array();
 
 		foreach($ip_bdd as $ip){
 			$array = $status = null;
-			$isMaster = isMaster($ip);
-				
+			$isMaster = $this->isMaster($user, $password, $ip);
+			$isMaster = $isMaster['variable_value'];
 			if($isMaster == 'OFF'){
-				$status = getMasterStatus($ip);
-				var_dump($status);
+				$status = $this->getMasterStatus($user, $password, $ip);
+			//	var_dump($status);
 				$array = array('ip' => $ip,
 						'status' => 'Master',
-						'log_binaire' => 'Maria-00097.bin',
-						'pos_binaire' => '548752',
+						'log_binaire' => $status['File'],
+						'pos_binaire' => $status['Position'],
 						'io_running' => ' ',
 						'sql_running' => ' ');
 				
 			} elseif($isMaster == 'ON' ){
-				$status = getSlaveStatus ($ip);
+				$status = $this->getSlaveStatus($user, $password, $ip);
 				
-				var_dump($status);
+				//var_dump($status);
 				$array = array('ip' => $ip,
-						'status' => 'Master',
-						'log_binaire' => 'Maria-00097.bin',
-						'pos_binaire' => '548752',
-						'io_running' => ' ',
-						'sql_running' => ' ');
+						'status' => 'Slave',
+						'log_binaire' => $status['Master_Log_File'],
+						'pos_binaire' => $status['Read_Master_Log_Pos'],
+						'io_running' => $status['Slave_IO_Running'],
+						'sql_running' => $status['Slave_SQL_Running']);
 				
 				$log_binaire = `echo $status | awk -F":" '{ print $8 }' | awk -F" " '{ print $1 }'`;
 				$pos_binaire = `echo $status | awk -F":" '{ print $7 }' | awk -F" " '{ print $1 }'`;
@@ -65,15 +65,21 @@ class DefaultController extends Controller
 
 
 	public function isMaster($user, $password, $ip) {
-		return `mysql -h $ip -u $user -p$password -N -s -e "select variable_value from information_schema.global_status where variable_name = 'Slave_running';"`;
+		$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
+		$select = "select variable_value from information_schema.global_status where variable_name = 'Slave_running';";
+		return $connection->query($select)->fetch();
 	}
 
 	public function getMasterStatus($user, $password, $ip) {
-		return `mysql -h $ip -u $user -p$password -N -s -e "SHOW MASTER STATUS;"`;
+		$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
+                $select = "SHOW MASTER STATUS";
+                return $connection->query($select)->fetch();
 	}
 
 	public function getSlaveStatus($user, $password, $ip) {
-		return `mysql -h $ip -u $user -p$password -e "SHOW SLAVE STATUS\G;"`;
+		$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
+		$select = "SHOW SLAVE STATUS";
+                return $connection->query($select)->fetch();	
 	}
 
 }
