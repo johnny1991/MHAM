@@ -12,11 +12,11 @@ class DefaultController extends Controller
 
 		$user=`cat $mha | grep user | awk '{print $3}'`;
 		$password=`cat $mha | grep password | awk '{print $3}'`;
-		$ip_bdd=(`cat $mha | grep hostname | awk '{print $3}'`);
+		$ip_bdd=explode(' ', (`cat $mha | grep hostname | awk '{print $3}'`));
 		 
 		echo $user; 
 		echo $password;
-		echo $ip_bdd;
+		var_dump($ip_bdd);
 		
 		 
 		$array1 = array('ip' => '172.20.0.225',
