@@ -15,6 +15,8 @@ class DefaultController extends Controller
 		$ip_bdd=(`cat $mha | grep hostname | awk '{print $3}'`);
 		 
 		echo $user; 
+		echo $password;
+		echo $ip_bdd;
 		
 		 
 		$array1 = array('ip' => '172.20.0.225',
