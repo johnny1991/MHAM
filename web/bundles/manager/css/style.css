@@ -14,5 +14,5 @@
 #mha_state .log{margin: 20px 0 5px; border: 1px solid #D5D5D5; padding: 10px; height: 400px; overflow: auto;}
 #mha_state .time{float: right}
 
-.glyphicon-ok{color:green}
-.glyphicon-remove{color:red}
+.ok, .glyphicon-ok{color:green}
+.nok, .glyphicon-remove{color:red}
