@@ -9,6 +9,7 @@ class DefaultController extends Controller
 {
 	public function indexAction(){
 		$mha = '/etc/mha.conf';
+		$mha_conf = parse_ini_file($mha,1,INI_SCANNER_RAW);
 
 		$user = trim(`cat $mha | grep user | awk '{print $3}'`);
 		$password = trim(`cat $mha | grep password | awk '{print $3}'`);
@@ -23,6 +24,8 @@ class DefaultController extends Controller
                         }
 
 		}
+		$mha_master = trim(`cat $mha | grep server1 | awk '{print $3}'`);
+		echo $mha_master;
 
 		foreach($ip_bdd as $ip){
 			$array = $status = null;
@@ -38,8 +41,8 @@ class DefaultController extends Controller
 						'io_running' => ' ',
 						'sql_running' => ' ',
 						'global_variables' => $this->getVariables($user, $password, $ip));
-echo "<pre>";			//var_dump($this->getVariables($user, $password, $ip));	
-echo "</pre>";			} elseif($isMaster == 'ON' ){
+				//var_dump($this->getVariables($user, $password, $ip));	
+				} elseif($isMaster == 'ON' ){
 				$status = $this->getSlaveStatus($user, $password, $ip);
 				
 				//var_dump($status);
@@ -62,7 +65,7 @@ echo "</pre>";			} elseif($isMaster == 'ON' ){
 			}
 		}
 	
-		return $this->render('ManagerHABundle:Default:index.html.twig', array('bdd' => $data, 'mha_status' => $mha_status));
+		return $this->render('ManagerHABundle:Default:index.html.twig', array('bdd' => $data, 'mha_status' => $mha_status, 'mha_conf' => $mha_conf));
 	}
 
 	public function logAction(){

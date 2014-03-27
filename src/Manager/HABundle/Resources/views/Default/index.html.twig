@@ -30,7 +30,15 @@
                         {% for item in bdd %}
                             <div class="row">
                                 <div class="col-sm-2">{{ item.ip }}</div>
-                                <div class="col-sm-1">{{ item.status }}</div>
+                                <div class="col-sm-1">
+					{% if (mha_conf.server1['hostname'] == item.ip) and (item.status == 'Master') %}
+						<span class='ok'>{{ item.status }}</span>
+					{% elseif (mha_conf.server1['hostname'] == item.ip) and (item.status == 'Master') %}
+						<span class='ok'>{{ item.status }}</span>
+					{% else %}
+						{{ item.status }}
+					{% endif %}
+				</div>
                                 <div class="col-sm-2">{{ item.log_binaire }}</div>
                                 <div class="col-sm-1">{{ item.pos_binaire }}</div>
                                 <div class="col-sm-1">{{ item.io_running  | default("&nbsp;")}}</div>
@@ -54,14 +62,19 @@
                     </div>
                     <div id="mha_state">
                         <h2>Etat du Manager MHA</h2>
-                        {% if mha_status %}
+			<div>
+	                        Ip du Master : {{ mha_conf.server1['hostname'] }}
+                        </div>
+                        <div>
+			{% if mha_status %}
                             <span class="glyphicon glyphicon-ok"></span>
                             <span>Le manager MHA est en cours d'éxecution</span>
                         {% else %}
                             <span class="glyphicon glyphicon-remove"></span>
                             <span>Le manager MHA n'est pas en cours d'éxecution</span>
                         {% endif %}
-                        <div class="log">
+			</div>
+			<div class="log">
                             En cours de chargement ...
                         </div>
                         <div class="time">Date du Log : <span id="refresh_time"></span></div>
