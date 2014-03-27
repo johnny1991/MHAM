@@ -17,64 +17,70 @@
                 <div class="col-sm-12">
                     <div id="bdd_state">
                         <h2>Etat des Bases de données</h2>
-                        <div class="row head">
-                            <div class="col-sm-2">IP</div>
-                            <div class="col-sm-1">Status</div>
-                            <div class="col-sm-2">Log Binaire</div>
-                            <div class="col-sm-1">Position Binaire</div>
-                            <div class="col-sm-1">IO Running</div>
-                            <div class="col-sm-1">SQL Running</div>
-			    <div class="col-sm-1">Read Only</div>
-                            <div class="col-sm-1">Relay Purge</div>
-                        </div>
-                        {% for item in bdd %}
-                            <div class="row">
-                                <div class="col-sm-2">{{ item.ip }}</div>
-                                <div class="col-sm-1">
-					{% if (mha_conf.server1['hostname'] == item.ip) and (item.status == 'Master') %}
-						<span class='ok'>{{ item.status }}</span>
-					{% elseif (mha_conf.server1['hostname'] == item.ip) and (item.status == 'Master') %}
-						<span class='ok'>{{ item.status }}</span>
-					{% else %}
-						{{ item.status }}
-					{% endif %}
-				</div>
-                                <div class="col-sm-2">{{ item.log_binaire }}</div>
-                                <div class="col-sm-1">{{ item.pos_binaire }}</div>
-                                <div class="col-sm-1">{{ item.io_running  | default("&nbsp;")}}</div>
-                                <div class="col-sm-1">{{ item.sql_running  | default("&nbsp;")}}</div>
-                                <div class="col-sm-1">
-				{% if ((item.global_variables['read_only'] == 'OFF') and (item.status == 'Master') or (item.global_variables['read_only'] == 'ON') and (item.status == 'Slave') ) %}
-                                        <span class="ok">{{ item.global_variables['read_only'] }}</span>
-                                {% else %}
-                                        <span class="nok">{{ item.global_variables['read_only'] }}</span>
-                                {% endif %}
-				</div>
-				<div class="col-sm-1">
-				{% if ((item.global_variables['relay_log_purge'] == 'ON') and (item.status == 'Master') or (item.global_variables['relay_log_purge'] == 'OFF') and (item.status == 'Slave') ) %}
-					<span class="ok">{{ item.global_variables['relay_log_purge'] }}</span>
-				{% else %}
-					<span class="nok">{{ item.global_variables['relay_log_purge'] }}</span>
-				{% endif %}
-				</div>
-			    </div>
-                        {% endfor %}
+                        <table>
+                            <thead>
+                            	<tr>
+                            		<th>IP</th>
+		                            <th>Status</th>
+		                            <th>Log Binaire</th>
+		                            <th>Position Binaire</th>
+		                            <th>IO Running</th>
+		                            <th>SQL Running</th>
+					    			<th>Read Only</th>
+		                            <th>Relay Purge</th>
+		                     	</tr>
+		                 	</thead>
+                        	<tbody>
+	                        	{% for item in bdd %}
+	                            <tr>
+	                                <td>{{ item.ip }}</td>
+	                                <td>
+										{% if (mha_conf.server1['hostname'] == item.ip) and (item.status == 'Master') %}
+											<span class='ok'>{{ item.status }}</span>
+										{% elseif (mha_conf.server1['hostname'] == item.ip) and (item.status == 'Master') %}
+											<span class='ok'>{{ item.status }}</span>
+										{% else %}
+											{{ item.status }}
+										{% endif %}
+									</td>
+	                                <td>{{ item.log_binaire }}</div>
+	                                <td>{{ item.pos_binaire }}</div>
+	                                <td>{{ item.io_running  | default("&nbsp;")}}</div>
+	                                <td>{{ item.sql_running  | default("&nbsp;")}}</div>
+	                                <td>
+										{% if ((item.global_variables['read_only'] == 'OFF') and (item.status == 'Master') or (item.global_variables['read_only'] == 'ON') and (item.status == 'Slave') ) %}
+	                                        <span class="ok">{{ item.global_variables['read_only'] }}</span>
+	                                	{% else %}
+	                                        <span class="nok">{{ item.global_variables['read_only'] }}</span>
+	                                	{% endif %}
+									</td>
+									<td>
+										{% if ((item.global_variables['relay_log_purge'] == 'ON') and (item.status == 'Master') or (item.global_variables['relay_log_purge'] == 'OFF') and (item.status == 'Slave') ) %}
+											<span class="ok">{{ item.global_variables['relay_log_purge'] }}</span>
+										{% else %}
+											<span class="nok">{{ item.global_variables['relay_log_purge'] }}</span>
+										{% endif %}
+									</td>
+							    </tr>
+	                        	{% endfor %}
+                    		</tbody>
+                    	</table>
                     </div>
                     <div id="mha_state">
                         <h2>Etat du Manager MHA</h2>
-			<div>
+						<div>
 	                        Ip du Master : {{ mha_conf.server1['hostname'] }}
                         </div>
                         <div>
-			{% if mha_status %}
-                            <span class="glyphicon glyphicon-ok"></span>
-                            <span>Le manager MHA est en cours d'éxecution</span>
-                        {% else %}
-                            <span class="glyphicon glyphicon-remove"></span>
-                            <span>Le manager MHA n'est pas en cours d'éxecution</span>
-                        {% endif %}
-			</div>
-			<div class="log">
+							{% if mha_status %}
+	                            <span class="glyphicon glyphicon-ok"></span>
+	                            <span>Le manager MHA est en cours d'éxecution</span>
+	                        {% else %}
+	                            <span class="glyphicon glyphicon-remove"></span>
+	                            <span>Le manager MHA n'est pas en cours d'éxecution</span>
+	                        {% endif %}
+						</div>
+						<div class="log">
                             En cours de chargement ...
                         </div>
                         <div class="time">Date du Log : <span id="refresh_time"></span></div>

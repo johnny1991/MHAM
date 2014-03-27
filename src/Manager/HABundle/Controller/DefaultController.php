@@ -20,12 +20,9 @@ class DefaultController extends Controller
 			if (strpos($tmp, 'is not running') !== false) {
 				$mha_status = false;
 			} else if (strpos($tmp, 'is running') !== false) {
-                                $mha_status = true;
-                        }
-
+				$mha_status = true;
+			}
 		}
-		$mha_master = trim(`cat $mha | grep server1 | awk '{print $3}'`);
-		echo $mha_master;
 
 		foreach($ip_bdd as $ip){
 			$array = $status = null;
@@ -33,7 +30,7 @@ class DefaultController extends Controller
 			$isMaster = $isMaster['variable_value'];
 			if($isMaster == 'OFF'){
 				$status = $this->getMasterStatus($user, $password, $ip);
-			//	var_dump($status);
+				//	var_dump($status);
 				$array = array('ip' => $ip,
 						'status' => 'Master',
 						'log_binaire' => $status['File'],
@@ -41,10 +38,10 @@ class DefaultController extends Controller
 						'io_running' => ' ',
 						'sql_running' => ' ',
 						'global_variables' => $this->getVariables($user, $password, $ip));
-				//var_dump($this->getVariables($user, $password, $ip));	
-				} elseif($isMaster == 'ON' ){
+				//var_dump($this->getVariables($user, $password, $ip));
+			} elseif($isMaster == 'ON' ){
 				$status = $this->getSlaveStatus($user, $password, $ip);
-				
+
 				//var_dump($status);
 				$array = array('ip' => $ip,
 						'status' => 'Slave',
@@ -53,7 +50,7 @@ class DefaultController extends Controller
 						'io_running' => $status['Slave_IO_Running'],
 						'sql_running' => $status['Slave_SQL_Running'],
 						'global_variables' => $this->getVariables($user, $password, $ip));
-				
+
 				$log_binaire = `echo $status | awk -F":" '{ print $8 }' | awk -F" " '{ print $1 }'`;
 				$pos_binaire = `echo $status | awk -F":" '{ print $7 }' | awk -F" " '{ print $1 }'`;
 				$io_running = `echo $status | awk -F":" '{ print $12 }' | awk -F" " '{ print $1 }'`;
@@ -64,7 +61,7 @@ class DefaultController extends Controller
 				array_push($data, $array);
 			}
 		}
-	
+
 		return $this->render('ManagerHABundle:Default:index.html.twig', array('bdd' => $data, 'mha_status' => $mha_status, 'mha_conf' => $mha_conf));
 	}
 
@@ -75,35 +72,55 @@ class DefaultController extends Controller
 		return $response;
 	}
 
-
+	public function chaAction(){
+		$html = nl2br(shell_exec('tail -n 15 /var/log/masterha/MHA.log'));
+		$response = new Response(json_encode($html));
+		$response->headers->set('Content-Type', 'application/json');
+		return $response;
+	}
 
 	public function isMaster($user, $password, $ip) {
-		$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
-		$select = "select variable_value from information_schema.global_status where variable_name = 'Slave_running';";
-		return $connection->query($select)->fetch();
+		try {
+			$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
+			$select = "select variable_value from information_schema.global_status where variable_name = 'Slave_running';";
+			return $connection->query($select)->fetch();
+		} catch(Exception $e) {
+		  	return false;
+		}
 	}
 
 	public function getMasterStatus($user, $password, $ip) {
-		$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
-                $select = "SHOW MASTER STATUS";
-                return $connection->query($select)->fetch();
+		try {
+			$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
+			$select = "SHOW MASTER STATUS";
+			return $connection->query($select)->fetch();
+		} catch(Exception $e) {
+			return false;
+		}
 	}
 
 	public function getSlaveStatus($user, $password, $ip) {
-		$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
-		$select = "SHOW SLAVE STATUS";
-                return $connection->query($select)->fetch();	
-	}
-	
-	public function getVariables($user, $password, $ip) {
-                $connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
-                $select = "SHOW GLOBAL VARIABLES";
-                $tmp = $connection->query($select)->fetchAll(\PDO::FETCH_ASSOC);
-       		$result = array();
-		foreach ($tmp as $item){
-			$result[$item['Variable_name']] = $item['Value'];
+		try {
+			$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
+			$select = "SHOW SLAVE STATUS";
+			return $connection->query($select)->fetch();
+		} catch(Exception $e) {
+			return false;
 		}
-	 	return $result;
 	}
 
+	public function getVariables($user, $password, $ip) {
+		try {
+			$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
+			$select = "SHOW GLOBAL VARIABLES";
+			$tmp = $connection->query($select)->fetchAll(\PDO::FETCH_ASSOC);
+			$result = array();
+			foreach ($tmp as $item){
+				$result[$item['Variable_name']] = $item['Value'];
+			}
+			return $result;
+		} catch(Exception $e) {
+			return false;
+		}
+	}
 }
