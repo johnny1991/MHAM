@@ -36,9 +36,10 @@ class DefaultController extends Controller
 						'log_binaire' => $status['File'],
 						'pos_binaire' => $status['Position'],
 						'io_running' => ' ',
-						'sql_running' => ' ');
-				
-			} elseif($isMaster == 'ON' ){
+						'sql_running' => ' ',
+						'global_variables' => $this->getVariables($user, $password, $ip));
+echo "<pre>";			//var_dump($this->getVariables($user, $password, $ip));	
+echo "</pre>";			} elseif($isMaster == 'ON' ){
 				$status = $this->getSlaveStatus($user, $password, $ip);
 				
 				//var_dump($status);
@@ -47,7 +48,8 @@ class DefaultController extends Controller
 						'log_binaire' => $status['Master_Log_File'],
 						'pos_binaire' => $status['Read_Master_Log_Pos'],
 						'io_running' => $status['Slave_IO_Running'],
-						'sql_running' => $status['Slave_SQL_Running']);
+						'sql_running' => $status['Slave_SQL_Running'],
+						'global_variables' => $this->getVariables($user, $password, $ip));
 				
 				$log_binaire = `echo $status | awk -F":" '{ print $8 }' | awk -F" " '{ print $1 }'`;
 				$pos_binaire = `echo $status | awk -F":" '{ print $7 }' | awk -F" " '{ print $1 }'`;
@@ -88,6 +90,17 @@ class DefaultController extends Controller
 		$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
 		$select = "SHOW SLAVE STATUS";
                 return $connection->query($select)->fetch();	
+	}
+	
+	public function getVariables($user, $password, $ip) {
+                $connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
+                $select = "SHOW GLOBAL VARIABLES";
+                $tmp = $connection->query($select)->fetchAll(\PDO::FETCH_ASSOC);
+       		$result = array();
+		foreach ($tmp as $item){
+			$result[$item['Variable_name']] = $item['Value'];
+		}
+	 	return $result;
 	}
 
 }
