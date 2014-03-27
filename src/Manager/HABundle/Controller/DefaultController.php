@@ -15,6 +15,14 @@ class DefaultController extends Controller
 		$ip_bdd = explode("\n", `cat $mha | grep hostname | awk '{print $3}'`);
 		$ip_bdd = array_filter($ip_bdd);
 		$data =array();
+		if($tmp = `service mha_daemon status`){
+			if (strpos($tmp, 'is not running') !== false) {
+				$mha_status = false;
+			} else if (strpos($tmp, 'is running') !== false) {
+                                $mha_status = true;
+                        }
+
+		}
 
 		foreach($ip_bdd as $ip){
 			$array = $status = null;
@@ -51,8 +59,8 @@ class DefaultController extends Controller
 				array_push($data, $array);
 			}
 		}
-			
-		return $this->render('ManagerHABundle:Default:index.html.twig', array('bdd' => $data));
+	
+		return $this->render('ManagerHABundle:Default:index.html.twig', array('bdd' => $data, 'mha_status' => $mha_status));
 	}
 
 	public function logAction(){
