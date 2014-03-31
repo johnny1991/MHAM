@@ -17,8 +17,8 @@ class ManagerMHA {
 
 	protected function __construct(){
 		$conf = $this->getConf();
-		$this->user = $conf['user'];
-		$this->password = $conf['password'];
+		$this->user = $conf['server default']['user'];
+		$this->password = $conf['server default']['password'];
 		foreach($item as $conf){
 			if (!empty($item['hostname'])){
 				$this->ips[] = $item['hostname'];
