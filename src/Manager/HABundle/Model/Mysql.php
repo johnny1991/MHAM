@@ -66,12 +66,13 @@ class Mysql {
 	}
 
 	public function getReplicationStatus() {
-		if(!$this->replicationStatus){ echo 'ffff'.$this->state.'ddd';
+		if(!$this->replicationStatus){
 			try {
 				if($this->state == 'Master'){
 					$this->replicationStatus = $this->PDOinstance->query("SHOW MASTER STATUS")->fetch();
 				} else if($this->state == 'Slave'){
 					$this->replicationStatus = $this->PDOinstance->query("SHOW SLAVE STATUS")->fetch();
+					var_dump($this->replicationStatus);
 				}
 			} catch(Exception $e) {
 				return false;
