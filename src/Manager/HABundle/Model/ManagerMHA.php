@@ -6,19 +6,17 @@ class ManagerMHA {
 
 	protected static $instance;
 
-	public $file = '/etc/mha.conf';
-	public $conf;
-
+	public static $file = '/etc/mha.conf';
+	public static $conf;
 	public $user;
 	public $password;
 	public $ips;
 	public $mainIp;
-
 	public $status;
 	public $servers;
 
 	protected function __construct(){
-		$mha = $this->file;
+		$mha = '/etc/mha.conf';
 		var_dump($this->getConf());
 		$this->user = trim(`cat $mha | grep user | awk '{print $3}'`);
 		$this->password = trim(`cat $mha | grep password | awk '{print $3}'`);
@@ -53,11 +51,12 @@ class ManagerMHA {
 		return $this->ips;
 	}
 
+	
 	public static function getConf(){
-		if(!$this->conf){
-			$this->conf = parse_ini_file($this->file, 1, INI_SCANNER_RAW);
+		if(!self::$conf){
+		self::$conf = parse_ini_file(self::$file, 1, INI_SCANNER_RAW);
 		}
-		return $this->conf;
+		return self::$conf;
 	}
 
 	public function initServers(){
