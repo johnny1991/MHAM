@@ -34,7 +34,7 @@
                         	<tbody>
 	                        	{% for server in manager.servers %}
 	                            <tr>
-	                                <td>{{server}}{{ server.ip }}</td>
+	                                <td>{{ dump(server) }}{{ server.ip }}</td>
 	                                <td>{{ server.status }}</td>
 							    </tr>
 	                        	{% endfor %}
