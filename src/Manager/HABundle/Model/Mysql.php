@@ -71,7 +71,7 @@ class Mysql {
 				if($this->state == 'Master'){
 					$this->replicationStatus = $this->PDOinstance->query("SHOW MASTER STATUS")->fetch();
 				} else if($this->state == 'Slave'){
-					$thi->replicationStatus = $this->PDOinstance->query("SHOW SLAVE STATUS")->fetch();
+					$this->replicationStatus = $this->PDOinstance->query("SHOW SLAVE STATUS")->fetch();
 				}
 			} catch(Exception $e) {
 				return false;
