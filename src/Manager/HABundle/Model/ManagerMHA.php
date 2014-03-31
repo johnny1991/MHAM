@@ -9,8 +9,8 @@ class ManagerMHA {
 	public $file = '/etc/mha.conf';
 	public $conf;
 
-	public static $user;
-	public static $password;
+	public $user;
+	public $password;
 	public $ips;
 	public $mainIp;
 
@@ -55,7 +55,7 @@ class ManagerMHA {
 
 	public function initServers(){
 		foreach ($this->getIps() as $ip){
-			$this->addServer(new Server($ip));
+			$this->addServer(new Server($ip, $this->user, $this->password));
 		}
 	} 
 	

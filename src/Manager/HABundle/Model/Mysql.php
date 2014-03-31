@@ -16,10 +16,10 @@ class Mysql {
 	public $global;
 	public $PDOinstance;
 
-	public function __construct($ip){
+	public function __construct($ip, $user, $password){
 		$this->ip = $ip;
-		$this->user = ManagerMHA::$user;
-		$this->password = ManagerMHA::$password;
+		$this->user = $user;
+		$this->password = $password;
 		$this->update();
 	}
 

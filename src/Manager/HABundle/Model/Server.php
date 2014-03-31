@@ -7,6 +7,8 @@ use Manager\HABundle\Model\Mysql;
 class Server {
 
 	public $ip;
+	public $user;
+	public $password;
 	public $status;
 	public $mysql;
 
