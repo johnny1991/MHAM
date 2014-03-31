@@ -42,7 +42,7 @@ class Server {
 	}
 
 	public function initMysql(){
-		$this->mysql = new Mysql($this->ip);
+		$this->mysql = new Mysql($this->ip, $this->user, $this->password);
 	}
 
 }
