@@ -138,20 +138,16 @@ class DefaultController extends Controller
 
 	public function isConnected($user, $password, $ip){
 		$mysqli = new \mysqli($ip, $user, $password);
-		//return $mysqli->ping();
 		$result = true;
-		
-		/* check connection */
+
 		if ($mysqli->connect_errno) {
 			$result = false;
 		}
 
-		/* check if server is alive */
 		if (!$mysqli->ping()) {
-		    	$result = false;
+			$result = false;
 		}
-		
-		/* close connection */
+
 		$mysqli->close();
 		return $result;
 	}

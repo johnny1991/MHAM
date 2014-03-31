@@ -6,10 +6,7 @@
 .footer{border-top: 1px solid #D5D5D5; padding: 10px; text-align: right}
 
 #bdd_state .head{font-weight: bold;}
-#bdd_state .row > div{border:1px solid #D5D5D5; border-width:1px 0px 0px 1px;}
-#bdd_state .row > div:last-child{border-width:1px 1px 0px 1px;}
-#bdd_state .row:last-child > div{border-width:1px 0px 1px 1px;}
-#bdd_state .row:last-child > div:last-child{border-width:1px 1px 1px 1px;}
+#bdd_state table td{border:1px solid #D5D5D5; padding:3px;}
 
 #mha_state .log{margin: 20px 0 5px; border: 1px solid #D5D5D5; padding: 10px; height: 400px; overflow: auto;}
 #mha_state .time{float: right}
