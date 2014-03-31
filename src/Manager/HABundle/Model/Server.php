@@ -34,13 +34,14 @@ class Server {
 
 	public function update(){
 		$this->status = exec("ping ".$this->ip." -w 2") ? true : false;
+		$this->initMysql();
 	}
 
 	public function getMysql(){
 		return $this->mysql;
 	}
 
-	public function setMysql(){
+	public function initMysql(){
 		$this->mysql = new Mysql($this->ip);
 	}
 
