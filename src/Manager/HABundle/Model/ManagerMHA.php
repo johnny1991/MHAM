@@ -23,7 +23,7 @@ class ManagerMHA {
 		$this->user = trim(`cat $mha | grep user | awk '{print $3}'`);
 		$this->password = trim(`cat $mha | grep password | awk '{print $3}'`);
 		$this->ips = explode("\n", `cat $mha | grep hostname | awk '{print $3}'`);
-		$this->ips = array_filter($ip_bdd);
+		$this->ips = array_filter($this->ips);
 
 		if($tmp = `service mha_daemon status`){
 			if (strpos($tmp, 'is not running') !== false) {
