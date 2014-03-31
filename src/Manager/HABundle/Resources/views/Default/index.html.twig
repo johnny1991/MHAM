@@ -34,11 +34,18 @@
                         	<tbody>
 	                        	{% for server in manager.servers %}
 	                            <tr>
-	                                <td>{{ dump(server) }}{{ server.ip }}</td>
+	                                <td>{#{ dump(server.mysql.replicationStatus) }#}{{ server.ip }}</td>
 	                                <td>{{ server.status }}</td>
 	                                <td>{{ server.mysql.state }}</td>
-	                                <td>{{ server.mysql.replicationStatus.File }}</td>
-	                                <td>{{ server.mysql.replicationStatus.Position }}</td>
+	                                {% if(server.mysql.state == 'Master') %}
+					<td>{{ server.mysql.replicationStatus['File'] }}</td>
+	                                <td>{{ server.mysql.replicationStatus['Position'] }}</td>
+					{% elseif(server.mysql.state == 'Slave') %}
+					<td>{#{ server.mysql.replicationStatus['Master_Log_File'] }#}</td>
+                                        <td>{#{ server.mysql.replicationStatus['Read_Master_Log_Pos'] }#}</td>
+					<td>{{ server.mysql.replicationStatus['Slave_IO_Running'] }}</td>
+					<td>{{ server.mysql.replicationStatus['Slave_SQL_Running'] }}</td>
+					{% endif %}
 							    </tr>
 	                        	{% endfor %}
                     		</tbody>
