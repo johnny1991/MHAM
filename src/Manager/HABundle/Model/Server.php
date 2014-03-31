@@ -31,7 +31,7 @@ class Server {
 	}
 
 	public function update(){
-		$this->status = exec("ping ".$ip." -w 2") ? true : false;
+		$this->status = exec("ping ".$this->ip." -w 2") ? true : false;
 	}
 
 	public function getMysql(){
