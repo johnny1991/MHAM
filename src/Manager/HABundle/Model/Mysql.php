@@ -31,6 +31,7 @@ class Mysql {
 			$this->PDOinstance = new \PDO("mysql:host=$this->ip;dbname=inkia_nomyisam", $this->user, $this->password,array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING));
 			$this->getState(); // Manage Errors if possible
 			$this->getReplicationStatus(); // Manage Errors if possible
+			$this->getGlobal();
 			$this->isStateOk = (($this->state == 'Master') && ($mhaConf['server1']['hostname'] == $this->ip));
 		}
 	}
@@ -55,7 +56,8 @@ class Mysql {
 	public function getState() {
 		if(!$this->state){
 			try {
-				$this->state = $this->PDOinstance->query("select variable_value from information_schema.global_status where variable_name = 'Slave_running';")->fetch();
+				$result = $this->PDOinstance->query("select variable_value from information_schema.global_status where variable_name = 'Slave_running';")->fetch();
+				$this->state = ($result['variable_value'] == 'OFF') ? 'Master' : 'Slave';
 			} catch (PDOException $e) {
 				return $e;
 			}
