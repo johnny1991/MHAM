@@ -66,7 +66,7 @@ class Mysql {
 	}
 
 	public function getReplicationStatus() {
-		if(!$this->replicationStatus){
+		if(!$this->replicationStatus){ echo 'ffff'.$this->state.'ddd';
 			try {
 				if($this->state == 'Master'){
 					$this->replicationStatus = $this->PDOinstance->query("SHOW MASTER STATUS")->fetch();
