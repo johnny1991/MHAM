@@ -11,5 +11,5 @@ manager_ha_sync:
     defaults: { _controller: ManagerHABundle:Default:sync }
 
 manager_ha_start_mha:
-    pattern:  /sync
+    pattern:  /start_mha
     defaults: { _controller: ManagerHABundle:Default:start_mha }
