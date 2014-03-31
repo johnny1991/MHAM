@@ -4,6 +4,7 @@ namespace Manager\HABundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Manager\HABundle\Model\ManagerMHA;
 
 class DefaultController extends Controller
 {
