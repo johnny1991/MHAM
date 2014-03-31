@@ -19,7 +19,7 @@ class ManagerMHA {
 		$conf = $this->getConf();
 		$this->user = $conf['server default']['user'];
 		$this->password = $conf['server default']['password'];
-		foreach($item as $conf){
+		foreach($conf as $item){
 			if (!empty($item['hostname'])){
 				$this->ips[] = $item['hostname'];
 			}
