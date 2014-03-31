@@ -17,7 +17,6 @@
                 <div class="col-sm-12">
                     <div id="bdd_state">
                         <h2>Etat des Bases de données</h2>
-                        {{ dump(manager) }}
                         <table>
                             <thead>
                             	<tr>
@@ -35,7 +34,7 @@
                         	<tbody>
 	                        	{% for server in manager.servers %}
 	                            <tr>
-	                                <td>{{ server.ip }}</td>
+	                                <td>{{server.mysql}}{{ server.ip }}</td>
 	                                <td>{{ server.status }}</td>
 							    </tr>
 	                        	{% endfor %}
