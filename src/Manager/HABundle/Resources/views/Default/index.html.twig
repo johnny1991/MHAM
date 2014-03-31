@@ -21,6 +21,7 @@
                             <thead>
                             	<tr>
                             		<th>IP</th>
+                            		<th>Status du serveur</th>
 		                            <th>Status</th>
 		                            <th>Log Binaire</th>
 		                            <th>Position Binaire</th>
@@ -34,6 +35,7 @@
 	                        	{% for item in bdd %}
 	                            <tr>
 	                                <td>{{ item.ip }}</td>
+	                                <td>{{ item.server_status }}</td>
 	                                <td>
 										{% if (mha_conf.server1['hostname'] == item.ip) and (item.status == 'Master') %}
 											<span class='ok'>{{ item.status }}</span>
@@ -47,7 +49,7 @@
 	                                <td>{{ item.pos_binaire }}</div>
 	                                <td>{{ item.io_running  | default("&nbsp;")}}</div>
 	                                <td>{{ item.sql_running  | default("&nbsp;")}}</div>
-	                                {% if item.global_variables !== false %}
+	                                {% if item.global_variables != false %}
 		                                <td>
 											{% if ((item.global_variables['read_only'] == 'OFF') and (item.status == 'Master') or (item.global_variables['read_only'] == 'ON') and (item.status == 'Slave') ) %}
 		                                        <span class="ok">{{ item.global_variables['read_only'] }}</span>

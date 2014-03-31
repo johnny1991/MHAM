@@ -32,7 +32,7 @@ class DefaultController extends Controller
 			$array = array();
 			$array['ip'] = $ip;
 			$array['global_variables'] = $this->getVariables($user, $password, $ip);
-			$array['server_status'] = exec("ping ".$ip." -w 2") ? true : false;
+			$array['server_status'] = exec("ping ".$ip." -w 2") ? 'Up' : 'Down';
 				
 			if($isMaster == 'OFF'){
 				$status = $this->getMasterStatus($user, $password, $ip);
