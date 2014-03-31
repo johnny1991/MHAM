@@ -12,20 +12,7 @@ class DefaultController extends Controller
 		
 		$ManagerMHA = ManagerMHA::getInstance();
 		
-		$user = trim(`cat $mha | grep user | awk '{print $3}'`);
-		$password = trim(`cat $mha | grep password | awk '{print $3}'`);
-		$ip_bdd = explode("\n", `cat $mha | grep hostname | awk '{print $3}'`);
-		$ip_bdd = array_filter($ip_bdd);
-		$data =array();
-		if($tmp = `service mha_daemon status`){
-			if (strpos($tmp, 'is not running') !== false) {
-				$mha_status = false;
-			} else if (strpos($tmp, 'is running') !== false) {
-				$mha_status = true;
-			}
-		}
-
-		foreach($ip_bdd as $ip){
+		/*foreach($ip_bdd as $ip){
 			$status = null;
 			$isMaster = $this->isMaster($user, $password, $ip);
 			$isMaster = $isMaster['variable_value'];
@@ -59,9 +46,12 @@ class DefaultController extends Controller
 			}
 
 			array_push($data, $array);
-		}
+		}*/
 
-		return $this->render('ManagerHABundle:Default:index.html.twig', array('bdd' => $data, 'mha_status' => $mha_status, 'mha_conf' => $mha_conf));
+		//return $this->render('ManagerHABundle:Default:index.html.twig', array('bdd' => $data, 'mha_status' => $mha_status, 'mha_conf' => $mha_conf));
+		
+		return $this->render('ManagerHABundle:Default:index.html.twig', array('manager' => $ManagerMHA));
+		
 	}
 
 	public function logAction(){

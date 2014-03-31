@@ -32,75 +32,29 @@
 		                     	</tr>
 		                 	</thead>
                         	<tbody>
-	                        	{% for item in bdd %}
+	                        	{% for server in manager.servers %}
 	                            <tr>
-	                                <td>{{ item.ip }}</td>
-	                                <td>{{ item.server_status }}</td>
+	                                <td>{{ server.ip }}</td>
+	                                <td>{{ server.status }}</td>
 	                                <td>
-										{% if (mha_conf.server1['hostname'] == item.ip) and (item.status == 'Master') %}
-											<span class='ok'>{{ item.status }}</span>
-										{% elseif (mha_conf.server1['hostname'] == item.ip) and (item.status == 'Master') %}
-											<span class='ok'>{{ item.status }}</span>
+										{% if server.mysql.isStateOk %}
+											<span class='ok'>{{ server.status }}</span>
 										{% else %}
 											{{ item.status }}
 										{% endif %}
 									</td>
-	                                <td>{{ item.log_binaire }}</div>
-	                                <td>{{ item.pos_binaire }}</div>
-	                                <td>{{ item.io_running  | default("&nbsp;")}}</div>
-	                                <td>{{ item.sql_running  | default("&nbsp;")}}</div>
-	                                {% if item.global_variables != false %}
-		                                <td>
-											{% if ((item.global_variables['read_only'] == 'OFF') and (item.status == 'Master') or (item.global_variables['read_only'] == 'ON') and (item.status == 'Slave') ) %}
-		                                        <span class="ok">{{ item.global_variables['read_only'] }}</span>
-		                                	{% else %}
-		                                        <span class="nok">{{ item.global_variables['read_only'] }}</span>
-		                                	{% endif %}
-										</td>
-										<td>
-											{% if ((item.global_variables['relay_log_purge'] == 'ON') and (item.status == 'Master') or (item.global_variables['relay_log_purge'] == 'OFF') and (item.status == 'Slave') ) %}
-												<span class="ok">{{ item.global_variables['relay_log_purge'] }}</span>
-											{% else %}
-												<span class="nok">{{ item.global_variables['relay_log_purge'] }}</span>
-											{% endif %}
-										</td>
-									{% else %}
-										<td>&nbsp;</td>
-										<td>&nbsp;</td>
-									{% endif %}
+	                                <td>{#{ item.log_binaire }#}</div>
+	                                <td>{#{ item.pos_binaire }#}</div>
+	                                <td>{#{ item.io_running  | default("&nbsp;")}#}</div>
+	                                <td>{#{ item.sql_running  | default("&nbsp;")}#}</div>
+	                                a remplir
 							    </tr>
 	                        	{% endfor %}
                     		</tbody>
                     	</table>
                     	<button id="sync" onclick="self.location.href='{{ path('manager_ha_sync') }}'" class="btn btn-primary">Synchroniser</button>
                     </div>
-                    <div id="mha_state">
-                        <h2>Etat du Manager MHA</h2>
-						<div>
-	                        Ip du Master : {{ mha_conf.server1['hostname'] }}
-                        </div>
-                        <div>
-							{% if mha_status %}
-	                            <span class="glyphicon glyphicon-ok"></span>
-	                            <span>Le manager MHA est en cours d'éxecution</span>
-	                        {% else %}
-	                            <span class="glyphicon glyphicon-remove"></span>
-	                            <span>Le manager MHA n'est pas en cours d'éxecution</span>
-	                        {% endif %}
-						</div>
-						<div class="log">
-                            En cours de chargement ...
-                        </div>
-                        <button id="start_mha" onclick="self.location.href='{{ path('manager_ha_start_mha') }}'" class="btn btn-primary">Démarrer MHA</button>
-                        
-                        <div class="time">Date du Log : <span id="refresh_time"></span></div>
-                        <script>
-                            setInterval(function (){
-                                $('#mha_state .log').load("{{ path('manager_ha_log')}}").fadeIn("slow");
-                                $('#mha_state #refresh_time').html(new Date($.now()));
-                            }, 500);
-                        </script>
-                    </div>
+                     
                 </div>
             </div>
             <div class="row footer">

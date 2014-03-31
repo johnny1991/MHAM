@@ -12,6 +12,7 @@ class Mysql {
 
 	public $status;
 	public $state;
+	public $isStateOk = true;
 	public $replicationStatus;
 	public $global;
 	public $PDOinstance;
@@ -24,14 +25,16 @@ class Mysql {
 	}
 
 	public function update(){
+		$mhaConf = ManagerMHA::getConf();
 		$this->isConnected();
 		if($this->status){
 			$this->PDOinstance = new \PDO("mysql:host=$this->ip;dbname=inkia_nomyisam", $this->user, $this->password,array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING));
 			$this->getState(); // Manage Errors if possible
 			$this->getReplicationStatus(); // Manage Errors if possible
+			$this->isStateOk = (($this->state == 'Master') && ($mhaConf['server1']['hostname'] == $this->ip));
 		}
 	}
-	
+
 	public function getIp(){
 		return $this->ip;
 	}
@@ -41,6 +44,10 @@ class Mysql {
 		return $this;
 	}
 
+	public function isStateOk(){
+		return $this->isStateOk();
+	}
+	
 	public function getStatus(){
 		return $this->status;
 	}

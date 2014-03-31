@@ -18,7 +18,6 @@ class ManagerMHA {
 	public $servers;
 
 	protected function __construct(){
-		$this->conf = parse_ini_file($this->file, 1, INI_SCANNER_RAW);
 		$mha = $this->file;
 		$this->user = trim(`cat $mha | grep user | awk '{print $3}'`);
 		$this->password = trim(`cat $mha | grep password | awk '{print $3}'`);
@@ -53,16 +52,23 @@ class ManagerMHA {
 		return $this->ips;
 	}
 
+	public static function getConf(){
+		if(!$this->conf){
+			$this->conf = parse_ini_file($this->file, 1, INI_SCANNER_RAW);
+		}
+		return $this->conf;
+	}
+
 	public function initServers(){
 		foreach ($this->getIps() as $ip){
 			$this->addServer(new Server($ip, $this->user, $this->password));
 		}
-	} 
-	
+	}
+
 	public function addServer($server){
 		$this->servers[] = $server;
 	}
-	
+
 	public function getServerByIp($ip){
 		foreach($this->getServers() as $server){
 			if($server->getIp() == $ip){
