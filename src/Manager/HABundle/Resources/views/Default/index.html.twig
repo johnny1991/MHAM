@@ -37,8 +37,8 @@
 	                                <td>{{ dump(server) }}{{ server.ip }}</td>
 	                                <td>{{ server.status }}</td>
 	                                <td>{{ server.mysql.state }}</td>
-	                                <td>{{ server.mysql.global.Master_Log_File }}</td>
-	                                <td>{{ server.mysql.global.Read_Master_Log_Pos }}</td>
+	                                <td>{{ server.mysql.status.File }}</td>
+	                                <td>{{ server.mysql.status.Position }}</td>
 							    </tr>
 	                        	{% endfor %}
                     		</tbody>
