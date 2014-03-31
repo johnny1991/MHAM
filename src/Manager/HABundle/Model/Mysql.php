@@ -56,7 +56,7 @@ class Mysql {
 	public function getState() {
 		if(!$this->state){
 			try {
-				$result = $this->PDOinstance->query("select variable_value from information_schema.global_status where variable_name = 'Slave_running';")->fetch();
+				$result = $this->PDOinstance->query("select variable_value from information_schema.global_status where variable_name = 'Slave_running'")->fetch();
 				$this->state = ($result['variable_value'] == 'ON') ? 'Master' : 'Slave';
 			} catch (PDOException $e) {
 				return $e;
@@ -72,7 +72,7 @@ class Mysql {
 					$this->replicationStatus = $this->PDOinstance->query("SHOW MASTER STATUS")->fetch();
 				} else if($this->state == 'Slave'){
 					$this->replicationStatus = $this->PDOinstance->query("SHOW SLAVE STATUS")->fetch();
-					var_dump($this->replicationStatus);
+					var_dump($this->PDOinstance->query("SHOW SLAVE STATUS")->fetch());
 				}
 			} catch(Exception $e) {
 				return false;
