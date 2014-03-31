@@ -18,8 +18,8 @@ class ManagerMHA {
 	public $servers;
 
 	protected function __construct(){
-		$this->conf = parse_ini_file($mha,1,INI_SCANNER_RAW);
-
+		$this->conf = parse_ini_file($this->file, 1, INI_SCANNER_RAW);
+		$mha = $this->file;
 		$this->user = trim(`cat $mha | grep user | awk '{print $3}'`);
 		$this->password = trim(`cat $mha | grep password | awk '{print $3}'`);
 		$this->ips = explode("\n", `cat $mha | grep hostname | awk '{print $3}'`);
