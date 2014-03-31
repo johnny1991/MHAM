@@ -72,6 +72,7 @@
 	                        	{% endfor %}
                     		</tbody>
                     	</table>
+                    	<button id="sync" onclick="self.location.href='{{ path('manager_ha_sync') }}'">Synchroniser</button>
                     </div>
                     <div id="mha_state">
                         <h2>Etat du Manager MHA</h2>

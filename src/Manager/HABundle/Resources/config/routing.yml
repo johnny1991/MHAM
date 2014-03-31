@@ -5,3 +5,7 @@ manager_ha_homepage:
 manager_ha_log:
     pattern:  /log
     defaults: { _controller: ManagerHABundle:Default:log }
+
+manager_ha_sync:
+    pattern:  /sync
+    defaults: { _controller: ManagerHABundle:Default:sync }

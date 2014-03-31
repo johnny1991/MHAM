@@ -70,11 +70,15 @@ class DefaultController extends Controller
 		return $response;
 	}
 
-	public function chaAction(){
-		$html = nl2br(shell_exec('tail -n 15 /var/log/masterha/MHA.log'));
-		$response = new Response(json_encode($html));
-		$response->headers->set('Content-Type', 'application/json');
-		return $response;
+	public function syncAction(){
+		$mha = '/etc/mha.conf';
+		$mha_conf = parse_ini_file($mha,1,INI_SCANNER_RAW);
+		if ($mha_conf['server1']['hostname'] == '172.20.0.236'){
+			exec('./root/installer_mha/auto-reverse');
+		} elseif ($mha_conf['server1']['hostname'] == '172.20.0.225'){
+			exec('./root/installer_mha/auto-rereverse');
+		}
+		return new $response();
 	}
 
 	public function isMaster($user, $password, $ip) {
