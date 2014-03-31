@@ -50,10 +50,10 @@ class DefaultController extends Controller
 				$array['io_running'] = $status['Slave_IO_Running'];
 				$array['sql_running'] = $status['Slave_SQL_Running'];
 			}
-
+			var_dump($array);
 			array_push($data, $array);
 		}
-
+	exit();
 		return $this->render('ManagerHABundle:Default:index.html.twig', array('bdd' => $data, 'mha_status' => $mha_status, 'mha_conf' => $mha_conf));
 	}
 
