@@ -33,7 +33,7 @@ class DefaultController extends Controller
 			$array['ip'] = $ip;
 			$array['global_variables'] = $this->getVariables($user, $password, $ip);
 			$array['server_status'] = exec("ping ".$ip." -w 2") ? 'Up' : 'Down';
-				
+
 			if($isMaster == 'OFF'){
 				$status = $this->getMasterStatus($user, $password, $ip);
 				$array['status'] = 'Master';
@@ -59,7 +59,7 @@ class DefaultController extends Controller
 
 			array_push($data, $array);
 		}
-		
+
 		return $this->render('ManagerHABundle:Default:index.html.twig', array('bdd' => $data, 'mha_status' => $mha_status, 'mha_conf' => $mha_conf));
 	}
 
@@ -74,10 +74,15 @@ class DefaultController extends Controller
 		$mha = '/etc/mha.conf';
 		$mha_conf = parse_ini_file($mha,1,INI_SCANNER_RAW);
 		if ($mha_conf['server1']['hostname'] == '172.20.0.225'){
-		echo exec('/usr/bin/sudo /bin/bash /home/installer_mha/auto-reverse');
+			echo exec('/usr/bin/sudo /bin/bash /home/installer_mha/auto-reverse');
 		} elseif ($mha_conf['server1']['hostname'] == '172.20.0.236'){
-		echo 	exec('/usr/bin/sudo /bin/bash /home/installer_mha/auto-rereverse');
+			echo 	exec('/usr/bin/sudo /bin/bash /home/installer_mha/auto-rereverse');
 		}
+		return new response();
+	}
+
+	public function start_mhaAction(){
+		exec('sudo /etc/init.d/mha_daemon start');
 		return new response();
 	}
 

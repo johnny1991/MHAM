@@ -9,3 +9,7 @@ manager_ha_log:
 manager_ha_sync:
     pattern:  /sync
     defaults: { _controller: ManagerHABundle:Default:sync }
+
+manager_ha_start_mha:
+    pattern:  /sync
+    defaults: { _controller: ManagerHABundle:Default:start_mha }

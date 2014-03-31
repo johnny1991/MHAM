@@ -91,6 +91,8 @@
 						<div class="log">
                             En cours de chargement ...
                         </div>
+                        <button id="start_mha" onclick="self.location.href='{{ path('manager_ha_start_mha') }}'">Démarrer MHA</button>
+                        
                         <div class="time">Date du Log : <span id="refresh_time"></span></div>
                         <script>
                             setInterval(function (){
