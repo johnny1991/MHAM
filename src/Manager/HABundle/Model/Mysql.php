@@ -57,7 +57,7 @@ class Mysql {
 		if(!$this->state){
 			try {
 				$result = $this->PDOinstance->query("select variable_value from information_schema.global_status where variable_name = 'Slave_running';")->fetch();
-				$this->state = ($result['variable_value'] == 'OFF') ? 'Master' : 'Slave';
+				$this->state = ($result['variable_value'] == 'ON') ? 'Master' : 'Slave';
 			} catch (PDOException $e) {
 				return $e;
 			}
