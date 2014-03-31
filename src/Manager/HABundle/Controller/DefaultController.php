@@ -80,47 +80,79 @@ class DefaultController extends Controller
 	}
 
 	public function isMaster($user, $password, $ip) {
-		try {
-			$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
-			$select = "select variable_value from information_schema.global_status where variable_name = 'Slave_running';";
-			return $connection->query($select)->fetch();
-		} catch(Exception $e) {
-		  	return false;
+		if($this->isConnected($user, $password, $ip)) {
+			try {
+				$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password,array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING));
+				$select = "select variable_value from information_schema.global_status where variable_name = 'Slave_running';";
+				return $connection->query($select)->fetch();
+			} catch (PDOException $e) {
+				return false;
+			}
 		}
+		return false;
 	}
 
 	public function getMasterStatus($user, $password, $ip) {
-		try {
-			$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
-			$select = "SHOW MASTER STATUS";
-			return $connection->query($select)->fetch();
-		} catch(Exception $e) {
-			return false;
+		if($this->isConnected($user, $password, $ip)) {
+			try {
+				$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
+				$select = "SHOW MASTER STATUS";
+				return $connection->query($select)->fetch();
+			} catch(Exception $e) {
+				return false;
+			}
 		}
+		return false;
 	}
 
 	public function getSlaveStatus($user, $password, $ip) {
-		try {
-			$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
-			$select = "SHOW SLAVE STATUS";
-			return $connection->query($select)->fetch();
-		} catch(Exception $e) {
-			return false;
+		if($this->isConnected($user, $password, $ip)) {
+			try {
+				$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
+				$select = "SHOW SLAVE STATUS";
+				return $connection->query($select)->fetch();
+			} catch(Exception $e) {
+				return false;
+			}
 		}
+		return false;
 	}
 
 	public function getVariables($user, $password, $ip) {
-		try {
-			$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
-			$select = "SHOW GLOBAL VARIABLES";
-			$tmp = $connection->query($select)->fetchAll(\PDO::FETCH_ASSOC);
-			$result = array();
-			foreach ($tmp as $item){
-				$result[$item['Variable_name']] = $item['Value'];
+		if($this->isConnected($user, $password, $ip)) {
+			try {
+				$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
+				$select = "SHOW GLOBAL VARIABLES";
+				$tmp = $connection->query($select)->fetchAll(\PDO::FETCH_ASSOC);
+				$result = array();
+				foreach ($tmp as $item){
+					$result[$item['Variable_name']] = $item['Value'];
+				}
+				return $result;
+			} catch(Exception $e) {
+				return false;
 			}
-			return $result;
-		} catch(Exception $e) {
-			return false;
 		}
+		return false;
+	}
+
+	public function isConnected($user, $password, $ip){
+		$mysqli = new \mysqli($ip, $user, $password);
+		//return $mysqli->ping();
+		$result = true;
+		
+		/* check connection */
+		if ($mysqli->connect_errno) {
+			$result = false;
+		}
+
+		/* check if server is alive */
+		if (!$mysqli->ping()) {
+		    	$result = false;
+		}
+		
+		/* close connection */
+		$mysqli->close();
+		return $result;
 	}
 }
