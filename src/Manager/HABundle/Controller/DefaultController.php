@@ -33,7 +33,7 @@ class DefaultController extends Controller
 			$array['ip'] = $ip;
 			$array['global_variables'] = $this->getVariables($user, $password, $ip);
 			$array['server_status'] = exec("ping ".$ip." -w 2") ? true : false;
-			
+				
 			if($isMaster == 'OFF'){
 				$status = $this->getMasterStatus($user, $password, $ip);
 				$array['status'] = 'Master';
@@ -41,7 +41,7 @@ class DefaultController extends Controller
 				$array['pos_binaire'] = $status['Position'];
 				$array['io_running'] = ' ';
 				$array['sql_running'] = ' ';
-				
+
 			} elseif($isMaster == 'ON' ){
 				$status = $this->getSlaveStatus($user, $password, $ip);
 				$array['status'] = 'Slave';
@@ -49,11 +49,17 @@ class DefaultController extends Controller
 				$array['pos_binaire'] = $status['Read_Master_Log_Pos'];
 				$array['io_running'] = $status['Slave_IO_Running'];
 				$array['sql_running'] = $status['Slave_SQL_Running'];
+			} else {
+				$array['status'] = ' ';
+				$array['log_binaire'] = ' ';
+				$array['pos_binaire'] = ' ';
+				$array['io_running'] = ' ';
+				$array['sql_running'] = ' ';
 			}
-			var_dump($array);
+
 			array_push($data, $array);
 		}
-	exit();
+		
 		return $this->render('ManagerHABundle:Default:index.html.twig', array('bdd' => $data, 'mha_status' => $mha_status, 'mha_conf' => $mha_conf));
 	}
 
