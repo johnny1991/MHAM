@@ -10,7 +10,7 @@ class DefaultController extends Controller
 {
 	public function indexAction(){
 		
-		$ManagerMHA = new ManagerMHA();
+		$ManagerMHA = ManagerMHA::getInstance();
 		
 		$user = trim(`cat $mha | grep user | awk '{print $3}'`);
 		$password = trim(`cat $mha | grep password | awk '{print $3}'`);
