@@ -19,6 +19,7 @@ class ManagerMHA {
 
 	protected function __construct(){
 		$mha = $this->file;
+		echo "dddssss";
 		var_dump($this->getConf());
 		$this->user = trim(`cat $mha | grep user | awk '{print $3}'`);
 		$this->password = trim(`cat $mha | grep password | awk '{print $3}'`);
