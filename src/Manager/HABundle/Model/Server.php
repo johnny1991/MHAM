@@ -14,6 +14,8 @@ class Server {
 
 	public function __construct($ip){
 		$this->ip = $ip;
+		$this->user = $user;
+		$this->password = $password;
 		$this->update();
 	}
 
