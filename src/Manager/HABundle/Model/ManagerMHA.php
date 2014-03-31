@@ -19,7 +19,6 @@ class ManagerMHA {
 
 	protected function __construct(){
 		$mha = $this->file;
-		echo "dddssss";
 		var_dump($this->getConf());
 		$this->user = trim(`cat $mha | grep user | awk '{print $3}'`);
 		$this->password = trim(`cat $mha | grep password | awk '{print $3}'`);
@@ -80,8 +79,7 @@ class ManagerMHA {
 		return false;
 	}
 
-	public static function getInstance()
-	{
+	public static function getInstance(){
 		if (!isset(self::$instance))
 		{
 			self::$instance = new self;
@@ -89,6 +87,5 @@ class ManagerMHA {
 
 		return self::$instance;
 	}
-
 
 }
