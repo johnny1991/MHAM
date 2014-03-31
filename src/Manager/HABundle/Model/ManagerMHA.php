@@ -16,12 +16,14 @@ class ManagerMHA {
 	public $servers;
 
 	protected function __construct(){
-		$mha = '/etc/mha.conf';
-		var_dump($this->getConf());
-		$this->user = trim(`cat $mha | grep user | awk '{print $3}'`);
-		$this->password = trim(`cat $mha | grep password | awk '{print $3}'`);
-		$this->ips = explode("\n", `cat $mha | grep hostname | awk '{print $3}'`);
-		$this->ips = array_filter($this->ips);
+		$conf = $this->getConf();
+		$this->user = $conf['user'];
+		$this->password = $conf['password'];
+		foreach($item as $conf){
+			if (!empty($item['hostname'])){
+				$this->ips[] = $item['hostname'];
+			}
+		}
 
 		if($tmp = `service mha_daemon status`){
 			if (strpos($tmp, 'is not running') !== false) {
