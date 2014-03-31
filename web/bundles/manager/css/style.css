@@ -6,7 +6,7 @@
 .footer{border-top: 1px solid #D5D5D5; padding: 10px; text-align: right}
 
 #bdd_state .head{font-weight: bold;}
-#bdd_state table td{border:1px solid #D5D5D5; padding:3px;}
+#bdd_state table td, #bdd_state table th{border:1px solid #D5D5D5; padding:5px;}
 
 #mha_state .log{margin: 20px 0 5px; border: 1px solid #D5D5D5; padding: 10px; height: 400px; overflow: auto;}
 #mha_state .time{float: right}

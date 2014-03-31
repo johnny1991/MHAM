@@ -25,41 +25,33 @@ class DefaultController extends Controller
 		}
 
 		foreach($ip_bdd as $ip){
-			$array = $status = null;
+			$status = null;
 			$isMaster = $this->isMaster($user, $password, $ip);
 			$isMaster = $isMaster['variable_value'];
+
+			$array = array();
+			$array['ip'] = $ip;
+			$array['global_variables'] = $this->getVariables($user, $password, $ip);
+			$array['server_status'] = exec("ping ".$ip." -w 2") ? true : false;
+			
 			if($isMaster == 'OFF'){
 				$status = $this->getMasterStatus($user, $password, $ip);
-				//	var_dump($status);
-				$array = array('ip' => $ip,
-						'status' => 'Master',
-						'log_binaire' => $status['File'],
-						'pos_binaire' => $status['Position'],
-						'io_running' => ' ',
-						'sql_running' => ' ',
-						'global_variables' => $this->getVariables($user, $password, $ip));
-				//var_dump($this->getVariables($user, $password, $ip));
+				$array['status'] = 'Master';
+				$array['log_binaire'] = $status['File'];
+				$array['pos_binaire'] = $status['Position'];
+				$array['io_running'] = ' ';
+				$array['sql_running'] = ' ';
+				
 			} elseif($isMaster == 'ON' ){
 				$status = $this->getSlaveStatus($user, $password, $ip);
-
-				//var_dump($status);
-				$array = array('ip' => $ip,
-						'status' => 'Slave',
-						'log_binaire' => $status['Master_Log_File'],
-						'pos_binaire' => $status['Read_Master_Log_Pos'],
-						'io_running' => $status['Slave_IO_Running'],
-						'sql_running' => $status['Slave_SQL_Running'],
-						'global_variables' => $this->getVariables($user, $password, $ip));
-
-				$log_binaire = `echo $status | awk -F":" '{ print $8 }' | awk -F" " '{ print $1 }'`;
-				$pos_binaire = `echo $status | awk -F":" '{ print $7 }' | awk -F" " '{ print $1 }'`;
-				$io_running = `echo $status | awk -F":" '{ print $12 }' | awk -F" " '{ print $1 }'`;
-				$sql_running = `echo $status | awk -F":" '{ print $13 }' | awk -F" " '{ print $1 }'`;
+				$array['status'] = 'Slave';
+				$array['log_binaire'] = $status['Master_Log_File'];
+				$array['pos_binaire'] = $status['Read_Master_Log_Pos'];
+				$array['io_running'] = $status['Slave_IO_Running'];
+				$array['sql_running'] = $status['Slave_SQL_Running'];
 			}
 
-			if(! is_null($array)){
-				array_push($data, $array);
-			}
+			array_push($data, $array);
 		}
 
 		return $this->render('ManagerHABundle:Default:index.html.twig', array('bdd' => $data, 'mha_status' => $mha_status, 'mha_conf' => $mha_conf));
