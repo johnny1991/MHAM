@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 class DefaultController extends Controller
 {
 	public function indexAction(){
-		$mha = '/etc/mha.conf';
-		$mha_conf = parse_ini_file($mha,1,INI_SCANNER_RAW);
-
+		
+		$ManagerMHA = new ManagerMHA();
+		
 		$user = trim(`cat $mha | grep user | awk '{print $3}'`);
 		$password = trim(`cat $mha | grep password | awk '{print $3}'`);
 		$ip_bdd = explode("\n", `cat $mha | grep hostname | awk '{print $3}'`);
