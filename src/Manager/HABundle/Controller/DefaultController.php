@@ -73,12 +73,12 @@ class DefaultController extends Controller
 	public function syncAction(){
 		$mha = '/etc/mha.conf';
 		$mha_conf = parse_ini_file($mha,1,INI_SCANNER_RAW);
-		if ($mha_conf['server1']['hostname'] == '172.20.0.236'){
-			exec('./root/installer_mha/auto-reverse');
-		} elseif ($mha_conf['server1']['hostname'] == '172.20.0.225'){
-			exec('./root/installer_mha/auto-rereverse');
+		if ($mha_conf['server1']['hostname'] == '172.20.0.225'){
+		echo exec('/usr/bin/sudo /bin/bash /home/installer_mha/auto-reverse');
+		} elseif ($mha_conf['server1']['hostname'] == '172.20.0.236'){
+		echo 	exec('/usr/bin/sudo /bin/bash /home/installer_mha/auto-rereverse');
 		}
-		return new $response();
+		return new response();
 	}
 
 	public function isMaster($user, $password, $ip) {
