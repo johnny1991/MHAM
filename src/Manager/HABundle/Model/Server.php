@@ -14,7 +14,7 @@ class Server {
 
 	public function __construct($ip){
 		$this->ip = $ip;
-		update();
+		$this->update();
 	}
 
 	public function getIp(){
