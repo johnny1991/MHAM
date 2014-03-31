@@ -12,7 +12,7 @@ class Server {
 	public $status;
 	public $mysql;
 
-	public function __construct($ip){
+	public function __construct($ip, $user, $password){
 		$this->ip = $ip;
 		$this->user = $user;
 		$this->password = $password;
