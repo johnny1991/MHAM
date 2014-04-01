@@ -30,7 +30,7 @@ class Server {
 	}
 
 	public function update(){
-		$this->status = exec("ping ".$this->ip." -w 2") ? true : false;
+		$this->status = exec("ping -c2 -i0.25 $this->ip") ? true : false;
 	}
 
 }
