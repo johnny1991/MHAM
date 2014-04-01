@@ -54,7 +54,7 @@
 	                        	{% endfor %}
                     		</tbody>
                     	</table>
-                    	<button id="sync" onclick="self.location.href='{{ path('manager_ha_sync') }}'" class="btn btn-primary">Synchroniser</button>
+                    	<button id="sync" class="btn btn-primary">Synchroniser</button>
                     </div>
                     <!--<div id="magento_state">
                     	<table>
@@ -93,7 +93,7 @@
 						<div class="log">
                             En cours de chargement ...
                         </div>
-                        <button id="start_mha" onclick="self.location.href='{{ path('manager_ha_start_mha') }}'" class="btn btn-primary">Démarrer MHA</button>
+                        <button id="start_mha" class="btn btn-primary">Démarrer MHA</button>
                         
                         <div class="time">Date du Log : <span id="refresh_time"></span></div>
                         <script>
@@ -101,6 +101,13 @@
                                 $('#mha_state .log').load("{{ path('manager_ha_log')}}").fadeIn("slow");
                                 $('#mha_state #refresh_time').html(new Date($.now()));
                             }, 500);
+                            $('#start_mha').click(function(){
+                            	jQuery.ajax({url:{{ path('manager_ha_start_mha') }} });
+                            });
+                            $('#sync').click(function(){
+                            	jQuery.ajax({url:{{ path('manager_ha_sync') }} });
+                            });
+                        
                         </script>
                     </div> 
                 </div>
