@@ -24,7 +24,7 @@ class MagentoServer extends Server {
 	public function initLocalxml(){
 		$string = shell_exec("/home/installer_mha/getLocalXml --user=root --ip=$this->ip --path=$this->localxmlpath");
 		$this->localxml = simplexml_load_string($string);
-		$this->BddIp = $this->localxml['global']['resources']['default_setup']['connection']['host'];
+		$this->BddIp = $this->localxml->global->resources->default_setup->connection->host;
 		print_r($this->localxml);
 	}
 
