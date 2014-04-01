@@ -9,49 +9,8 @@ use Manager\HABundle\Model\ManagerMHA;
 class DefaultController extends Controller
 {
 	public function indexAction(){
-		
 		$ManagerMHA = ManagerMHA::getInstance();
-		
-		/*foreach($ip_bdd as $ip){
-			$status = null;
-			$isMaster = $this->isMaster($user, $password, $ip);
-			$isMaster = $isMaster['variable_value'];
-
-			$array = array();
-			$array['ip'] = $ip;
-			$array['global_variables'] = $this->getVariables($user, $password, $ip);
-			$array['server_status'] = exec("ping ".$ip." -w 2") ? 'Up' : 'Down';
-
-			if($isMaster == 'OFF'){
-				$status = $this->getMasterStatus($user, $password, $ip);
-				$array['status'] = 'Master';
-				$array['log_binaire'] = $status['File'];
-				$array['pos_binaire'] = $status['Position'];
-				$array['io_running'] = ' ';
-				$array['sql_running'] = ' ';
-
-			} elseif($isMaster == 'ON' ){
-				$status = $this->getSlaveStatus($user, $password, $ip);
-				$array['status'] = 'Slave';
-				$array['log_binaire'] = $status['Master_Log_File'];
-				$array['pos_binaire'] = $status['Read_Master_Log_Pos'];
-				$array['io_running'] = $status['Slave_IO_Running'];
-				$array['sql_running'] = $status['Slave_SQL_Running'];
-			} else {
-				$array['status'] = ' ';
-				$array['log_binaire'] = ' ';
-				$array['pos_binaire'] = ' ';
-				$array['io_running'] = ' ';
-				$array['sql_running'] = ' ';
-			}
-
-			array_push($data, $array);
-		}*/
-
-		//return $this->render('ManagerHABundle:Default:index.html.twig', array('bdd' => $data, 'mha_status' => $mha_status, 'mha_conf' => $mha_conf));
-		
 		return $this->render('ManagerHABundle:Default:index.html.twig', array('manager' => $ManagerMHA));
-		
 	}
 
 	public function logAction(){
@@ -62,91 +21,21 @@ class DefaultController extends Controller
 	}
 
 	public function syncAction(){
-		$mha = '/etc/mha.conf';
-		$mha_conf = parse_ini_file($mha,1,INI_SCANNER_RAW);
-		if ($mha_conf['server1']['hostname'] == '172.20.0.225'){
+		$ManagerMHA = ManagerMHA::getInstance();
+		$conf = $ManagerMHA::getConf();
+		$hostname = $conf['server1']['hostname'];
+		
+		if ($hostname == '172.20.0.225'){
 			echo exec('/usr/bin/sudo /bin/bash /home/installer_mha/auto-reverse');
-		} elseif ($mha_conf['server1']['hostname'] == '172.20.0.236'){
-			echo 	exec('/usr/bin/sudo /bin/bash /home/installer_mha/auto-rereverse');
+		} elseif ($hostname == '172.20.0.236'){
+			echo exec('/usr/bin/sudo /bin/bash /home/installer_mha/auto-rereverse');
 		}
+		
 		return new response();
 	}
 
 	public function start_mhaAction(){
 		exec('sudo /etc/init.d/mha_daemon start');
 		return new response();
-	}
-
-	public function isMaster($user, $password, $ip) {
-		if($this->isConnected($user, $password, $ip)) {
-			try {
-				$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password,array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING));
-				$select = "select variable_value from information_schema.global_status where variable_name = 'Slave_running';";
-				return $connection->query($select)->fetch();
-			} catch (PDOException $e) {
-				return false;
-			}
-		}
-		return false;
-	}
-
-	public function getMasterStatus($user, $password, $ip) {
-		if($this->isConnected($user, $password, $ip)) {
-			try {
-				$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
-				$select = "SHOW MASTER STATUS";
-				return $connection->query($select)->fetch();
-			} catch(Exception $e) {
-				return false;
-			}
-		}
-		return false;
-	}
-
-	public function getSlaveStatus($user, $password, $ip) {
-		if($this->isConnected($user, $password, $ip)) {
-			try {
-				$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
-				$select = "SHOW SLAVE STATUS";
-				return $connection->query($select)->fetch();
-			} catch(Exception $e) {
-				return false;
-			}
-		}
-		return false;
-	}
-
-	public function getVariables($user, $password, $ip) {
-		if($this->isConnected($user, $password, $ip)) {
-			try {
-				$connection = new \PDO("mysql:host=$ip;dbname=inkia_nomyisam", $user, $password);
-				$select = "SHOW GLOBAL VARIABLES";
-				$tmp = $connection->query($select)->fetchAll(\PDO::FETCH_ASSOC);
-				$result = array();
-				foreach ($tmp as $item){
-					$result[$item['Variable_name']] = $item['Value'];
-				}
-				return $result;
-			} catch(Exception $e) {
-				return false;
-			}
-		}
-		return false;
-	}
-
-	public function isConnected($user, $password, $ip){
-		$mysqli = new \mysqli($ip, $user, $password);
-		$result = true;
-
-		if ($mysqli->connect_errno) {
-			$result = false;
-		}
-
-		if (!$mysqli->ping()) {
-			$result = false;
-		}
-
-		$mysqli->close();
-		return $result;
 	}
 }

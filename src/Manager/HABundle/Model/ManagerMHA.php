@@ -8,6 +8,8 @@ class ManagerMHA {
 
 	public static $file = '/etc/mha.conf';
 	public static $conf;
+	public static $localxmlpath = '/var/www/magento/app/etc/local.xml';
+	
 	public $user;
 	public $password;
 	public $bddIps;
@@ -16,11 +18,9 @@ class ManagerMHA {
 	public $status;
 	public $bddServers;
 	public $magentoServers;
-	public $localxml;
 
 	protected function __construct(){
 		$this->magentoIps = array('172.20.0.213','172.20.0.213');
-		$this->localxml = '/var/www/magento/app/etc/local.xml';
 		$conf = $this->getConf();
 		$this->user = $conf['server default']['user'];
 		$this->password = $conf['server default']['password'];

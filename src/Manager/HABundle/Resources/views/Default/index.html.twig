@@ -66,7 +66,13 @@
 		                     	</tr>
 		                 	</thead>
                         	<tbody>
-	                        	 
+	                        	{% for server in manager.magentoServers %}
+	                            <tr>
+	                                <td>{{ server.ip }}</td>
+	                                <td>{{ server.status }}</td>
+	                                <td>{{ server.localxml }}</td>
+							    </tr>
+	                        	{% endfor %}
                     		</tbody>
                     	</table>
                     </div>
