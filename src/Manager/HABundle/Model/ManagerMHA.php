@@ -10,18 +10,23 @@ class ManagerMHA {
 	public static $conf;
 	public $user;
 	public $password;
-	public $ips;
-	public $mainIp;
+	public $bddIps;
+	public $magentoIps;
+	//public $mainIp;
 	public $status;
-	public $servers;
+	public $bddServers;
+	public $magentoServers;
+	public $localxml;
 
 	protected function __construct(){
+		$this->magentoIps = array('172.20.0.213','172.20.0.213');
+		$this->localxml = '/var/www/magento/app/etc/local.xml';
 		$conf = $this->getConf();
 		$this->user = $conf['server default']['user'];
 		$this->password = $conf['server default']['password'];
 		foreach($conf as $item){
 			if (!empty($item['hostname'])){
-				$this->ips[] = $item['hostname'];
+				$this->bddIps[] = $item['hostname'];
 			}
 		}
 
@@ -33,7 +38,8 @@ class ManagerMHA {
 			}
 		}
 
-		$this->initServers();
+		$this->initBddServers();
+		$this->initMagentoServers();
 
 	}
 
@@ -45,14 +51,17 @@ class ManagerMHA {
 		return $this->mainIp;
 	}
 
-	public function getServers(){
-		return $this->servers;
+	public function getBddServers(){
+		return $this->bddServers;
 	}
 
-	public function getIps(){
-		return $this->ips;
+	public function getBddIps(){
+		return $this->bddIps;
 	}
-
+	
+	public function getMagentoIps(){
+		return $this->magentoIps;
+	}
 	
 	public static function getConf(){
 		if(!self::$conf){
@@ -61,24 +70,34 @@ class ManagerMHA {
 		return self::$conf;
 	}
 
-	public function initServers(){
-		foreach ($this->getIps() as $ip){
-			$this->addServer(new Server($ip, $this->user, $this->password));
+	public function initMagentoServers(){
+		foreach ($this->getMagentoIps() as $ip){
+			$this->addMagentoServer(new MagentoServer($ip, $this->user, $this->password));
+		}
+	}
+	
+	public function addMagentoServer($magentoServer){
+		$this->magentoServers[] = $magentoServer;
+	}
+	
+	public function initBddServers(){
+		foreach ($this->getBddIps() as $ip){
+			$this->addBddServer(new BddServer($ip, $this->user, $this->password));
 		}
 	}
 
-	public function addServer($server){
-		$this->servers[] = $server;
+	public function addBddServer($bddServer){
+		$this->bddServers[] = $bddServer;
 	}
 
-	public function getServerByIp($ip){
-		foreach($this->getServers() as $server){
-			if($server->getIp() == $ip){
-				return $server;
+	/*public function getBddServerByIp($ip){
+		foreach($this->getBddServers() as $bddServer){
+			if($bddServer->getIp() == $ip){
+				return $bddServer;
 			}
 		}
 		return false;
-	}
+	}*/
 
 	public static function getInstance(){
 		if (!isset(self::$instance))
