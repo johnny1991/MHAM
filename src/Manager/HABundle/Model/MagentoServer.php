@@ -21,9 +21,8 @@ class MagentoServer extends Server {
 	}
 
 	public function initLocalxml(){
-		echo "/home/installer_mha/getLocalXml --user=root --ip=$this->ip --path=$this->localxmlpath";
-		var_dump(exec("/home/installer_mha/getLocalXml --user=root --ip=$this->ip --path=$this->localxmlpath"));
-		$this->localxml = exec("/home/installer_mha/getLocalXml --user=root --ip=$this->ip --path=$this->localxmlpath");
+		var_dump(shell_exec("/home/installer_mha/getLocalXml --user=root --ip=$this->ip --path=$this->localxmlpath"));
+		$this->localxml = shell_exec("/home/installer_mha/getLocalXml --user=root --ip=$this->ip --path=$this->localxmlpath");
 	}
 
 	public function getLocalXml(){
