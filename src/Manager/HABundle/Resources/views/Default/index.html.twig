@@ -56,7 +56,7 @@
                     	</table>
                     	<button id="sync" onclick="self.location.href='{{ path('manager_ha_sync') }}'" class="btn btn-primary">Synchroniser</button>
                     </div>
-                    <div id="magento_state">
+                    <!--<div id="magento_state">
                     	<table>
                             <thead>
                             	<tr>
@@ -66,16 +66,16 @@
 		                     	</tr>
 		                 	</thead>
                         	<tbody>
-	                        	{% for server in manager.magentoServers %}
+	                        	{#% for server in manager.magentoServers %#}
 	                            <tr>
-	                                <td>{{ server.ip }}</td>
-	                                <td>{{ server.status }}</td>
-	                                <td>{{ server.localxml }}</td>
+	                                <td>{#{ server.ip }#}</td>
+	                                <td>{#{ server.status }#}</td>
+	                                <td>{#{ server.localxml }#}</td>
 							    </tr>
 	                        	{% endfor %}
                     		</tbody>
                     	</table>
-                    </div>
+                    </div>-->
                     <div id="mha_state">
                         <h2>Etat du Manager MHA</h2>
 						<div>
