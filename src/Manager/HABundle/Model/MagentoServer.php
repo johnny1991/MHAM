@@ -21,6 +21,7 @@ class MagentoServer extends Server {
 	}
 	
 	public function initLocalxml(){
+		var_dump(exec("sudo ssh root@$ip 'cat ".$this->localxmlpath."'"));
 		$this->localxml = exec("sudo ssh root@$ip 'cat ".$this->localxmlpath."'");
 	}
 	
