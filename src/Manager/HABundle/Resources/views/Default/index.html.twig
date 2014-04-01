@@ -62,7 +62,7 @@
 	                        Ip du Master : {{ manager.conf['server1']['hostname'] }}
                         </div>
                         <div>
-							{% if mha_status %}
+							{% if manager.status %}
 	                            <span class="glyphicon glyphicon-ok"></span>
 	                            <span>Le manager MHA est en cours d'éxecution</span>
 	                        {% else %}
