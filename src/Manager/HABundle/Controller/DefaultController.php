@@ -35,7 +35,7 @@ class DefaultController extends Controller
 	}
 
 	public function start_mhaAction(){
-		exec('sudo /etc/init.d/mha_daemon start');
+		exec('sudo /etc/init.d/mha_daemon restart');
 		return new response();
 	}
 }
