@@ -102,10 +102,10 @@
                                 $('#mha_state #refresh_time').html(new Date($.now()));
                             }, 500);
                             $('#start_mha').click(function(){
-                            	jQuery.ajax({url:{{ path('manager_ha_start_mha') }} });
+                            	jQuery.ajax({url: '{{ path('manager_ha_start_mha') }}' });
                             });
                             $('#sync').click(function(){
-                            	jQuery.ajax({url:{{ path('manager_ha_sync') }} });
+                            	jQuery.ajax({url: '{{ path('manager_ha_sync') }}' });
                             });
                         
                         </script>
