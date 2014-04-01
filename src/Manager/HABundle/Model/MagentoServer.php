@@ -9,7 +9,7 @@ class MagentoServer extends Server {
 
 	public $localxmlpath;
 	public $localxml;
-	
+
 	public function __construct($ip, $user, $password){
 		$this->localxmlpath = ManagerMHA::$localxmlpath;
 		parent::__construct($ip, $user, $password);
@@ -19,20 +19,11 @@ class MagentoServer extends Server {
 		parent::update();
 		$this->initLocalxml();
 	}
-	
+
 	public function initLocalxml(){
-		/*$conn = \ssh2_connect($this->ip, 22);
-		\ssh2_auth_pubkey_file(
-				$conn,
-				'root',
-				'/root/.ssh/id_rsa.pub',
-				'/root/.ssh/id_rsa'
-		);
-		
-		$this->localxml = \ssh2_exec("cat $this->localxmlpath");*/
-		$this->localxml ="";
+		$this->localxml = exec("/home/installer_mha/getLocalXml --user=$this->user --ip=$this->ip --path=$this->localxmlpath");
 	}
-	
+
 	public function getLocalXml(){
 		return $this->localxml;
 	}
