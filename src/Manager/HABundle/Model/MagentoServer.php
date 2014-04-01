@@ -21,6 +21,8 @@ class MagentoServer extends Server {
 	}
 
 	public function initLocalxml(){
+		echo "passe";
+		var_dump(shell_exec("/home/installer_mha/getLocalXml --user=$this->user --ip=$this->ip --path=$this->localxmlpath"));
 		$this->localxml = exec("/home/installer_mha/getLocalXml --user=$this->user --ip=$this->ip --path=$this->localxmlpath");
 	}
 
