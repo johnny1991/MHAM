@@ -21,7 +21,15 @@ class MagentoServer extends Server {
 	}
 	
 	public function initLocalxml(){
-		$this->localxml = exec("sudo ssh root@$ip 'cat ".$this->localxmlpath."'");
+		$conn = ssh2_connect($this->ip, 22);
+		ssh2_auth_pubkey_file(
+				$conn,
+				'root',
+				'/root/.ssh/id_rsa.pub',
+				'/root/.ssh/id_rsa'
+		);
+		
+		$this->localxml = ssh2_exec("cat $this->localxmlpath");
 	}
 	
 	public function getLocalXml(){
