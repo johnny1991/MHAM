@@ -63,6 +63,11 @@
 	                        	{% endfor %}
                     		</tbody>
                     	</table>
+                    	<div>
+                    		{% if server.mysql.replicationStatus['Slave_IO_Running'] == 'Yes' %}
+                    			Last IO Error : {{ server.mysql.replicationStatus['Last_IO_Error'] }}
+                    		{% %}
+                    	</div>
                     	{% if not manager.isServerDown %}
                     		<button id="sync" class="btn btn-primary">Synchroniser</button>
                     	{% endif %}
