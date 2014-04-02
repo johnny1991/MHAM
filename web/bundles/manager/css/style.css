@@ -82,7 +82,7 @@ table {
 	background: url("../images/feu.jpg") repeat scroll 0 0 rgba(0, 0, 0, 0);
 	height: 132px;
 	width: 43px;
-	margin: 10px 0 0 5px;
+	margin: 14px 0 0 10px;
 }
 
 #feu_tricolore.green {
@@ -112,8 +112,8 @@ table {
 #global_state {
 	position: absolute;
 	right: -64px;
-	height:150px;
-	width:55px;
+	height:160px;
+	width:65px;
 	top: 0px;
 	background: white;
 	border-radius: 0 10px 10px 0;
