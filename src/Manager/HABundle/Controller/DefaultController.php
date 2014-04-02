@@ -31,7 +31,7 @@ class DefaultController extends Controller
 			echo exec('/usr/bin/sudo /bin/bash /home/installer_mha/auto-rereverse');
 		}
 		
-		return new response();
+		return new response(true);
 	}
 
 	public function start_mhaAction(){
