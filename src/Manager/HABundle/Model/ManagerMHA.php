@@ -19,6 +19,7 @@ class ManagerMHA {
 	public $mainServerBdd = false;
 	public $status;
 	public $isMhaOk = false;
+	public $isServerDown = false;
 	public $bddServers;
 	public $magentoServers;
 
@@ -82,6 +83,10 @@ class ManagerMHA {
 		return $this->magentoIps;
 	}
 	
+	public function getIsServerDown(){
+		return $this->isServerDown;
+	}
+	
 	public static function getConf(){
 		if(!self::$conf){
 		self::$conf = parse_ini_file(self::$file, 1, INI_SCANNER_RAW);
@@ -107,6 +112,9 @@ class ManagerMHA {
 			if($server->getMysql()->isMaster()){
 				$this->mainServerBdd = $server;
 				$countMaster++;
+			}
+			if(!$server->getMysql()->getStatus()){
+				$this->isServerDown = true;
 			}
 			unset($server);
 		}
