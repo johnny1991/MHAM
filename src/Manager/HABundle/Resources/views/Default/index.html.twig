@@ -94,7 +94,7 @@
                     <div id="mha_state">
                         <h2>Etat du Manager MHA</h2>
 						<div>
-	                        Ip du Master : {{ manager.conf['server1']['hostname'] }}
+	                        Ip du Master : {{ manager.mainBddIp }}
                         </div>
                         <div>
 							{% if manager.status %}
@@ -135,6 +135,11 @@
                         
                         </script>
                     </div> 
+                    {% if server.isMasterOk == 1 %}
+                    	Master OK
+                    {% else %}
+                    	Master pas OK
+                    {% endif %}
                 </div>
             </div>
             <div class="row footer">

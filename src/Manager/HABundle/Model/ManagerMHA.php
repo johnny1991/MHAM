@@ -14,7 +14,8 @@ class ManagerMHA {
 	public $password;
 	public $bddIps;
 	public $magentoIps;
-	//public $mainIp;
+	public $mainMhaBddIp;
+	public $mainServerBdd = false;
 	public $status;
 	public $bddServers;
 	public $magentoServers;
@@ -24,6 +25,7 @@ class ManagerMHA {
 		$conf = $this->getConf();
 		$this->user = $conf['server default']['user'];
 		$this->password = $conf['server default']['password'];
+		$this->mainMhaBddIp = $conf['server1']['hosname'];
 		foreach($conf as $item){
 			if (!empty($item['hostname'])){
 				$this->bddIps[] = $item['hostname'];
@@ -47,8 +49,16 @@ class ManagerMHA {
 		return $this->user;
 	}
 
-	public function getMainIp(){
-		return $this->mainIp;
+	public function getMainMhaBddIp(){
+		return $this->mainMhaBddIp;
+	}
+	
+	public function getMainServerBdd(){
+		return $this->mainServerBdd;
+	}
+	
+	public function isMasterOk(){
+		return ($this->mainMhaBddIp == $this->mainServerBdd->getMysql()->getIp()) ? true : false;
 	}
 
 	public function getBddServers(){
@@ -81,8 +91,18 @@ class ManagerMHA {
 	}
 	
 	public function initBddServers(){
+		$countMaster = 0;
 		foreach ($this->getBddIps() as $ip){
-			$this->addBddServer(new BddServer($ip, $this->user, $this->password));
+			$server = new BddServer($ip, $this->user, $this->password);
+			$this->addBddServer($server);
+			if($server->getMysql()->isMaster()){
+				$this->mainServerBdd = $server;
+				$countMaster++;
+			}
+			unset($server);
+		}
+		if($countMaster > 1){
+			$this->mainServerBdd = false;
 		}
 	}
 

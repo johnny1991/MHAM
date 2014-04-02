@@ -2,7 +2,7 @@
 
 body{background:url('../images/gauze.png')}
 
-.container{background: #F6F6F6}
+.container{background: #FFF}
 .main{padding: 10px;}
 .header{border-bottom: 1px solid #D5D5D5; padding: 10px;}
 .footer{border-top: 1px solid #D5D5D5; padding: 30px 10px; text-align: right}
