@@ -35,7 +35,8 @@
 	                        	{% for server in manager.bddServers %}
 	                            <tr>
 	                                <td>{#{ dump(server.mysql.replicationStatus) }#}{{ server.ip }}</td>
-	                                <td>{{ server.status }}</td>
+	                                <td>{{ server.mysql.status }}</td>
+	                              	{% if server.mysql.status %}
 	                                <td>{{ server.mysql.state }}</td>
 	                                {% if(server.mysql.state == 'Master') %}
 										<td>{{ server.mysql.replicationStatus['File'] }}</td>
@@ -50,6 +51,7 @@
 									{% endif %}
 										<td>{{ server.mysql.global['read_only'] }}</td>
 										<td>{{ server.mysql.global['relay_log_purge'] }}</td>
+									{% endif %}
 							    </tr>
 	                        	{% endfor %}
                     		</tbody>
