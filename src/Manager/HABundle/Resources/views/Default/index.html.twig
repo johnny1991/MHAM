@@ -104,15 +104,17 @@
                             }, 500);
                             $('#start_mha').click(function(){
                             	jQuery.ajax({
-                            		url: '{{ path('manager_ha_start_mha') }}',
-                            		success: function(s,x){ 
-                            			console.log('passe');
-                            			location.reload();
-                            		} 
+                            		url: '{{ path('manager_ha_start_mha') }}'
+                            		
                             	});
                             });
                             $('#sync').click(function(){
-                            	jQuery.ajax({url: '{{ path('manager_ha_sync') }}' });
+                            	jQuery.ajax({
+                            		url: '{{ path('manager_ha_sync') }}',
+                            		success: function(s,x){ 
+                            			location.reload();
+                            		} 
+                            	});
                             });
                         
                         </script>
