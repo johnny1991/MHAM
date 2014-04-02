@@ -106,6 +106,7 @@
                             	jQuery.ajax({
                             		url: '{{ path('manager_ha_start_mha') }}',
                             		success: function(s,x){ 
+                            			console.log('passe');
                             			location.reload();
                             		} 
                             	});
