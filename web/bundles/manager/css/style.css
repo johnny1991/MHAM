@@ -1,13 +1,14 @@
 @CHARSET "UTF-8";
 
+body{background:url('../images/gauze.png')}
+
 .container{background: #F6F6F6}
 .main{padding: 10px;}
 .header{border-bottom: 1px solid #D5D5D5; padding: 10px;}
-.footer{border-top: 1px solid #D5D5D5; padding: 10px; text-align: right}
+.footer{border-top: 1px solid #D5D5D5; padding: 30px 10px; text-align: right}
 
 #bdd_state,
-#magento_state,
-#mha_state{border-bottom: 1px solid #D5D5D5; padding-bottom:10px;}
+#magento_state{border-bottom: 1px solid #D5D5D5; padding-bottom:10px;}
 
 #bdd_state .head{font-weight: bold;}
 table td, table th{border:1px solid #D5D5D5; padding:5px;}
