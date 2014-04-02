@@ -25,7 +25,7 @@ class ManagerMHA {
 		$conf = $this->getConf();
 		$this->user = $conf['server default']['user'];
 		$this->password = $conf['server default']['password'];
-		$this->mainMhaBddIp = $conf['server1']['hosname'];
+		$this->mainMhaBddIp = $conf['server1']['hostname'];
 		foreach($conf as $item){
 			if (!empty($item['hostname'])){
 				$this->bddIps[] = $item['hostname'];
