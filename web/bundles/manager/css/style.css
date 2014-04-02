@@ -35,11 +35,11 @@ body {
 table td,table th {
 	border: 1px solid #D5D5D5;
 	padding: 5px;
+	text-align: center;
 }
 
 table {
 	margin: 5px 0px;
-	text-align: center;
 }
 
 #mha_state .log {
@@ -55,11 +55,13 @@ table {
 }
 
 .ok,.glyphicon-ok {
-	color: green
+	color: green;
+	font-weight: bold;
 }
 
 .nok,.glyphicon-remove {
-	color: red
+	color: red;
+	font-weight: bold;
 }
 
 .loader {
@@ -113,9 +115,9 @@ table {
 #global_state {
 	position: absolute;
 	right: -75px;
-	height:160px;
-	width:65px;
-	top: 0px;
+	height: 160px;
+	width: 65px; top : 0px;
 	background: white;
 	border-radius: 0 10px 10px 0;
+	top: 0px;
 }
