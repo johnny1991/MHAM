@@ -39,7 +39,7 @@
                         	<tbody>
 	                        	{% for server in manager.bddServers %}
 	                            <tr>
-	                                <td>{#{ dump(server.mysql.replicationStatus) }#}{{ server.ip }}</td>
+	                                <td>{{ dump(server.mysql.replicationStatus) }}{{ server.ip }}</td>
 	                                <td>
 		                                {% if server.mysql.status == 1 %}
 		                                	<span class="ok">Up</span>
