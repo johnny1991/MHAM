@@ -121,8 +121,10 @@
                             }, 500);
                             $('#start_mha').click(function(){
                             	jQuery.ajax({
-                            		url: '{{ path('manager_ha_start_mha') }}'
-                            		
+                            		url: '{{ path('manager_ha_start_mha') }}',
+                            		success: function(s,x){ 
+                            			location.reload();
+                            		} 
                             	});
                             });
                             $('#sync').click(function(){
