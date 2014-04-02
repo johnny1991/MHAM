@@ -63,7 +63,7 @@
 	                        	{% endfor %}
                     		</tbody>
                     	</table>
-                    	{% if manager.isServerDown %}
+                    	{% if ! manager.isServerDown %}
                     		<button id="sync" class="btn btn-primary">Synchroniser</button>
                     	{% endif %}
                     </div>

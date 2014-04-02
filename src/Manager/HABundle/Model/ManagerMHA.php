@@ -119,7 +119,7 @@ class ManagerMHA {
 				$this->mainServerBdd = $server;
 				$countMaster++;
 			}
-			if(!$server->getMysql()->getStatus()){
+			if($server->getMysql()->getStatus() == false){
 				$this->isServerDown = true;
 			}
 			unset($server);
