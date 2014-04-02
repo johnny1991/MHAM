@@ -105,13 +105,13 @@ table {
 	padding: 12px
 }
 
-.mha_status.nok {
+.mha_status.not {
 	background: none repeat scroll 0 0 #FFD2D2;
 }
 
 #global_state {
 	position: absolute;
-	right: -64px;
+	right: -75px;
 	height:160px;
 	width:65px;
 	top: 0px;
