@@ -13,3 +13,6 @@ table{margin: 5px 0px;}
 
 .ok, .glyphicon-ok{color:green}
 .nok, .glyphicon-remove{color:red}
+
+.loader{background: url('../images/loader.gif'); width:128px; height:128px;}
+.load{background-color: rgba(0, 0, 255, 0.5);}
