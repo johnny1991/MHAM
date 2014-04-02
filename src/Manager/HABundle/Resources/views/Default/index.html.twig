@@ -103,7 +103,12 @@
                                 $('#mha_state #refresh_time').html(new Date($.now()));
                             }, 500);
                             $('#start_mha').click(function(){
-                            	jQuery.ajax({url: '{{ path('manager_ha_start_mha') }}' }).always(function(data) { location.reload(); });
+                            	jQuery.ajax({
+                            		url: '{{ path('manager_ha_start_mha') }}',
+                            		success: function(s,x){ 
+                            			location.reload();
+                            		} 
+                            	});
                             });
                             $('#sync').click(function(){
                             	jQuery.ajax({url: '{{ path('manager_ha_sync') }}' });
