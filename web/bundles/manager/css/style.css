@@ -42,7 +42,7 @@ table {
 }
 
 #mha_state .log {
-	margin: 20px 0 5px;
+	margin: 5px 0px;
 	border: 1px solid #D5D5D5;
 	padding: 10px;
 	height: 400px;
@@ -79,16 +79,39 @@ table {
 }
 
 #feu_tricolore {
-	background:
-		url("../images/feu.jpg")
-		repeat scroll 0 0 rgba(0, 0, 0, 0);
+	background: url("../images/feu.jpg") repeat scroll 0 0 rgba(0, 0, 0, 0);
 	height: 132px;
-	position: absolute;
 	width: 43px;
-	right: -54px;
-	top: 0px;
 }
 
-#feu_tricolore.green{background-position: -23px -17px}
-#feu_tricolore.orange{background-position: -88px -17px}
-#feu_tricolore.red{background-position: -150px -17px}
+#feu_tricolore.green {
+	background-position: -23px -17px
+}
+
+#feu_tricolore.orange {
+	background-position: -88px -17px
+}
+
+#feu_tricolore.red {
+	background-position: -150px -17px
+}
+
+.mha_main_ip {
+	padding: 12px
+}
+
+.mha_status {
+	padding: 12px
+}
+
+.mha_status.nok {
+	background: none repeat scroll 0 0 #FFD2D2;
+}
+
+#global_state {
+	position: absolute;
+	right: -54px;
+	top: 0px;
+	background: white;
+	border-radius: 0 10px 10px 0;
+}

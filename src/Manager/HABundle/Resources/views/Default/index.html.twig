@@ -17,7 +17,7 @@
             <div class="row main">
                 <div class="col-sm-12">
                     <div id="bdd_state">
-                        <h2>Etat des Bases de données</h2>
+                        <h2>État des Bases de données</h2>
                         <table>
                             <thead>
                             	<tr>
@@ -115,18 +115,21 @@
                     	</table>
                     </div>
                     <div id="mha_state">
-                        <h2>Etat du Manager MHA</h2>
-						<div>
-	                        Ip du Master : {{ manager.mainMhaBddIp }}
+                        <h2>État du Manager MHA</h2>
+						<div class="mha_main_ip">
+	                        Ip du Master : <b>{{ manager.mainMhaBddIp }}</b>
                         </div>
-                        <div>
-							{% if manager.status %}
+						{% if manager.status %}
+							<div class="mha_status">
 	                            <span class="glyphicon glyphicon-ok"></span>
 	                            <span>Le manager MHA est en cours d'éxecution</span>
-	                        {% else %}
+	                        </div>
+                        {% else %}
+	                        <div class="mha_status">
 	                            <span class="glyphicon glyphicon-remove"></span>
 	                            <span>Le manager MHA n'est pas en cours d'éxecution</span>
-	                        {% endif %}
+	                        </div>
+                        {% endif %}
 						</div>
 						<div class="log">
                             En cours de chargement ...
@@ -161,17 +164,19 @@
                             });
                         
                         </script>
-                    </div> 
-                    <div id="feu_tricolore" class="
-                    {% if (manager.isMasterOk == 1) and (manager.isMhaOk == 1) %}
-                    	green
-                    {% elseif (manager.isMasterOk == 1) or (manager.isMhaOk == 1) %}
-                    	orange
-                    {% else %}
-                    	red
-                    {% endif %}
-                    ">
                     </div>
+                    <div id="global_state">
+	                    <div id="feu_tricolore" class="
+		                    {% if (manager.isMasterOk == 1) and (manager.isMhaOk == 1) %}
+		                    	green
+		                    {% elseif (manager.isMasterOk == 1) or (manager.isMhaOk == 1) %}
+		                    	orange
+		                    {% else %}
+		                    	red
+		                    {% endif %}
+		                    ">
+	                    </div>
+	               	</div>
                 </div>
             </div>
             <div class="row footer">
