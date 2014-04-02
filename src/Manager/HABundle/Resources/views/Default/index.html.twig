@@ -35,7 +35,13 @@
 	                        	{% for server in manager.bddServers %}
 	                            <tr>
 	                                <td>{#{ dump(server.mysql.replicationStatus) }#}{{ server.ip }}</td>
-	                                <td>{{ server.mysql.status }}</td>
+	                                <td>
+		                                {% if server.mysql.status == 1 %}
+		                                	<span class="ok">Up</span>
+		                                {% else %}
+		                                	<span class="nok">Down</span> 
+		                                {% endif %}
+	                                </td>
 	                              	{% if server.mysql.status %}
 	                                <td>{{ server.mysql.state }}</td>
 	                                {% if(server.mysql.state == 'Master') %}
@@ -72,7 +78,13 @@
 	                        	{% for server in manager.magentoServers %}
 	                            <tr>
 	                                <td>{{ server.ip }}</td>
-	                                <td>{{ server.status }}</td>
+	                                <td>
+	                                	{% if server.status == 1 %}
+		                                	<span class="ok">Up</span>
+		                                {% else %}
+		                                	<span class="nok">Down</span> 
+		                                {% endif %}
+		                            </td>
 	                                <td>{{ server.BddIp }}</td>
 							    </tr>
 	                        	{% endfor %}
