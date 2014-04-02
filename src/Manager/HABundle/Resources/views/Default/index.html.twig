@@ -135,16 +135,16 @@
                         
                         </script>
                     </div> 
-                    {% if manager.isMasterOk == 1 %}
-                    	Master OK
+                    <div id="feu_tricolore" class="
+                    {% if manager.isMasterOk == 1 && manager.isMhaOk == 1 %}
+                    	green
+                    {% else if manager.isMasterOk == 1 || manager.isMhaOk == 1 %}
+                    	orange
                     {% else %}
-                    	Master pas OK
+                    	red
                     {% endif %}
-                    {% if manager.isMhaOk == 1 %}
-                    	MHA OK
-                    {% else %}
-                    	MHA pas OK
-                    {% endif %}
+                    ">
+                    </div>
                 </div>
             </div>
             <div class="row footer">
