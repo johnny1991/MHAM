@@ -45,7 +45,7 @@ class ManagerMHA {
 		if($this->status){
 			$last_line = shell_exec('tail -n 1 '. self::$mhalog);
 			if (strpos($last_line, "Ping(SELECT) succeeded, waiting until MySQL doesn't respond..") !== false) {
-				$this->$isMhaOk = true;
+				$this->isMhaOk = true;
 			}
 		}
 
