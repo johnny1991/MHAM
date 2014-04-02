@@ -9,6 +9,7 @@ class ManagerMHA {
 	public static $file = '/etc/mha.conf';
 	public static $conf;
 	public static $localxmlpath = '/var/www/magento/app/etc/local.xml';
+	public static $mhalog = '/var/log/masterha/MHA.log';
 	
 	public $user;
 	public $password;
@@ -17,6 +18,7 @@ class ManagerMHA {
 	public $mainMhaBddIp;
 	public $mainServerBdd = false;
 	public $status;
+	public $isMhaOk = false;
 	public $bddServers;
 	public $magentoServers;
 
@@ -37,6 +39,13 @@ class ManagerMHA {
 				$this->status = false;
 			} else if (strpos($tmp, 'is running') !== false) {
 				$this->status = true;
+			}
+		}
+		
+		if($this->status){
+			$last_line = shell_exec('tail -n 1 '. self::$mhalog);
+			if (strpos($last_line, "Ping(SELECT) succeeded, waiting until MySQL doesn't respond..") !== false) {
+				$this->$isMhaOk = true;
 			}
 		}
 
