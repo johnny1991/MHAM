@@ -10,7 +10,7 @@ class ManagerMHA {
 	public static $conf;
 	public static $localxmlpath = '/var/www/magento/app/etc/local.xml';
 	public static $mhalog = '/var/log/masterha/MHA.log';
-	
+
 	public $user;
 	public $password;
 	public $bddIps;
@@ -42,7 +42,7 @@ class ManagerMHA {
 				$this->status = true;
 			}
 		}
-		
+
 		if($this->status){
 			$last_line = shell_exec('tail -n 1 '. self::$mhalog);
 			if (strpos($last_line, "Ping(SELECT) succeeded, waiting until MySQL doesn't respond..") !== false) {
@@ -62,13 +62,19 @@ class ManagerMHA {
 	public function getMainMhaBddIp(){
 		return $this->mainMhaBddIp;
 	}
-	
+
 	public function getMainServerBdd(){
 		return $this->mainServerBdd;
 	}
-	
+
 	public function isMasterOk(){
-		return ($this->mainMhaBddIp == $this->mainServerBdd->getMysql()->getIp()) ? true : false;
+		if($this->mainServerBdd){
+			if($this->mainMhaBddIp == $this->mainServerBdd->getMysql()->getIp()){
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public function getBddServers(){
@@ -78,18 +84,18 @@ class ManagerMHA {
 	public function getBddIps(){
 		return $this->bddIps;
 	}
-	
+
 	public function getMagentoIps(){
 		return $this->magentoIps;
 	}
-	
+
 	public function getIsServerDown(){
 		return $this->isServerDown;
 	}
-	
+
 	public static function getConf(){
 		if(!self::$conf){
-		self::$conf = parse_ini_file(self::$file, 1, INI_SCANNER_RAW);
+			self::$conf = parse_ini_file(self::$file, 1, INI_SCANNER_RAW);
 		}
 		return self::$conf;
 	}
@@ -99,11 +105,11 @@ class ManagerMHA {
 			$this->addMagentoServer(new MagentoServer($ip, $this->user, $this->password));
 		}
 	}
-	
+
 	public function addMagentoServer($magentoServer){
 		$this->magentoServers[] = $magentoServer;
 	}
-	
+
 	public function initBddServers(){
 		$countMaster = 0;
 		foreach ($this->getBddIps() as $ip){
@@ -129,11 +135,11 @@ class ManagerMHA {
 
 	/*public function getBddServerByIp($ip){
 		foreach($this->getBddServers() as $bddServer){
-			if($bddServer->getIp() == $ip){
-				return $bddServer;
-			}
-		}
-		return false;
+	if($bddServer->getIp() == $ip){
+	return $bddServer;
+	}
+	}
+	return false;
 	}*/
 
 	public static function getInstance(){
