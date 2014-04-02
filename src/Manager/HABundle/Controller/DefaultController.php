@@ -21,7 +21,7 @@ class DefaultController extends Controller
 	}
 
 	public function syncAction(){
-		$conf = $ManagerMHA::getConf();
+		$conf = ManagerMHA::getConf();
 		$hostname = $conf['server1']['hostname'];
 		
 		if ($hostname == '172.20.0.225'){
