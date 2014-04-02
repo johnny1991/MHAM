@@ -14,5 +14,5 @@ table{margin: 5px 0px;}
 .ok, .glyphicon-ok{color:green}
 .nok, .glyphicon-remove{color:red}
 
-.loader{background: url('../images/loader.gif'); width:128px; height:128px;}
-.load{background-color: rgba(0, 0, 255, 0.5); position: fixed; height:100%; width:100%; top:0; left:0}
+.loader{background: url('../images/loader.png'); width:128px; height:128px; margin: 20% auto;}
+.load{display: none; background-color: rgba(0, 0, 0, 0.4); position: fixed; height:100%; width:100%; top:0; left:0}
