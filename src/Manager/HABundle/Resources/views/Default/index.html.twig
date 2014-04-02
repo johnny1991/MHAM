@@ -55,16 +55,16 @@
                                         <td>{{ server.mysql.replicationStatus['Read_Master_Log_Pos'] }}</td>
 										<td alt="{{ server.mysql.replicationStatus['Last_IO_Error'] }}">
 											{% if server.mysql.replicationStatus['Slave_IO_Running'] ==  'No' %}
-												<span class="nok"{{ server.mysql.replicationStatus['Slave_IO_Running'] }}</span>
+												<span class="nok">{{ server.mysql.replicationStatus['Slave_IO_Running'] }}</span>
 											{% else %}
-												<span class="ok"{{ server.mysql.replicationStatus['Slave_IO_Running'] }}</span>
+												<span class="ok">{{ server.mysql.replicationStatus['Slave_IO_Running'] }}</span>
 											{% endif %}
 										</td>
 										<td alt="{{ server.mysql.replicationStatus['Last_SQL_Error'] }}">
 											{% if server.mysql.replicationStatus['Slave_SQL_Running'] ==  'No' %}
-												<span class="nok"{{ server.mysql.replicationStatus['Slave_SQL_Running'] }}</span>
+												<span class="nok">{{ server.mysql.replicationStatus['Slave_SQL_Running'] }}</span>
 											{% else %}
-												<span class="ok"{{ server.mysql.replicationStatus['Slave_SQL_Running'] }}</span>
+												<span class="ok">{{ server.mysql.replicationStatus['Slave_SQL_Running'] }}</span>
 											{% endif %}
 										</td>
 									{% endif %}
