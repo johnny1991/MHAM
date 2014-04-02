@@ -53,8 +53,20 @@
 									{% elseif(server.mysql.state == 'Slave') %}
 										<td>{{ server.mysql.replicationStatus['Master_Log_File'] }}</td>
                                         <td>{{ server.mysql.replicationStatus['Read_Master_Log_Pos'] }}</td>
-										<td>{{ server.mysql.replicationStatus['Slave_IO_Running'] }}</td>
-										<td>{{ server.mysql.replicationStatus['Slave_SQL_Running'] }}</td>
+										<td alt="{{ server.mysql.replicationStatus['Last_IO_Error'] }}">
+											{% if server.mysql.replicationStatus['Slave_IO_Running'] ==  'No' %}
+												<span class="nok"{{ server.mysql.replicationStatus['Slave_IO_Running'] }}</span>
+											{% else %}
+												<span class="ok"{{ server.mysql.replicationStatus['Slave_IO_Running'] }}</span>
+											{% endif %}
+										</td>
+										<td alt="{{ server.mysql.replicationStatus['Last_SQL_Error'] }}">
+											{% if server.mysql.replicationStatus['Slave_SQL_Running'] ==  'No' %}
+												<span class="nok"{{ server.mysql.replicationStatus['Slave_SQL_Running'] }}</span>
+											{% else %}
+												<span class="ok"{{ server.mysql.replicationStatus['Slave_SQL_Running'] }}</span>
+											{% endif %}
+										</td>
 									{% endif %}
 										<td>{{ server.mysql.global['read_only'] }}</td>
 										<td>{{ server.mysql.global['relay_log_purge'] }}</td>
@@ -63,11 +75,6 @@
 	                        	{% endfor %}
                     		</tbody>
                     	</table>
-                    	<div>
-                    		{% if server.mysql.replicationStatus['Slave_IO_Running'] == 'Yes' %}
-                    			Last IO Error : {{ server.mysql.replicationStatus['Last_IO_Error'] }}
-                    		{% endif %}
-                    	</div>
                     	{% if not manager.isServerDown %}
                     		<button id="sync" class="btn btn-primary">Synchroniser</button>
                     	{% endif %}
