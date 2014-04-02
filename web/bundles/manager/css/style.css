@@ -89,6 +89,6 @@ table {
 	top: 0px;
 }
 
-#feu_tricolore .green{background-position: -23px -17px}
-#feu_tricolore .orange{background-position: -23px -17px}
-#feu_tricolore .red{background-position: -23px -17px}
+#feu_tricolore.green{background-position: -23px -17px}
+#feu_tricolore.orange{background-position: -88px -17px}
+#feu_tricolore.red{background-position: -150px -17px}
