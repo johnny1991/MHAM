@@ -39,6 +39,7 @@ table td,table th {
 
 table {
 	margin: 5px 0px;
+	text-align: center;
 }
 
 #mha_state .log {
