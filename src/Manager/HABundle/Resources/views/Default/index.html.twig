@@ -122,8 +122,10 @@
                             $('#start_mha').click(function(){
                             	jQuery.ajax({
                             		url: '{{ path('manager_ha_start_mha') }}',
-                            		success: function(s,x){ 
-                            			location.reload();
+                            		success: function(s,x){
+                            			setTimeout(function(){ 
+                            				location.reload();
+                            			 }, 2000);
                             		} 
                             	});
                             });
