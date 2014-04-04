@@ -24,11 +24,11 @@ class DefaultController extends Controller
 		$conf = ManagerMHA::getConf();
 		$hostname = $conf['server1']['hostname'];
 		
-		if ($hostname == '172.20.0.225'){
-			echo exec('/usr/bin/sudo /bin/bash /home/installer_mha/auto-reverse');
+		/*if ($hostname == '172.20.0.225'){
+			echo exec('/usr/bin/sudo /bin/bash /home/HA/auto-reverse');
 		} elseif ($hostname == '172.20.0.236'){
-			echo exec('/usr/bin/sudo /bin/bash /home/installer_mha/auto-rereverse');
-		}
+			echo exec('/usr/bin/sudo /bin/bash /home/HA/auto-rereverse');
+		}*/
 		
 		return new response('ok');
 	}
