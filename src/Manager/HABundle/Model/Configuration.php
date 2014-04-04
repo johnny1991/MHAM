@@ -44,8 +44,17 @@ class Configuration {
 
 		$this->initial_slave_ip = $this->configuration['ip_slave'];
 		$this->initial_master_ip = $this->configuration['ip_master'];
+		
 		$this->magento_ips = $this->configuration['ip_magento'];
+		$this->magento_ips = str_replace("(", "", $this->magento_ips);
+		$this->magento_ips = str_replace(")", "", $this->magento_ips);
+		$this->magento_ips = explode(' ', $this->magento_ips);
+		
 		$this->bdd_ips = $this->configuration['ip_bdd'];
+		$this->bdd_ips = str_replace("(", "", $this->bdd_ips);
+		$this->bdd_ips = str_replace(")", "", $this->bdd_ips);
+		$this->bdd_ips = explode(' ', $this->bdd_ips);
+		
 		$this->bdd_mask = $this->configuration['ip_all'];
 
 		return $this->configuration;
