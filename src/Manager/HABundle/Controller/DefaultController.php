@@ -9,12 +9,11 @@ use Manager\HABundle\Model\ManagerMHA;
 class DefaultController extends Controller
 {
 	public function indexAction(){
-		$ManagerMHA = ManagerMHA::getInstance();
-		return $this->render('ManagerHABundle:Default:index.html.twig', array('manager' => $ManagerMHA));
+		return $this->render('ManagerHABundle:Default:index.html.twig', array('manager' => ManagerMHA::getInstance()));
 	}
 
 	public function logAction(){
-		$html = nl2br(shell_exec('tail -n 15 '.ManagerMHA::$mhalog));
+		$html = nl2br(shell_exec('tail -n 15 ' . ManagerMHA::getInstance()->getMha()->getLogPath()));
 		$response = new Response(json_encode($html));
 		$response->headers->set('Content-Type', 'application/json');
 		return $response;
