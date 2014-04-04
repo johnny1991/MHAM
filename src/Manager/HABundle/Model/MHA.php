@@ -18,7 +18,7 @@ class MHA {
 	public $isOperational = false;
 
 	public function __construct(){
-		$global_configuration = $this->getManager()->getConfiguration();
+		$global_configuration = Configuration::getInstance();
 
 		$this->configuration_path = $global_configuration['mha_conf'];
 		$this->configuration = parse_ini_file($this->$configuration_path, 1, INI_SCANNER_RAW);
@@ -112,8 +112,4 @@ class MHA {
 		return $this->isOperational;
 	}
 	
-	public function getManager(){
-		return ManagerMHA::getInstance();
-	}
-
 }

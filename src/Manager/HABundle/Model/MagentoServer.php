@@ -20,8 +20,8 @@ class MagentoServer extends Server {
 	}
 
 	public function initLocalxml(){
-		$local_xml_path = $this->getManager()->getConfiguration()->getLocalXmlPath();
-		$scripts_path = $this->getManager()->getConfiguration()->getScriptsPath();
+		$local_xml_path = Configuration::getInstance()->getLocalXmlPath();
+		$scripts_path = Configuration::getInstance()->getScriptsPath();
 		$content = shell_exec($scripts_path . "getFile --user=root --ip=$this->getIp() --path=$local_xml_path");
 		if($content){
 			$this->local_xml = simplexml_load_string($content);

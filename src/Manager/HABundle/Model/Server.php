@@ -29,8 +29,4 @@ class Server {
 		$this->status = exec("ping -c2 -i0.25 $this->getIp()") ? true : false;
 	}
 	
-	public function getManager(){
-		return ManagerMHA::getInstance();
-	}
-
 }
