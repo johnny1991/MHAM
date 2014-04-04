@@ -25,7 +25,7 @@ class ManagerMHA {
 	public $magentoServers;
 
 	protected function __construct(){
-		$this->magentoIps = array('172.20.0.213','172.20.0.234');
+		$this->magentoIps = array('172.16.10.104','172.16.10.105');
 		$conf = $this->getConf();
 		$this->user = $conf['server default']['user'];
 		$this->password = $conf['server default']['password'];
