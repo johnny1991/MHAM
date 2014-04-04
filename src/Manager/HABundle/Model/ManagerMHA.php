@@ -5,6 +5,7 @@ namespace Manager\HABundle\Model;
 class ManagerMHA {
 
 	protected static $instance;
+	public static $configuration;
 	
 	public $status;
 	
@@ -14,11 +15,9 @@ class ManagerMHA {
 	public $bddServers;
 	public $magentoServers;
 	
-	public $configuration;
 	public $mha;
 
 	protected function __construct(){
-		$this->configuration = new Configuration();
 		$this->mha = new MHA();
 		
 		$this->initBddServers();
@@ -27,7 +26,7 @@ class ManagerMHA {
 	}
 
 	public function initMagentoServers(){
-		foreach ($this->configuration->getMagentoIps() as $ip){
+		foreach ($this->getConfiguration()->getMagentoIps() as $ip){
 			$this->addMagentoServer(new MagentoServer($ip));
 		}
 	}
@@ -51,8 +50,8 @@ class ManagerMHA {
 		#}
 	}
 	
-	public function getConfiguration(){
-		return $this->configuration;
+	public static function getConfiguration(){
+		return Configuration::getInstance();
 	}
 	
 	public static function getMha(){

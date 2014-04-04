@@ -112,5 +112,12 @@ class Configuration {
 	public function getBddMask(){
 		return $this->bdd_mask;
 	}
+	
+	public static function getInstance(){
+		if (!isset(self::$instance)){
+			self::$instance = new self;
+		}
+		return self::$instance;
+	}
 
 }
