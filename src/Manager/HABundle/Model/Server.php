@@ -26,7 +26,9 @@ class Server {
 	}
 
 	public function update(){
-		$this->status = exec("ping -c2 -i0.25 $this->getIp()") ? true : false;
+		$number_of_request = 2;
+		$time_between_request = 0.25;
+		$this->status = exec("ping -c$number_of_request -i$time_between_request " . $this->getIp()) ? true : false;
 	}
 	
 }

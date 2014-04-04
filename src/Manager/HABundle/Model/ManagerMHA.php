@@ -32,7 +32,6 @@ class ManagerMHA {
 	
 	public function initBddServers(){
 		$countMaster = 0;
-		var_dump($this->getConfiguration()->getBddIps());
 		foreach ($this->getConfiguration()->getBddIps() as $ip){
 			$server = new BddServer($ip);
 			$this->addBddServer($server);
