@@ -107,7 +107,7 @@ class Mysql {
 
 	private function isConnected(){
 		echo $this->getIp();
-		$mysqli = new \mysqli($this->getIp(), $this->getUser(), $this->getPassword());
+		$mysqli = new \mysqli('172.16.10.104', $this->getUser(), $this->getPassword());
 
 		if (($mysqli->connect_errno) || (!$mysqli->ping())) {
 			$this->status = false;
