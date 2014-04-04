@@ -2,8 +2,6 @@
 
 namespace Manager\HABundle\Model;
 
-use Manager\HABundle\Model\ManagerMHA;
-
 class Mysql {
 
 	public $ip;
@@ -26,7 +24,7 @@ class Mysql {
 	public function update(){
 		$this->isConnected();
 		if($this->status){
-			$this->PDOinstance = new \PDO("mysql:host=$this->ip;dbname=inkia_nomyisam", $this->user, $this->password,array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING));
+			$this->PDOinstance = new \PDO("mysql:host=$this->ip;dbname=".ManagerMHA::$bdName, $this->user, $this->password,array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING));
 			$this->getState(); // Manage Errors if possible
 			$this->getReplicationStatus(); // Manage Errors if possible
 			$this->getGlobal();

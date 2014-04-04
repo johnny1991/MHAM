@@ -9,6 +9,7 @@ class ManagerMHA {
 	public static $file = '/etc/mha.conf';
 	public static $conf;
 	public static $localxmlpath = '/var/www/magento/app/etc/local.xml';
+	public static $bdName = 'collectiong';
 	public static $mhalog = '/var/log/masterha/MHA.log';
 
 	public $user;
