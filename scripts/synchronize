@@ -1,0 +1,124 @@
+#!/bin/bash
+
+# script
+
+# Ce script permet de switcher un serveur maitre down en serveur esclave.
+
+############## PARAMETERS ##############################################################"
+
+source HA.conf
+
+printer='script_perso'
+
+for i in $*; do 
+   	#echo $i 
+	tmp=$(echo $i | cut -d = -f2)
+	[[ $i == --ip_master_to_slave=* ]] && ip_master_to_slave=$tmp
+	[[ $i == --ip_slave_to_master=* ]] && ip_slave_to_master=$tmp
+	tmp=''
+done
+
+if [[ ! -z "$ip_master_to_slave" ]] && [[ ! -z "$ip_slave_to_master" ]]; 
+then 
+
+############### SLAVE TO MASTER ############################################################
+
+echo -e "\033[32m $printer[slave to master][info] Initialisation du Slave \(futur Master\) : $ip_slave_to_master \033[0m"
+echo -e "\033[32m $printer[slave to master][info] Lecture du status du master SQL et modification de variables globales READ_ONLY et relay_log_purge \033[0m"
+master_status=`sudo mysql -h $ip_slave_to_master -u $db_user -p$db_password $db_name -N -s -e "
+STOP SLAVE;
+SHOW MASTER STATUS;
+SET GLOBAL READ_ONLY=0;
+SET GLOBAL relay_log_purge = 1;
+"`
+
+tmp=`sudo ssh root@$ip_slave_to_master "cat $mycnf | grep server-id"`
+server_id_value=$(echo $tmp | awk '{print $3}')
+
+echo -e "\033[32m $printer[slave to master][info] server-id : $server_id_value \033[0m"
+
+array=( $( for i in $master_status ; do echo $i ; done ) )
+MASTER_LOG_FILE=${array[0]}
+MASTER_LOG_POS=${array[1]}
+MASTER_DB=${array[2]}
+
+echo -e "\033[32m $printer[slave to master][info] Log file : $MASTER_LOG_FILE \033[0m"
+echo -e "\033[32m $printer[slave to master][info] Log position : $MASTER_LOG_POS \033[0m"
+echo -e "\033[32m $printer[slave to master][info] Base de donnees : $MASTER_DB \033[0m"
+echo -e "\033[32m $printer[slave to master][info] Fin du changement avec succes \033[0m"
+
+############### MASTER TO SLAVE ############################################################
+
+echo -e "\033[32m $printer[master to slave][info] Initialisation du Master \(futur Slave\) : $ip_master_to_slave \033[0m"
+
+etape1=true
+
+if $etape1; then
+
+value=`expr $server_id_value + 1`;
+echo -e "\033[32m $printer[master to slave][info] new server-id : $value \033[0m"
+echo -e "\033[32m $printer[master to slave][info] Modification du fichier my.cnf ... \033[0m"
+
+sudo ssh root@$ip_master_to_slave << EOF
+sed -i 's/\(server-id\).*/\1            	= $value/'  $mycnf
+service mysql restart
+EOF
+
+fi
+
+echo -e "\033[32m $printer[master][info] Changement dans la base de donnees du status du master et des variables globales \033[0m"
+
+master_status=`sudo mysql -h $ip_master_to_slave -u $db_user -p$db_password $db_name -N -s -e "
+STOP SLAVE;
+CHANGE MASTER TO MASTER_HOST='"$ip_slave_to_master"', MASTER_USER='"$db_user"', MASTER_PASSWORD='"$db_password"', MASTER_LOG_FILE='"$MASTER_LOG_FILE"', MASTER_LOG_POS=  "$MASTER_LOG_POS";
+SET GLOBAL READ_ONLY=1;
+SET GLOBAL relay_log_purge = 0;
+START SLAVE;
+"`
+
+echo -e "\033[32m $printer[master to slave][info] Fin du changement avec succes \033[0m"
+
+echo -e "\033[32m $printer[master to slave][info] Swicth des deux serveurs dans la configuration de mha \033[0m"
+
+cd /etc
+sudo sed -i "s/server1/serverx/" mha.conf
+sudo sed -i "s/server2/server1/" mha.conf
+sudo sed -i "s/serverx/server2/" mha.conf
+
+for ip in "${ip_magento[@]}"
+do :
+echo -e "\033[32m $printer[info] Connexion en ssh a $ip \033[0m"
+ 	sudo ssh -T root@$ip <<EOF
+                if apt-get -qq install xmlstarlet; then
+                        echo -e "\033[32m $printer[info] Xmlstarlet est installe \033[0m"
+                else
+                        echo -e "\033[32m $printer[info] Erreur lors de l'installation de Xmlstarlet \033[0m"
+                fi
+                echo -e "\033[32m $printer[info] Modification de l'adresse ip dans le local.xml \033[0m"
+                xmlstarlet edit -L -u "/config/global/resources/default_setup/connection/host" -v $ip_slave_to_master $local_xml
+                echo -e "\033[32m $printer[info] Flush de Redis $db_number \033[0m"
+                redis-cli
+		select 0
+                flushdb
+                exit
+EOF
+done
+
+echo -e "\033[32m $printer[info] Activation des vhosts concernes \033[0m"
+for (( i = 0; i < ${#ip_bdd[@]}; i++ )); do
+echo $i
+	for file in /etc/apache2/sites-available/$i*
+        do
+        	if [[ -f $file ]]; then
+                	if [ ${ip_bdd[$i]} = $ip_slave_to_master ]; then
+				echo -e "\033[32m $printer[info] a2ensite ${file##*/} \033[0m"
+                        	sudo a2ensite ${file##*/}
+                        else
+                                sudo a2dissite ${file##*/}
+                        fi
+                fi
+        done
+done
+sudo service apache2 reload
+
+fi

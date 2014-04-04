@@ -1,0 +1,259 @@
+#!/bin/bash
+
+echo -e "\033[32m Ce script permet d'installer automatiquement un système dereplication de base de donnees avec MHA (Master Hight Availability).
+Veuillez verifier que chaque cluster et le manager aient un acces a chacun via ssh \033[0m"
+
+############## PARAMETERS ##########################################################
+
+source HA.conf
+
+printer='initialisation'
+
+################## FUNCTIONS ##########################################################
+
+function ask {
+	while true; do
+		if [ "${2:-}" = "Y" ]; then
+			prompt="Y/n"
+			default=Y
+		elif [ "${2:-}" = "N" ]; then
+			prompt="y/N"
+			default=N
+		else
+			prompt="y/n"
+			default=
+		fi
+		# Ask the question
+		read -p "$1 [$prompt] " REPLY
+		# Default?
+		if [ -z "$REPLY" ]; then
+			REPLY=$default
+		fi
+		# Check if the reply is valid
+		case "$REPLY" in
+			Y*|y*) return 0 ;;
+			N*|n*) return 1 ;;
+		esac
+	done
+}
+
+function addMysqlPackage {
+if ask "Voulez vous installer les paquets MYSQL sur le serveur $1 ?"; then
+        echo -e "\033[32m $printer[info] Installation des paquets mysql \033[0m"
+        ssh -T root@$1 <<EOF
+		debconf-set-selections <<< 'mysql-server mysql-server/root_password password $db_root_password'
+		debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $db_root_password'
+		apt-get -y install mysql-server
+                apt-get -y install libdbd-mysql-perl
+EOF
+fi
+
+}
+
+function addNode {
+if ask "Voulez vous installer les noeuds MHA sur le serveur $1 ?"; then
+        echo -e "\033[32m $printer[info] Telechargement et installation des noeuds MHA \033[0m"
+        ssh -T root@$1 <<EOF
+                cd /root
+                wget $node_url
+                tar xzvf $node_file
+		rm $node_file
+                cd $node_name
+                perl Makefile.PL
+                make
+                sudo make install
+		rm -R ../$node_name
+EOF
+fi
+}
+
+function addMysqlUser {
+if ask "Voulez vous mettre en place l'utilisateur mysql sur le serveur $1 ?"; then
+        echo -e "\033[32m $printer[info] Mise en place de l'utilisateur $db_user \033[0m"
+	ssh -T root@$1 <<EOF
+		mysql -u $db_root -p$db_root_password  -N -s -e "
+			CREATE USER '$db_user'@'$ip_all' identified by '$db_password';
+			GRANT all privileges ON *.* TO '$db_user'@'$ip_all';
+			grant all privileges on $db_name.* to '$db_user'@'$ip_all' WITH GRANT OPTION;
+			flush privileges;"
+EOF
+fi
+}
+
+function flushmaster {
+echo -e "\033[32m $printer[master][info] Flush des tables et lecture du status du master sur Mysql \033[0m"
+master_status=`mysql -h $ip_master -u $db_user -p$db_password $db_name -N -s -e "
+RESET MASTER;
+FLUSH TABLES WITH READ LOCK; 
+SHOW MASTER STATUS;"`
+array=($( for i in $master_status ; do echo $i ; done ))
+MASTER_LOG_FILE=${array[0]}
+MASTER_LOG_POS=${array[1]}
+MASTER_DB=${array[2]}
+}
+
+
+############### MASTER #################################################################
+if ask "Voulez vous configurer le serveur maitre ?"; then
+
+echo -e "\033[32m $printer[master][info] Initialisation du Master $ip_master \033[0m"
+
+addMysqlPackage $ip_master
+addNode $ip_master
+addMysqlUser $ip_master
+
+if ask "N'oublier pas de creer la base de donnees $db_name et de l'importer sur le master !!!, appuyer sur y ensuite."; then
+echo -e "\033[32m $printer[master][info] BDD OK \033[0m"
+fi
+ssh -T root@$ip_master <<EOF
+	echo -e "\033[32m $printer[master][info] Modification du fichier my.cnf ... \033[0m"
+	sed -i 's/#\(server-id *\)/\1/'  $mycnf
+	sed -i 's/\(server-id\).*/\1	= 1/'  $mycnf
+	sed -i 's/#\(log_bin *\)/\1/' $mycnf
+	sed -i 's/#\(binlog_do_db\).*/\1		= $db_name/'  $mycnf
+	sed -i 's/\(bind-address\).*/\1		= 0.0.0.0/' $mycnf
+
+	echo -e "\033[32m $printer[master][info] Modification du fichier my.cnf termine \033[0m"
+	echo -e "\033[32m $printer[master][info] Redemarrage de Mysql \033[0m"
+	service mysql restart
+        echo -e "\033[32m $printer[master][info] Redemarrage de Mysql termine \033[0m"
+EOF
+
+flushmaster
+
+echo -e "\033[32m $printer[master][info] Lecture du status du master sur Mysql terminee \033[0m"
+
+echo -e "\033[32m $printer[master][info] Log file : $MASTER_LOG_FILE \033[0m"
+echo -e "\033[32m $printer[master][info] Log position : $MASTER_LOG_POS \033[0m"
+echo -e "\033[32m $printer[master][info] Base de donnees : $MASTER_DB \033[0m"
+
+echo -e "\033[32m $printer[master][info] Lecture du status du master sur Mysql termine \033[0m"
+
+echo -e "\033[32m $printer[master][info] Dump de la base donnees sur le serveur maitre \033[0m"
+ssh root@$ip_master <<EOF
+	mysqldump  -h $ip_master -u $db_user -p$db_password --opt $db_name > /tmp/$db_name.sql
+EOF
+
+echo -e "\033[32m $printer[master][info] Dump termine \(/tmp/$db_name.sql\) \033[0m"
+
+else
+flushmaster
+fi
+
+
+echo -e "\033[32m $printer[master][info] Unlock des tables en cours \033[0m"
+mysql -h $ip_master -u $db_user -p$db_password $db_name -N -s -e "UNLOCK TABLES;"
+
+echo -e "\033[32m $printer[master][info] Unlock des tables terminee \033[0m"
+
+############### SLAVE #################################################################
+
+echo ""
+if ask "Voulez vous configurer le serveur slave ?"; then
+echo -e "\033[32m $printer[slave][info] Initialisation du slave $ip_master_to_slave \033[0m"
+
+addMysqlPackage $ip_slave
+addNode $ip_slave
+addMysqlUser $ip_slave
+
+ssh -T root@$ip_slave <<EOF
+        echo -e "\033[32m $printer[slave][info] Modification du fichier my.cnf ... \033[0m"
+        sed -i 's/#\(server-id *\)/\1/'  $mycnf
+        sed -i 's/\(server-id\).*/\1			= 2/'  $mycnf
+        sed -i 's/#\(log_bin *\)/\1/' $mycnf
+        sed -i 's/#\(binlog_do_db\).*/\1                = $db_name/'  $mycnf
+        sed -i 's/\(bind-address\).*/\1         = 0.0.0.0/' $mycnf
+
+        echo -e "\033[32m $printer[master][info] Modification du fichier my.cnf terminee \033[0m"
+        echo -e "\033[32m $printer[master][info] Redemarrage de Mysql \033[0m"
+        service mysql restart
+        echo -e "\033[32m $printer[master][info] Redemarrage de Mysql terminee \033[0m"
+EOF
+
+echo -e "\033[32m $printer[slave][info] Creation de la base de donnees \033[0m"
+mysql -h $ip_slave -u $db_user -p$db_password -N -s -e "DROP DATABASE IF EXISTS $db_name; CREATE DATABASE $db_name;"
+
+echo -e "\033[32m $printer[slave][info] Import de la base donnees\033[0m"
+ssh -T root@$ip_master <<EOF
+mysql -h $ip_slave -u $db_user -p$db_password $db_name < /tmp/$db_name.sql
+EOF
+
+echo -e "\033[32m $printer[slave][info] Synchronisation des deux bases de donnees et modification de variables globales sur MYSQL\033[0m"
+
+mysql -h $ip_slave -u $db_user -p$db_password $db_name -N -s -e "
+STOP SLAVE;
+CHANGE MASTER TO MASTER_HOST='$ip_master',MASTER_USER='$db_user', MASTER_PASSWORD='$db_password', MASTER_LOG_FILE='$MASTER_LOG_FILE', MASTER_LOG_POS= $MASTER_LOG_POS;
+SET GLOBAL READ_ONLY=1;
+SET GLOBAL relay_log_purge = 0;
+START SLAVE;
+"
+
+echo -e "\033[32m $printer[master][info] Log file : $MASTER_LOG_FILE \033[0m"
+echo -e "\033[32m $printer[master][info] Log position : $MASTER_LOG_POS \033[0m"
+echo -e "\033[32m $printer[master][info] Base de donnees : $MASTER_DB \033[0m"
+
+
+fi
+
+############### MANAGER ###############################################################
+
+if ask "Voulez vous configurer le manager ?"; then
+echo -e "\033[32m $printer[manager][info] Initialisation du manager\033[0m"
+
+if ask "Voulez vous installer les paquets necessaire pour le manager ?"; then
+echo -e "\033[32m $printer[[manager]info] Installation des paquets necessaires au manager\033[0m"
+apt-get install libdbd-mysql-perl
+apt-get install libconfig-tiny-perl
+apt-get install liblog-dispatch-perl
+apt-get install libparallel-forkmanager-perl
+perl -MCPAN -e "install Config::Tiny"
+perl -MCPAN -e "install Log::Dispatch"
+perl -MCPAN -e "install Parallel::ForkManager"
+fi
+
+if ask "Voulez vous installer les noeuds MHA sur le serveur manager ?"; then
+        echo -e "\033[32m $printer[[manager]info] Telechargement et installation des noeuds MHA \033[0m"
+        cd /home
+        wget $node_url
+        tar xzvf $node_file
+        rm $node_file
+        cd $node_name
+        perl Makefile.PL
+        make
+        sudo make install
+        rm -R ../$node_name
+fi
+
+if ask "Voulez vous installer le manager MHA le serveur manager ?"; then
+        echo -e "\033[32m $printer[[manager]info] Telechargement et installation du manager MHA \033[0m"	
+	cd /home
+	# http://downloads.skysql.com/files/MHA
+	wget $manager_url
+	tar xzvf $manager_file
+	cd $manager_name
+	perl Makefile.PL
+	make
+	sudo make install
+fi
+
+if ask "Voulez vous installer le fichier de configuration du manager ?"; then
+echo -e "\033[32m $printer[manager][info] installation du fichier de configuration\033[0m"
+cat > $mha_conf << EOF
+[server default]
+ user = $db_user
+ password = $db_password
+ manager_workdir = /var/log/masterha
+ manager_log = /var/log/masterha/MHA.log
+ master_ip_failover_script=/home/HA/after_balancer
+
+[server1]
+ hostname = $ip_master
+
+[server2]
+ hostname = $ip_slave
+EOF
+fi
+
+fi
+echo -e "\033[32m $printer[info] Et voila :)\033[0m"
+

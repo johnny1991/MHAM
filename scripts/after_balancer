@@ -1,0 +1,78 @@
+#!/bin/bash
+
+###################################### PARAMETERS ##############################################
+
+source HA.conf
+
+#################################################################################################
+
+echo -e "\033[32m $printer[info] Lecture des arguments \033[0m"
+for i in $*; do 
+   	#echo $i 
+	tmp=$(echo $i | cut -d = -f2)
+	[[ $i == --command=* ]] && command=$tmp
+	[[ $i == --ssh_user=* ]] && ssh_user=$tmp
+	[[ $i == --orig_master_host=* ]] && orig_master_host=$tmp
+	[[ $i == --orig_master_ip=* ]] && orig_master_ip=$tmp
+	[[ $i == --orig_master_port=* ]] && orig_master_port=$tmp
+	[[ $i == --new_master_host=* ]] && new_master_host=$tmp
+	[[ $i == --new_master_ip=* ]] && new_master_ip=$tmp
+	[[ $i == --new_master_port=* ]] && new_master_port=$tmp
+	[[ $i == --new_master_user=* ]] && new_master_user=$tmp
+	[[ $i == --new_master_password=* ]] && new_master_password=$tmp
+	tmp=''
+done
+echo -e "\033[32m $printer[info] Lecture des arguments termine\033[0m"
+
+if [ $command == 'stopssh' ] || [ $command == 'stop' ]; then
+
+
+#echo "MHA : The server $orig_master_ip is down !!! at `eval date +%d/%m/%Y":"%H:%M`" | mail -s "The server $orig_master_ip is down !!!" "maintenance@auguria.net"
+
+for ip in "${ip_bdd[@]}"
+do :
+        if [ $ip != $orig_master_ip ]; then
+                new_master_ip=$ip
+        fi
+done
+
+echo -e "\033[32m $printer[info] Activation des vhosts concernes \033[0m"
+echo -e "\033[32m $printer[info] New master ip : $new_master_ip \033[0m"
+if [ $new_master_ip ]; then
+	for (( i = 0; i < ${#ip_bdd[@]}; i++ )); do
+	echo -e "\033[32m $printer[info] $i -> ${ip_bdd[$i]} \033[0m"
+	     	for file in /etc/apache2/sites-available/$i*
+	        do
+	                if [[ -f $file ]]; then
+	                        if [ ${ip_bdd[$i]} == $new_master_ip ]; then
+	                                echo -e "\033[32m $printer[info] a2ensite ${file##*/} \033[0m"
+	                                sudo a2ensite ${file##*/}
+	                        else
+	                                sudo a2dissite ${file##*/}
+	                        fi
+	                fi
+	        done
+	done
+	sudo service apache2 reload
+fi
+
+for ip in "${ip_magento[@]}"
+do :
+echo -e "\033[32m $printer[info] Connexion en ssh a $ip \033[0m"
+	ssh -T $ssh_user@$ip <<EOF
+		if apt-get -qq install xmlstarlet; then
+			echo -e "\033[32m $printer[info] Xmlstarlet est installe \033[0m"
+		else
+			echo -e "\033[32m $printer[info] Erreur lors de l'installation de Xmlstarlet \033[0m"
+		fi
+		echo -e "\033[32m $printer[info] Modification de l'adresse ip dans le local.xml \033[0m"
+		xmlstarlet edit -L -u "/config/global/resources/default_setup/connection/host" -v $new_master_ip $local_xml
+		echo -e "\033[32m $printer[info] Flush de Redis $db_number \033[0m"
+		redis-cli
+		select 0
+		flushdb
+		exit
+EOF
+done
+
+fi
