@@ -13,8 +13,9 @@ class DefaultController extends Controller
 	}
 
 	public function logAction(){
+		echo ManagerMHA::getInstance()->getMha()->getLogPath();
 		$html = nl2br(shell_exec('tail -n 15 ' . ManagerMHA::getInstance()->getMha()->getLogPath()));
-		$response = new Response(json_encode($html));
+		$response = new Response($html);
 		$response->headers->set('Content-Type', 'application/json');
 		return $response;
 	}
