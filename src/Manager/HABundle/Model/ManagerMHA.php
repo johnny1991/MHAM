@@ -5,7 +5,6 @@ namespace Manager\HABundle\Model;
 class ManagerMHA {
 
 	protected static $instance;
-	public static $configuration;
 	
 	public $status;
 	
