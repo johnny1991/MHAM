@@ -10,8 +10,8 @@ class BddServer extends Server {
 	public $bdd_password;
 
 	public function __construct($ip){
-		$this->bdd_user = Configuration::getInstance()->getUser();
-		$this->bdd_password = Configuration::getInstance()->getPassword();
+		$this->bdd_user = Configuration::getInstance()->getBddUser();
+		$this->bdd_password = Configuration::getInstance()->getBddPassword();
 		parent::__construct($ip);
 	}
 
