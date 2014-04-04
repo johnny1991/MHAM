@@ -5,14 +5,10 @@ namespace Manager\HABundle\Model;
 class Server {
 
 	public $ip;
-	public $user;
-	public $password;
 	public $status;
 
-	public function __construct($ip, $user, $password){
+	public function __construct($ip){
 		$this->ip = $ip;
-		$this->user = $user;
-		$this->password = $password;
 		$this->update();
 	}
 
@@ -30,7 +26,11 @@ class Server {
 	}
 
 	public function update(){
-		$this->status = exec("ping -c2 -i0.25 $this->ip") ? true : false;
+		$this->status = exec("ping -c2 -i0.25 $this->getIp()") ? true : false;
+	}
+	
+	public function getManager(){
+		return ManagerMHA::getInstance();
 	}
 
 }

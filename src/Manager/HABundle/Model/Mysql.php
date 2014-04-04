@@ -45,7 +45,7 @@ class Mysql {
 	}
 	
 	public function isMaster(){
-		return ($this->state == 'Master') ? true : false;
+		return ($this->getState() == 'Master') ? true : false;
 	}
 
 	public function getState() {

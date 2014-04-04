@@ -7,14 +7,12 @@ use Manager\HABundle\Model\ManagerMHA;
 
 class MagentoServer extends Server {
 
-	public $localxmlpath;
-	public $localxml;
-	public $BddIp;
+	public $local_xml;
+	public $bdd_ip;
 
-	public function __construct($ip, $user, $password){
-		$this->localxmlpath = ManagerMHA::$localxmlpath;
-		parent::__construct($ip, $user, $password);
-	}
+	#public function __construct($ip){
+	#	parent::__construct($ip);
+	#}
 
 	public function update(){
 		parent::update();
@@ -22,19 +20,21 @@ class MagentoServer extends Server {
 	}
 
 	public function initLocalxml(){
-		$string = shell_exec("/home/HA/getFile --user=root --ip=$this->ip --path=$this->localxmlpath");
-		if($string){
-			$this->localxml = simplexml_load_string($string);
-			$this->BddIp = $this->localxml->global->resources->default_setup->connection->host;
+		$local_xml_path = $this->getManager()->getConfiguration()->getLocalXmlPath();
+		$scripts_path = $this->getManager()->getConfiguration()->getScriptsPath();
+		$content = shell_exec($scripts_path . "getFile --user=root --ip=$this->getIp() --path=$local_xml_path");
+		if($content){
+			$this->local_xml = simplexml_load_string($content);
+			$this->bdd_ip = $this->localxml->global->resources->default_setup->connection->host;
 		}
 	}
 
 	public function getLocalXml(){
-		return $this->localxml;
+		return $this->local_xml;
 	}
 	
 	public function getBddIp(){
-		return $this->BddIp;
+		return $this->bdd_ip;
 	}
 
 }
