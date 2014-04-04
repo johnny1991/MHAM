@@ -15,6 +15,7 @@ class Mysql {
 	public $PDOinstance;
 
 	public function __construct($ip, $user, $password){
+		echo $ip; 
 		$this->ip = $ip;
 		$this->user = $user;
 		$this->password = $password;
