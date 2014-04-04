@@ -53,7 +53,7 @@ class ManagerMHA {
 		return Configuration::getInstance();
 	}
 	
-	public static function getMha(){
+	public function getMha(){
 		return $this->mha;
 	}
 	
