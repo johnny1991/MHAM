@@ -7,6 +7,7 @@ class Mysql {
 	public $ip;
 	public $user;
 	public $password;
+	public $database;
 
 	public $status;
 	public $state;
@@ -15,17 +16,17 @@ class Mysql {
 	public $PDOinstance;
 
 	public function __construct($ip, $user, $password){
-		echo $ip; 
 		$this->ip = $ip;
 		$this->user = $user;
 		$this->password = $password;
+		$this->database = Configuration::getInstance()->getBddName();
 		$this->update();
 	}
 
 	public function update(){
 		$this->isConnected();
 		if($this->status){
-			$this->PDOinstance = new \PDO("mysql:host=$this->ip;dbname=".ManagerMHA::$bdName, $this->user, $this->password,array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING));
+			$this->PDOinstance = new \PDO("mysql:host={$this->getIp()};dbname={$this->getDatabase()}", $this->getUser(), $this->getPassword(), array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING));
 			$this->getState(); // Manage Errors if possible
 			$this->getReplicationStatus(); // Manage Errors if possible
 			$this->getGlobal();
@@ -41,6 +42,18 @@ class Mysql {
 		return $this;
 	}
 
+	public function getUser(){
+		return $this->user;
+	}
+	
+	public function getPassword(){
+		return $this->password;
+	}
+	
+	public function getDatabase(){
+		return $this->database;
+	}
+	
 	public function getStatus(){
 		return $this->status;
 	}
