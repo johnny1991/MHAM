@@ -21,10 +21,8 @@ class DefaultController extends Controller
 	public function syncAction(){
 		$response = shell_exec("/usr/bin/sudo /bin/bash " . Configuration::getInstance()->getScriptsPath(). "synchronize --ip_master_to_slave=" . ManagerMHA::getInstance()->getMha()->getSlaveBddIp() . " --ip_slave_to_master=" . ManagerMHA::getInstance()->getMha()->getMainBddIp());
 		
-		/*echo "/usr/bin/sudo /bin/bash " . Configuration::getInstance()->getScriptsPath(). "synchronize
-				 --ip_master_to_slave=" . ManagerMHA::getInstance()->getMha()->getSlaveBddIp() . "
-				 --ip_slave_to_master=" . ManagerMHA::getInstance()->getMha()->getMainBddIp();
-		*/
+		echo "/usr/bin/sudo /bin/bash " . Configuration::getInstance()->getScriptsPath(). "synchronize --ip_master_to_slave=" . ManagerMHA::getInstance()->getMha()->getSlaveBddIp() . " --ip_slave_to_master=" . ManagerMHA::getInstance()->getMha()->getMainBddIp();
+		
 		return new response($response);
 	}
 
