@@ -30,7 +30,6 @@ class Configuration {
 	protected function __construct(){
 		$this->scripts_path = __DIR__ . '/../../../../scripts/';
 		$this->configuration_path = $this->scripts_path . 'HA.conf';
-		echo $this->configuration_path;
 		$this->configuration = parse_ini_file($this->configuration_path, 1, INI_SCANNER_RAW);
 
 		$this->bdd_name = $this->configuration['db_name'];

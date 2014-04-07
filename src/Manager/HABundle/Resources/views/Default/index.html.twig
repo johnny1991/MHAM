@@ -169,7 +169,8 @@
                     	$('.load').show();
                     	jQuery.ajax({
                     		url: '{{ path('manager_ha_sync') }}',
-                    		success: function(s,x){ 
+                    		success: function(data,x){
+                    			alert(data);
                     			location.reload();
                     			$('.load').hide();
                     		} 
