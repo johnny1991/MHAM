@@ -4,7 +4,9 @@ namespace Manager\HABundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+
 use Manager\HABundle\Model\ManagerMHA;
+use Manager\HABundle\Model\Configuration;
 
 class DefaultController extends Controller
 {
@@ -18,7 +20,7 @@ class DefaultController extends Controller
 
 	public function syncAction(){
 		$manager = ManagerMHA::getInstance();
-		$response = shell_exec("/usr/bin/sudo /bin/bash { $manager->getConfiguration()->getScriptsPath() }synchronize --ip_master_to_slave={ $manager->getMha()->getSlaveBddIp() } --ip_slave_to_master={ $manager->getMha()->getMainBddIp() }");
+		$response = shell_exec("/usr/bin/sudo /bin/bash { Configuration::getInstance()->getScriptsPath() }synchronize --ip_master_to_slave={ $manager->getMha()->getSlaveBddIp() } --ip_slave_to_master={ $manager->getMha()->getMainBddIp() }");
 		return new response($response);
 	}
 
