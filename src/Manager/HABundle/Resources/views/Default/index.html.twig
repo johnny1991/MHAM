@@ -39,7 +39,7 @@
                         	<tbody>
 	                        	{% for server in manager.bddServers %}
 	                            <tr>
-	                                <td>{#{ dump(server.mysql.replicationStatus) }#}{{ server.ip }}</td>
+	                                <td>{{ server.ip }}</td>
 	                                <td>
 		                                {% if server.mysql.status == 1 %}
 		                                	<span class="ok">Up</span>
@@ -75,13 +75,15 @@
 										<td>{{ server.mysql.global['read_only'] }}</td>
 										<td>{{ server.mysql.global['relay_log_purge'] }}</td>
 									{% endif %}
+									<td>
+										{% if not manager.getServersDown %}
+	                    					<button id="sync" class="btn btn-primary" data-url="{{ path('manager_ha_sync',{{ server.ip }} ) }}">Forcer en Master</button>
+	                    				{% endif %}
+	                    			</td>
 							    </tr>
 	                        	{% endfor %}
                     		</tbody>
                     	</table>
-                    	{% if not manager.getServersDown %}
-                    		<button id="sync" class="btn btn-primary">Synchroniser</button>
-                    	{% endif %}
                     </div>
                     <div id="magento_state">
                      	<h2>Clusters Magento</h2>
@@ -168,7 +170,7 @@
                     $('#sync').click(function(){
                     	$('.load').show();
                     	jQuery.ajax({
-                    		url: '{{ path('manager_ha_sync') }}',
+                    		url: "this.attr('data-url')",
                     		success: function(data,x){
                     			alert(data);
                     			location.reload();
