@@ -22,7 +22,7 @@
                             <thead>
                             	<tr>
                             		<th colspan="2">Serveur</th>
-		                            <th colspan="7">BDD</th>
+		                            <th colspan="8">BDD</th>
 		                     	</tr>
                             	<tr>
                             		<th>IP du serveur</th>
@@ -34,6 +34,7 @@
 		                            <th>Slave SQL Running</th>
 					    			<th>Read Only</th>
 		                            <th>Relay Purge</th>
+		                            <th>Synchronisation</th>
 		                     	</tr>
 		                 	</thead>
                         	<tbody>
@@ -170,7 +171,7 @@
                     $('#sync').click(function(){
                     	$('.load').show();
                     	jQuery.ajax({
-                    		url: "this.attr('data-url')",
+                    		url: this.attr('data-url'),
                     		success: function(data,x){
                     			alert(data);
                     			location.reload();
