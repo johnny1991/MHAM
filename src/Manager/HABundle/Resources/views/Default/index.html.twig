@@ -78,7 +78,7 @@
 									{% endif %}
 									<td>
 										{% if not manager.getServersDown %}
-	                    					<button id="sync" class="btn btn-primary" data-url="{{ path('manager_ha_sync',{'ip': server.ip } ) }}">Forcer en Master</button>
+	                    					<button id="sync" class="btn btn-primary synchronisation" data-url="{{ path('manager_ha_sync',{'ip': server.ip } ) }}">Forcer en Master</button>
 	                    				{% endif %}
 	                    			</td>
 							    </tr>
@@ -168,7 +168,7 @@
                     		} 
                     	});
                     });
-                    $('#sync').click(function(){
+                    $('.synchronisation').click(function(){
                     	$('.load').show();
                     	jQuery.ajax({
                     		url: $(this).attr('data-url'),
