@@ -33,7 +33,7 @@ class Configuration {
 		/*if(substr(__DIR__, -1) != '/') : 
 			$this->scripts_path .= '/';
 		endif;*/
-		$this->scripts_path .= '../../../../../scripts/';
+		$this->scripts_path .= '/../../../../scripts/';
 		$this->configuration_path = $this->scripts_path . 'HA.conf';
 		echo $this->configuration_path;
 		$this->configuration = parse_ini_file($this->configuration_path, 1, INI_SCANNER_RAW);
