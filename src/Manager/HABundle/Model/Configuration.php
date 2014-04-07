@@ -29,6 +29,7 @@ class Configuration {
 
 	protected function __construct(){
 		$this->scripts_path = __DIR__;
+		echo substr(__DIR__, -1);
 		/*if(substr(__DIR__, -1) != '/') : 
 			$this->scripts_path .= '/';
 		endif;*/
