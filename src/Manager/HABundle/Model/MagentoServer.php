@@ -25,7 +25,7 @@ class MagentoServer extends Server {
 		$content = shell_exec($scripts_path . "getFile --user=root --ip={$this->getIp()} --path=$local_xml_path");
 		if($content){
 			$this->local_xml = simplexml_load_string($content);
-			$this->bdd_ip = $this->localxml->global->resources->default_setup->connection->host;
+			$this->bdd_ip = $this->local_xml->global->resources->default_setup->connection->host;
 		}
 	}
 
