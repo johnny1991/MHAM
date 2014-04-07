@@ -19,10 +19,7 @@ class DefaultController extends Controller
 	}
 
 	public function syncAction(){
-		$response = shell_exec("/bin/bash " . Configuration::getInstance()->getScriptsPath(). "synchronize --ip_master_to_slave=" . ManagerMHA::getInstance()->getMha()->getSlaveBddIp() . " --ip_slave_to_master=" . ManagerMHA::getInstance()->getMha()->getMainBddIp());
-		
-		echo "/bin/bash " . Configuration::getInstance()->getScriptsPath(). "synchronize --ip_master_to_slave=" . ManagerMHA::getInstance()->getMha()->getMainBddIp() . " --ip_slave_to_master=" . ManagerMHA::getInstance()->getMha()->getSlaveBddIp();
-		
+		$response = shell_exec("/bin/bash " . Configuration::getInstance()->getScriptsPath(). "synchronize --ip_master_to_slave=" . ManagerMHA::getInstance()->getMha()->getMainSlaveBddIp() . " --ip_slave_to_master=" . ManagerMHA::getInstance()->getMha()->getSlaveBddIp());
 		return new response($response);
 	}
 
