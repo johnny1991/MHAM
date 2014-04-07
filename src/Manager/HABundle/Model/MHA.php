@@ -13,6 +13,7 @@ class MHA {
 	public $master_ip_failover_script;
 	public $bdd_ips;
 	public $main_bdd_ip;
+	public $slave_bdd_ip;
 
 	public $isRunning = false;
 	public $isOperational = false;
@@ -26,6 +27,7 @@ class MHA {
 		$this->manager_workdir = $this->configuration['server default']['manager_workdir'];
 		$this->master_ip_failover_script = $this->configuration['server default']['master_ip_failover_script'];
 		$this->main_bdd_ip = $this->configuration['server1']['hostname'];
+		$this->slave_bdd_ip = $this->configuration['server2']['hostname'];
 
 		foreach($this->configuration as $item){
 			if (!empty($item['hostname'])){
@@ -84,6 +86,10 @@ class MHA {
 
 	public function getMainBddIp(){
 		return $this->main_bdd_ip;
+	}
+	
+	public function getSlaveBddIp(){
+		return $this->slave_bdd_ip;
 	}
 	
 	public function stop(){

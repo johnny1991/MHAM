@@ -13,24 +13,13 @@ class DefaultController extends Controller
 	}
 
 	public function logAction(){
-		echo ManagerMHA::getInstance()->getMha()->getLogPath();
-		$html = nl2br(shell_exec('tail -n 15 ' . ManagerMHA::getInstance()->getMha()->getLogPath()));
-		$response = new Response($html);
-		$response->headers->set('Content-Type', 'application/json');
-		return $response;
+		return new Response(nl2br(shell_exec('tail -n 15 ' . ManagerMHA::getInstance()->getMha()->getLogPath())));
 	}
 
 	public function syncAction(){
-		$conf = ManagerMHA::getConf();
-		$hostname = $conf['server1']['hostname'];
-		
-		/*if ($hostname == '172.20.0.225'){
-			echo exec('/usr/bin/sudo /bin/bash /home/HA/auto-reverse');
-		} elseif ($hostname == '172.20.0.236'){
-			echo exec('/usr/bin/sudo /bin/bash /home/HA/auto-rereverse');
-		}*/
-		
-		return new response('ok');
+		$manager = ManagerMHA::getInstance();
+		$response = shell_exec("/usr/bin/sudo /bin/bash { $manager->getConfiguration()->getScriptsPath() }synchronize --ip_master_to_slave={ $manager->getMha()->getSlaveBddIp() } --ip_slave_to_master={ $manager->getMha()->getMainBddIp() }");
+		return new response($response);
 	}
 
 	public function start_mhaAction(){
