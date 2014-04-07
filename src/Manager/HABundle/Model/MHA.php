@@ -44,7 +44,7 @@ class MHA {
 		}
 		
 		if($this->isRunning){
-			$last_line = shell_exec('tail -n 1 '. self::$mhalog);
+			$last_line = shell_exec('tail -n 1 '. $this->log_path);
 			if (strpos($last_line, "Ping(SELECT) succeeded, waiting until MySQL doesn't respond..") !== false) {
 				$this->isOperational = true;
 			}
