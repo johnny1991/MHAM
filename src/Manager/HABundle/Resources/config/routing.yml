@@ -7,7 +7,7 @@ manager_ha_log:
     defaults: { _controller: ManagerHABundle:Default:log }
 
 manager_ha_sync:
-    pattern:  /sync
+    pattern:  /sync/ip/{ip}
     defaults: { _controller: ManagerHABundle:Default:sync }
 
 manager_ha_start_mha:
