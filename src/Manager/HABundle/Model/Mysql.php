@@ -63,6 +63,10 @@ class Mysql {
 	}
 
 	public function getState() {
+		if(!$this->status){
+			return false;
+		}
+		
 		if(!$this->state){
 			try {
 				$result = $this->PDOinstance->query("select variable_value from information_schema.global_status where variable_name = 'Slave_running'")->fetch();
@@ -75,6 +79,9 @@ class Mysql {
 	}
 
 	public function getReplicationStatus() {
+		if(!$this->status){
+			return false;
+		}
 		if(!$this->replicationStatus){
 			try {
 				if($this->state == 'Master'){
@@ -90,6 +97,9 @@ class Mysql {
 	}
 
 	public function getGlobal() {
+		if(!$this->status){
+			return false;
+		}
 		if(!$this->global){
 			try {
 				$tmp = $this->PDOinstance->query("SHOW GLOBAL VARIABLES")->fetchAll(\PDO::FETCH_ASSOC);
@@ -118,7 +128,6 @@ class Mysql {
 		} else {
 			$this->status = true;
 		}
-		var_dump($this->status);
 		@$mysqli->close();
 	}
 
