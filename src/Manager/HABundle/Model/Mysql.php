@@ -111,6 +111,8 @@ class Mysql {
 		} catch(Exception $e){
 			echo $e;
 		}
+		
+		var_dump($mysqli);
 		if( !isset($mysqli) ){
 			$this->status = false;
 		}
