@@ -116,7 +116,7 @@ class Mysql {
 		} else {
 			$this->status = true;
 		}
-		$mysqli->close();
+		@$mysqli->close();
 	}
 
 }
