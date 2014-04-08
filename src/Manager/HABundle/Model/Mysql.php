@@ -118,7 +118,7 @@ class Mysql {
 		} else {
 			$this->status = true;
 		}
-		echo $this->status;
+		var_dump($this->status);
 		@$mysqli->close();
 	}
 
