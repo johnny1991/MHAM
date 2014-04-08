@@ -106,6 +106,7 @@ class Mysql {
 	}
 
 	private function isConnected(){
+		
 		try {
 			@$mysqli = new \mysqli($this->getIp(), $this->getUser(), $this->getPassword());
 		} catch(Exception $e){
@@ -117,6 +118,7 @@ class Mysql {
 		} else {
 			$this->status = true;
 		}
+		echo $this->status;
 		@$mysqli->close();
 	}
 
