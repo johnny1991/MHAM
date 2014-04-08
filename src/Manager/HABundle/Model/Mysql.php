@@ -111,6 +111,9 @@ class Mysql {
 		} catch(Exception $e){
 			echo $e;
 		}
+		if(!mysqli){
+			$this->status = false;
+		}
 		if (($mysqli->connect_errno) || (!$mysqli->ping())) {
 			$this->status = false;
 		} else {
