@@ -1,0 +1,19 @@
+#!/bin/bash
+
+###################################### PARAMETERS ##############################################
+
+. HA.conf
+. $(dirname $0)/HA.conf
+
+printer='script_perso'
+
+echo -e "\033[32m $printer[info] Connexion en ssh a $ip \033[0m"
+sudo ssh -T root@$ip_magento[0] <<EOF
+    echo -e "\033[32m $printer[info] lecture de l'adresse ip dans le local.xml \033[0m"
+    
+    xmlstarlet sel -t -m "/config/global/resources/default_setup/connection" -v host $local_xml
+    
+EOF
+
+#mysql -h $ip -u $db_user -p$db_password $db_name -N -s -e "
+#"
