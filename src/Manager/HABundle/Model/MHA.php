@@ -20,6 +20,7 @@ class MHA {
 
 	public function __construct(){
 		$this->configuration_path = Configuration::getInstance()->getMhaConfPath();
+		echo $this->configuration_path;
 		$this->configuration = parse_ini_file($this->configuration_path, 1, INI_SCANNER_RAW);
 		$this->log_path = $this->configuration['server default']['manager_log'];
 		$this->user = $this->configuration['server default']['user'];
