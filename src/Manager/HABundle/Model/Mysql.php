@@ -107,7 +107,6 @@ class Mysql {
 				foreach ($tmp as $item){
 					$result[$item['Variable_name']] = $item['Value'];
 				}
-				var_dump($result);
 				$this->global = $result;
 			} catch(Exception $e) {
 				return false;
