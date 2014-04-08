@@ -107,7 +107,7 @@ EOF
 	done
 	
 	
-	if [[ $isBalancing != false ]];  then 
+	if [[ $isBalancing == false ]];  then 
 	
 		echo -e "\033[32m $printer[info] Activation des vhosts concernes \033[0m"
 		
@@ -116,7 +116,7 @@ EOF
 			for file in /etc/apache2/sites-available/$i*
 	        do
 	        	if [[ -f $file ]]; then
-	            	if [ ${ip_bdd[$i]} = $ip_slave_to_master ]; then
+	            	if [ ${ip_bdd[$i]} = $ip_master ]; then
 						echo -e "\033[32m $printer[info] a2ensite ${file##*/} \033[0m"
                        	sudo a2ensite ${file##*/}
                     else

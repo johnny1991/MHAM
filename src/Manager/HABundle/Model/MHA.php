@@ -20,7 +20,6 @@ class MHA {
 
 	public function __construct(){
 		$this->configuration_path = Configuration::getInstance()->getMhaConfPath();
-		echo $this->configuration_path;
 		$this->configuration = parse_ini_file($this->configuration_path, 1, INI_SCANNER_RAW);
 		$this->log_path = $this->configuration['server default']['manager_log'];
 		$this->user = $this->configuration['server default']['user'];
@@ -28,7 +27,6 @@ class MHA {
 		$this->manager_workdir = $this->configuration['server default']['manager_workdir'];
 		$this->master_ip_failover_script = $this->configuration['server default']['master_ip_failover_script'];
 		$this->main_bdd_ip = $this->configuration['server1']['hostname'];
-		var_dump($this->configuration);
 		$this->slave_bdd_ip = $this->configuration['server2']['hostname'];
 
 		foreach($this->configuration as $item){
