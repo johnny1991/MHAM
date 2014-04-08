@@ -8,10 +8,12 @@
 . $(dirname $0)/HA.conf
 
 printer='script_perso'
+change_mha_conf=true
 
 for i in $*; do 
 	tmp=$(echo $i | cut -d = -f2)
 	[[ $i == --master=* ]] && ip_master=$tmp
+	[[ $i == --change_mha_conf=* ]] && change_mha_conf=$tmp
 	tmp=''
 done
 
@@ -77,11 +79,15 @@ START SLAVE;
 	done
 	
 	echo -e "\033[32m $printer[master to slave][info] Fin du changement avec succes \033[0m"
-	echo -e "\033[32m $printer[master to slave][info] Swicth des deux serveurs dans la configuration de mha \033[0m"
+	echo -e "\033[32m $printer[master to slave][info] Switch des deux serveurs dans la configuration de mha \033[0m"
 	
-	sed -i "s/server1/serverx/" $mha_conf
-	sed -i "s/server2/server1/" $mha_conf
-	sed -i "s/serverx/server2/" $mha_conf
+	if [ $change_mha_conf == true ]; then 
+	
+		sed -i "s/server1/serverx/" $mha_conf
+		sed -i "s/server2/server1/" $mha_conf
+		sed -i "s/serverx/server2/" $mha_conf
+	
+	fi
 	
 	for ip in "${ip_magento[@]}"
 	do :
