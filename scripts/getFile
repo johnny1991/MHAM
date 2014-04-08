@@ -1,7 +1,6 @@
 #!/bin/bash
 
 for i in $*; do 
-   	#echo $i 
 	tmp=$(echo $i | cut -d = -f2)
 	[[ $i == --ip=* ]] && ip=$tmp
 	[[ $i == --user=* ]] && user=$tmp

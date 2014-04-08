@@ -1,7 +1,7 @@
 #! /bin/sh
 . /lib/lsb/init-functions
 name="mhamanager"
-mhamanager_conf=/etc/mha.conf
+mhamanager_conf=/var/www/projetha/scripts/mha.conf
 mhamanager_log=/var/log/masterha/MHA.log
 pid_file="/var/run/$name.pid"
 
