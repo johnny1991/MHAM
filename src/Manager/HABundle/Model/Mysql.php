@@ -107,7 +107,7 @@ class Mysql {
 
 	private function isConnected(){
 		try {
-		$mysqli = new \mysqli($this->getIp(), $this->getUser(), $this->getPassword());
+			$mysqli = new @\mysqli($this->getIp(), $this->getUser(), $this->getPassword());
 		} catch(Exception $e){
 			echo $e;
 		}
