@@ -45,19 +45,19 @@ class Mysql {
 	public function getUser(){
 		return $this->user;
 	}
-	
+
 	public function getPassword(){
 		return $this->password;
 	}
-	
+
 	public function getDatabase(){
 		return $this->database;
 	}
-	
+
 	public function getStatus(){
 		return $this->status;
 	}
-	
+
 	public function isMaster(){
 		return ($this->getState() == 'Master') ? true : false;
 	}
@@ -111,12 +111,8 @@ class Mysql {
 		} catch(Exception $e){
 			echo $e;
 		}
-		
-		var_dump($mysqli);
-		if( !isset($mysqli) ){
-			$this->status = false;
-		}
-		if (($mysqli->connect_errno) || (!$mysqli->ping())) {
+
+		if (($mysqli->connect_errno) || (!$mysqli->ping()) || (!isset($mysqli))) {
 			$this->status = false;
 		} else {
 			$this->status = true;
