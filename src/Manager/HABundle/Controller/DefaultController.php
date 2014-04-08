@@ -19,7 +19,7 @@ class DefaultController extends Controller
 	}
 
 	public function syncAction($ip){
-		$change_mha_conf = ($ip == ManagerMHA::getInstance()->getMha()->getMainBddIp()) ? false : true;
+		$change_mha_conf = ($ip == ManagerMHA::getInstance()->getMha()->getMainBddIp()) ? "false" : "true";
 		$command = "/bin/bash " . Configuration::getInstance()->getScriptsPath(). "synchronize --master=" . $ip . "--change_mha_conf=" . $change_mha_conf;
 		$response = shell_exec($command);
 		echo $command;
