@@ -7,13 +7,20 @@
 
 printer='script_perso'
 
-echo -e "\033[32m $printer[info] Connexion en ssh a $ip \033[0m"
-sudo ssh -T root@$ip_magento[0] <<EOF
-    echo -e "\033[32m $printer[info] lecture de l'adresse ip dans le local.xml \033[0m"
-    
-    xmlstarlet sel -t -m "/config/global/resources/default_setup/connection" -v host $local_xml
-    
-EOF
+echo -e "\033[32m $printer[info] Connexion en ssh a $ip_magento \033[0m"
+echo -e "\033[32m $printer[info] lecture de l'adresse ip dans le local.xml \033[0m"
 
-#mysql -h $ip -u $db_user -p$db_password $db_name -N -s -e "
-#"
+ip=$(sudo ssh -T root@$ip_magento "xmlstarlet sel -t -m '/config/global/resources/default_setup/connection' -v host $local_xml")
+
+for (( i = 0; i < ${#ip_bdd[@]}; i++ )); 
+do
+	if [ ${ip_bdd[$i]} != $ip ]; then
+		$Slave_IO_Running=`mysql -h $ip -u $db_user -p$db_password $db_name -N -s -e "" | awk 'Slave_IO_Running' -F": " {print $2}`
+		$Slave_SQL_Running=`mysql -h $ip -u $db_user -p$db_password $db_name -N -s -e "" | awk 'Slave_SQL_Running' -F": " {print $2}`
+		if [[ -z "$Slave_IO_Running" ]] && if [[ -z "$Slave_SQL_Running" ]]; then
+			if [ $Slave_IO_Running = No ] || [ $Slave_SQL_Running]; then
+				echo 'PROBLEME DE SYNCHRONISATION
+			fi
+		fi
+	fi
+EOF
