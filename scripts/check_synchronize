@@ -18,12 +18,12 @@ for (( i = 0; i < ${#ip_bdd[@]}; i++ )); do
         Slave_SQL_Running=`mysql -h ${ip_bdd[$i]} -u $db_user -p$db_password $db_name -e 'SHOW SLAVE STATUS\G' | grep 'Slave_SQL_Running'| awk -F': ' {'print $2'}`
         if [ -n "$Slave_IO_Running" ] && [ -n "$Slave_SQL_Running" ]; then
             if [ $Slave_IO_Running = No ] || [ $Slave_SQL_Running = No ]; then
-                echo PROBLEME DE SYNCHRONISATION
+                echo Probleme de synchronisation
             else
-            	echo AUCUN PROBLEME DE SYNCHRONISATION
+            	echo Aucun probleme de synchronisation
             fi
         else
-        	echo Les variables ne sont pas initialisés
+        	echo La connexion a la bdd a echoue
         fi
     fi
 done
