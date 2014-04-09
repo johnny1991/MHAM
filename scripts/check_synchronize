@@ -16,12 +16,14 @@ for (( i = 0; i < ${#ip_bdd[@]}; i++ )); do
     if [ ${ip_bdd[$i]} != $ip ]; then
         Slave_IO_Running=`mysql -h ${ip_bdd[$i]} -u $db_user -p$db_password $db_name -e 'SHOW SLAVE STATUS\G' | grep 'Slave_IO_Running' | awk -F': ' {'print $2'}`
         Slave_SQL_Running=`mysql -h ${ip_bdd[$i]} -u $db_user -p$db_password $db_name -e 'SHOW SLAVE STATUS\G' | grep 'Slave_SQL_Running'| awk -F': ' {'print $2'}`
-        if [ -z "$Slave_IO_Running" ] && [ -z "$Slave_SQL_Running" ]; then
+        if [ -n "$Slave_IO_Running" ] && [ -n "$Slave_SQL_Running" ]; then
             if [ $Slave_IO_Running = No ] || [ $Slave_SQL_Running = No ]; then
                 echo PROBLEME DE SYNCHRONISATION
             else
             	echo AUCUN PROBLEME DE SYNCHRONISATION
             fi
+        else
+        	echo Les variables ne sont pas initialisés
         fi
     fi
 done
