@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Ce script permet de switcher un serveur maitre down en serveur esclave.
+# Ce script permet de switcher un serveur maitre down en serveur esclave
 
 ###################################### PARAMETERS ##############################################
 
