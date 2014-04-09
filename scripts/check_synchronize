@@ -32,5 +32,5 @@ for (( i = 0; i < ${#ip_bdd[@]}; i++ )); do
 done
 
 if [ $synchronize = true ]; then 
-	ldd /bin/bash $script_path"synchronize --master=$ip --change_mha_conf=false"
+	/bin/bash $script_path"synchronize --master=$ip --change_mha_conf=false"
 fi

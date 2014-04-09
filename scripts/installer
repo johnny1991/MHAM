@@ -233,6 +233,7 @@ if ask "Voulez vous configurer le manager ?"; then
 		perl Makefile.PL
 		make
 		sudo make install
+		apt-get install ia32-libs		
 	fi
 	
 	if ask "Voulez vous installer le fichier de configuration du manager ?"; then
