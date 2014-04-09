@@ -5,6 +5,8 @@
 . HA.conf
 . $(dirname $0)/HA.conf
 
+synchronize=false
+
 printer='script_perso'
 
 echo -e "\033[32m $printer[info] Connexion en ssh a $ip_magento \033[0m"
@@ -19,7 +21,7 @@ for (( i = 0; i < ${#ip_bdd[@]}; i++ )); do
         if [ -n "$Slave_IO_Running" ] && [ -n "$Slave_SQL_Running" ]; then
             if [ $Slave_IO_Running = No ] || [ $Slave_SQL_Running = No ]; then
                 echo Probleme de synchronisation
-                /bin/bash  $script_path"synchronize --master=$ip --change_mha_conf=false"
+                synchronize=true
             else
             	echo Aucun probleme de synchronisation
             fi
@@ -28,3 +30,7 @@ for (( i = 0; i < ${#ip_bdd[@]}; i++ )); do
         fi
     fi
 done
+
+if [ $synchronize = true ]; then 
+	. $script_path"synchronize --master=$ip --change_mha_conf=false"
+fi
