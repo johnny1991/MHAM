@@ -19,7 +19,7 @@ for (( i = 0; i < ${#ip_bdd[@]}; i++ )); do
         if [ -n "$Slave_IO_Running" ] && [ -n "$Slave_SQL_Running" ]; then
             if [ $Slave_IO_Running = No ] || [ $Slave_SQL_Running = No ]; then
                 echo Probleme de synchronisation
-                /bin/bash $(dirname $0)/synchronize --master=$ip --change_mha_conf=false
+                /bin/bash $script_pathsynchronize --master=$ip --change_mha_conf=false
             else
             	echo Aucun probleme de synchronisation
             fi
