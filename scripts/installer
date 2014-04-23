@@ -244,7 +244,7 @@ if ask "Voulez vous configurer le manager ?"; then
  password = $db_password
  manager_workdir = /var/log/masterha
  manager_log = /var/log/masterha/MHA.log
- master_ip_failover_script=/home/HA/after_balancer
+ master_ip_failover_script=$script_path"after_balancer"
 
 [server1]
  hostname = $ip_master
