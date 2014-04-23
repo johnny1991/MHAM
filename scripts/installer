@@ -237,14 +237,15 @@ if ask "Voulez vous configurer le manager ?"; then
 	fi
 	
 	if ask "Voulez vous installer le fichier de configuration du manager ?"; then
-		echo -e "\033[32m $printer[manager][info] installation du fichier de configuration\033[0m"
-		cat > $mha_conf << EOF
+                master_ip_failover_script=after_balancer
+                echo -e "\033[32m $printer[manager][info] installation du fichier de configuration\033[0m"
+                cat > $mha_conf << EOF
 [server default]
  user = $db_user
  password = $db_password
  manager_workdir = /var/log/masterha
  manager_log = /var/log/masterha/MHA.log
- master_ip_failover_script=$script_pathafter_balancer
+ master_ip_failover_script=$script_path$master_ip_failover_script
 
 [server1]
  hostname = $ip_master
@@ -252,8 +253,8 @@ if ask "Voulez vous configurer le manager ?"; then
 [server2]
  hostname = $ip_slave
 EOF
-	
-	fi
+
+        fi
 
 fi
 echo -e "\033[32m $printer[info] Et voila :)\033[0m"
