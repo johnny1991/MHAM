@@ -23,7 +23,7 @@ for (( i = 0; i < ${#ip_bdd[@]}; i++ )); do
                 echo Probleme de synchronisation
                 synchronize=true
             else
-            	echo Aucun probleme de synchronisation
+            	echo Aucun probleme de synchronisation 
             fi
         else
         	echo La connexion a la bdd a echoue
