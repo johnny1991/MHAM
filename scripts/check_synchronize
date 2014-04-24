@@ -41,14 +41,14 @@ pbSync () {
 	if [ $bdd == 'bdd' ]; then 
 		echo probleme de base de donnees
 		if [ -f $flagpath ]; then
-    		echo j'envoi un mail car la bdd est down
-        	#echo "MYSQL : Le serveur MYSQL ne fonctionne plus sur $ip !!! at `eval date +%d/%m/%Y":"%H:%M`" | mail -s "Le serveur MYSQL ne fonctionne plus sur $ip !!! at `eval date +%d/%m/%Y":"%H:%M`" "maintenance@auguria.net"
+    		echo j\'envoi un mail car la bdd est down
+        	#echo "MYSQL : Le serveur MYSQL ne fonctionne plus sur $ip !!! at `eval date +%d/%m/%Y":"%H:%M`" | mail -s "MYSQL : Le serveur MYSQL ne fonctionne plus sur $ip !!! at `eval date +%d/%m/%Y":"%H:%M`" "maintenance@auguria.net"
 		fi
 	else
 		echo probleme de synchronisation
 		if [ -f $flagpath ]; then
-    		echo j'envoi un mail car il n'y a plus de synchronisation
-        	#echo "MYSQL : Le serveur $ip n'est plus synchrone !!! at `eval date +%d/%m/%Y":"%H:%M`" | mail -s "MYSQL : Le serveur $ip n'est plus synchrone !!! at `eval date +%d/%m/%Y":"%H:%M`" "maintenance@auguria.net"
+    		echo j\'envoi un mail car il n'y a plus de synchronisation
+        	#echo "MYSQL : Le serveur $ip n\'est plus synchrone !!! at `eval date +%d/%m/%Y":"%H:%M`" | mail -s "MYSQL : Le serveur $ip n'est plus synchrone !!! at `eval date +%d/%m/%Y":"%H:%M`" "maintenance@auguria.net"
 		fi
 	fi
 }
