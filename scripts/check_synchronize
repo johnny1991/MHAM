@@ -9,10 +9,39 @@ synchronize=false
 
 printer='script_perso'
 
+config_parser () {
+        local iniFile="$1";
+        local tmpFile=$( mktemp /tmp/`basename $iniFile`.XXXXXX );
+        local intLines;
+        local binSED=$( which sed );
+        cp $iniFile $tmpFile;
+
+        $binSED -i -e 's/[ \t]*=[ \t]*/=/g' $tmpFile;
+        $binSED -i -e 's/\[\([A-Za-z0-9[:space:]]*\)\]/config.section.\1() \{/g' $tmpFile;
+        $binSED -i -e 's/ //g' $tmpFile;
+        $binSED -i -e 's/config\.section\./\}\'$'\nconfig\.section\./g' $tmpFile;
+
+        # remove first line
+        intLines=$( wc -l $tmpFile | awk '{ print $1}' );
+        let "intLines=$intLines - 1";
+        tail -n $intLines $tmpFile > $tmpFile-2;
+        mv -f $tmpFile-2 $tmpFile;
+
+        # add the last brace
+        echo -e "\n}" >> $tmpFile;
+
+        source $tmpFile;
+        rm -f $tmpFile;
+}
+
+############################################### PROGRAMME ################################"
+
+config_parser $mha_conf;
+config.section.server1;
+ip=$hostname;
+
 echo -e "\033[32m $printer[info] Connexion en ssh a $ip_magento \033[0m"
 echo -e "\033[32m $printer[info] lecture de l'adresse ip dans le local.xml \033[0m"
-
-ip=$(sudo ssh -T root@$ip_magento "xmlstarlet sel -t -m '/config/global/resources/default_setup/connection' -v host $local_xml")
 
 for (( i = 0; i < ${#ip_bdd[@]}; i++ )); do
     if [ ${ip_bdd[$i]} != $ip ]; then
@@ -23,14 +52,16 @@ for (( i = 0; i < ${#ip_bdd[@]}; i++ )); do
                 echo Probleme de synchronisation
                 synchronize=true
             else
-            	echo Aucun probleme de synchronisation 
+                echo Aucun probleme de synchronisation 
             fi
         else
-        	echo La connexion a la bdd a echoue
+                echo La connexion a la bdd a echoue
         fi
     fi
 done
 
-if [ $synchronize = true ]; then 
-	/bin/bash $script_path"synchronize --master=$ip --change_mha_conf=false"
+if [ $synchronize = true ]; then
+        /bin/bash $script_path"synchronize --master=$ip --change_mha_conf=false"
 fi
+
+                                                                                                 66,0-1        Bot
