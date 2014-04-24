@@ -47,7 +47,7 @@ pbSync () {
 	else
 		echo probleme de synchronisation
 		if [ -f $flagpath ]; then
-    		echo j\'envoi un mail car il n'y a plus de synchronisation
+    		echo j\'envoi un mail car il n\'y a plus de synchronisation
         	#echo "MYSQL : Le serveur $ip n\'est plus synchrone !!! at `eval date +%d/%m/%Y":"%H:%M`" | mail -s "MYSQL : Le serveur $ip n'est plus synchrone !!! at `eval date +%d/%m/%Y":"%H:%M`" "maintenance@auguria.net"
 		fi
 	fi
