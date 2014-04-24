@@ -39,7 +39,8 @@ config_parser () {
 config_parser $mha_conf;
 config.section.server1;
 ip=$hostname;
-
+flag=error.flag
+flagpath=$script_path$flag
 echo -e "\033[32m $printer[info] Connexion en ssh a $ip_magento \033[0m"
 echo -e "\033[32m $printer[info] lecture de l'adresse ip dans le local.xml \033[0m"
 
@@ -49,13 +50,12 @@ for (( i = 0; i < ${#ip_bdd[@]}; i++ )); do
         Slave_SQL_Running=`mysql -h ${ip_bdd[$i]} -u $db_user -p$db_password $db_name -e 'SHOW SLAVE STATUS\G' | grep 'Slave_SQL_Running'| awk -F': ' {'print $2'}`
         if [ -n "$Slave_IO_Running" ] && [ -n "$Slave_SQL_Running" ]; then
             if [ $Slave_IO_Running = No ] || [ $Slave_SQL_Running = No ]; then
-                echo Probleme de synchronisation
-                synchronize=true
+                pbSync
             else
-                echo Aucun probleme de synchronisation 
+                sync
             fi
         else
-                echo La connexion a la bdd a echoue
+                pbSync bdd
         fi
     fi
 done
@@ -64,4 +64,28 @@ if [ $synchronize = true ]; then
         /bin/bash $script_path"synchronize --master=$ip --change_mha_conf=false"
 fi
 
-                                                                                                 66,0-1        Bot
+pbSync () {
+
+    bdd="$1";
+	touch $flagpath
+	
+	if [ $bdd == 'bdd' ] then 
+		echo probleme de base de donnees
+		if [ -f $flagpath ] then
+    	echo j'envoi un mail car la bdd est down
+        #echo "MYSQL : Le serveur MYSQL ne fonctionne plus sur $ip !!! at `eval date +%d/%m/%Y":"%H:%M`" | mail -s "Le serveur MYSQL ne fonctionne plus sur $ip !!! at `eval date +%d/%m/%Y":"%H:%M`" "maintenance@auguria.net"
+	fi
+	else
+		echo probleme de synchronisation
+		if [ -f $flagpath ] then
+    	echo j'envoi un mail car il n'y a plus de synchronisation
+        #echo "MYSQL : Le serveur $ip n'est plus synchrone !!! at `eval date +%d/%m/%Y":"%H:%M`" | mail -s "MYSQL : Le serveur $ip n'est plus synchrone !!! at `eval date +%d/%m/%Y":"%H:%M`" "maintenance@auguria.net"
+	fi
+}
+
+sync () {
+	echo Aucun probleme de synchronisation
+	if [ -f $flagpath ] then
+    	rm $flagpath
+	fi
+}
