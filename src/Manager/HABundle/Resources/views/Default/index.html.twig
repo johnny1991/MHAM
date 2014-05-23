@@ -16,174 +16,178 @@
             </div>
             <div class="row main">
                 <div class="col-sm-12">
-                    <div id="bdd_state">
-                        <h2>État des Bases de données</h2>
-                        <table>
-                            <thead>
-                            	<tr>
-                            		<th colspan="2">Serveur</th>
-		                            <th colspan="8">BDD</th>
-		                     	</tr>
-                            	<tr>
-                            		<th>IP du serveur</th>
-                            		<th>Status de Mysql</th>
-		                            <th>Status de réplication</th>
-		                            <th>Log Binaire</th>
-		                            <th>Position Binaire</th>
-		                            <th>Slave IO Running</th>
-		                            <th>Slave SQL Running</th>
-					    			<th>Read Only</th>
-		                            <th>Relay Purge</th>
-		                            <th>Synchronisation</th>
-		                     	</tr>
-		                 	</thead>
-                        	<tbody>
-	                        	{% for server in manager.bddServers %}
-	                            <tr>
-	                                <td>{{ server.ip }}</td>
-	                                <td>
-		                                {% if server.mysql.status == 1 %}
-		                                	<span class="ok">Up</span>
-		                                {% else %}
-		                                	<span class="nok">Down</span> 
-		                                {% endif %}
-	                                </td>
-	                              	{% if server.mysql.status %}
-	                                <td>{{ server.mysql.state }}</td>
-	                                {% if(server.mysql.state == 'Master') %}
-										<td>{{ server.mysql.replicationStatus['File'] }}</td>
-	                                	<td>{{ server.mysql.replicationStatus['Position'] }}</td>
-	                                	<td></td>
-	                                	<td></td>
-									{% elseif(server.mysql.state == 'Slave') %}
-										<td>{{ server.mysql.replicationStatus['Master_Log_File'] }}</td>
-                                        <td>{{ server.mysql.replicationStatus['Read_Master_Log_Pos'] }}</td>
-										<td alt="{{ server.mysql.replicationStatus['Last_IO_Error'] }}">
-											{% if server.mysql.replicationStatus['Slave_IO_Running'] ==  'No' %}
-												<span class="nok">{{ server.mysql.replicationStatus['Slave_IO_Running'] }}</span>
-											{% else %}
-												<span class="ok">{{ server.mysql.replicationStatus['Slave_IO_Running'] }}</span>
+                	<div class="row">
+                		<div class="col-sm-12">
+		                    <div id="bdd_state">
+		                        <h2>État des Bases de données</h2>
+		                        <table>
+		                            <thead>
+		                            	<tr>
+		                            		<th colspan="2">Serveur</th>
+				                            <th colspan="8">BDD</th>
+				                     	</tr>
+		                            	<tr>
+		                            		<th>IP du serveur</th>
+		                            		<th>Status de Mysql</th>
+				                            <th>Status de réplication</th>
+				                            <th>Log Binaire</th>
+				                            <th>Position Binaire</th>
+				                            <th>Slave IO Running</th>
+				                            <th>Slave SQL Running</th>
+							    			<th>Read Only</th>
+				                            <th>Relay Purge</th>
+				                            <th>Synchronisation</th>
+				                     	</tr>
+				                 	</thead>
+		                        	<tbody>
+			                        	{% for server in manager.bddServers %}
+			                            <tr>
+			                                <td>{{ server.ip }}</td>
+			                                <td>
+				                                {% if server.mysql.status == 1 %}
+				                                	<span class="ok">Up</span>
+				                                {% else %}
+				                                	<span class="nok">Down</span> 
+				                                {% endif %}
+			                                </td>
+			                              	{% if server.mysql.status %}
+			                                <td>{{ server.mysql.state }}</td>
+			                                {% if(server.mysql.state == 'Master') %}
+												<td>{{ server.mysql.replicationStatus['File'] }}</td>
+			                                	<td>{{ server.mysql.replicationStatus['Position'] }}</td>
+			                                	<td></td>
+			                                	<td></td>
+											{% elseif(server.mysql.state == 'Slave') %}
+												<td>{{ server.mysql.replicationStatus['Master_Log_File'] }}</td>
+		                                        <td>{{ server.mysql.replicationStatus['Read_Master_Log_Pos'] }}</td>
+												<td alt="{{ server.mysql.replicationStatus['Last_IO_Error'] }}">
+													{% if server.mysql.replicationStatus['Slave_IO_Running'] ==  'No' %}
+														<span class="nok">{{ server.mysql.replicationStatus['Slave_IO_Running'] }}</span>
+													{% else %}
+														<span class="ok">{{ server.mysql.replicationStatus['Slave_IO_Running'] }}</span>
+													{% endif %}
+												</td>
+												<td alt="{{ server.mysql.replicationStatus['Last_SQL_Error'] }}">
+													{% if server.mysql.replicationStatus['Slave_SQL_Running'] ==  'No' %}
+														<span class="nok">{{ server.mysql.replicationStatus['Slave_SQL_Running'] }}</span>
+													{% else %}
+														<span class="ok">{{ server.mysql.replicationStatus['Slave_SQL_Running'] }}</span>
+													{% endif %}
+												</td>
 											{% endif %}
-										</td>
-										<td alt="{{ server.mysql.replicationStatus['Last_SQL_Error'] }}">
-											{% if server.mysql.replicationStatus['Slave_SQL_Running'] ==  'No' %}
-												<span class="nok">{{ server.mysql.replicationStatus['Slave_SQL_Running'] }}</span>
-											{% else %}
-												<span class="ok">{{ server.mysql.replicationStatus['Slave_SQL_Running'] }}</span>
+												<td>{{ server.mysql.global['read_only'] }}</td>
+												<td>{{ server.mysql.global['relay_log_purge'] }}</td>
 											{% endif %}
-										</td>
-									{% endif %}
-										<td>{{ server.mysql.global['read_only'] }}</td>
-										<td>{{ server.mysql.global['relay_log_purge'] }}</td>
-									{% endif %}
-									<td>
-										{% if not manager.getServersDown %}
-	                    					<button id="sync" class="btn btn-primary synchronisation" data-url="{{ path('manager_ha_sync',{'ip': server.ip } ) }}">Forcer en Master</button>
-	                    				{% endif %}
-	                    			</td>
-							    </tr>
-	                        	{% endfor %}
-                    		</tbody>
-                    	</table>
-                    </div>
-            	</div>
-            </div>
-           	<div class="row main">
-                <div class="col-sm-6">
-                    <div id="magento_state">
-                     	<h2>Clusters Magento</h2>
-                    	<table>
-                            <thead>
-                            	<tr>
-                            		<th colspan="2">Serveur</th>
-		                            <th colspan="1">Magento</th>
-		                     	</tr>
-                            	<tr>
-                            		<th>IP du serveur</th>
-                            		<th>Status du serveur</th>
-		                            <th>Ip de la BDD</th>
-		                     	</tr>
-		                 	</thead>
-                        	<tbody>
-	                        	{% for server in manager.magentoServers %}
-	                            <tr>
-	                                <td>{{ server.ip }}</td>
-	                                <td>
-	                                	{% if server.status == 1 %}
-		                                	<span class="ok">Up</span>
-		                                {% else %}
-		                                	<span class="nok">Down</span> 
-		                                {% endif %}
-		                            </td>
-	                                <td>{{ server.BddIp }}</td>
-							    </tr>
-	                        	{% endfor %}
-                    		</tbody>
-                    	</table>
-                    	<div class="magento_main_ip">
-	                        IP public de Magento : <b>{{ manager.getConfiguration.public_ip }}</b>
-                        </div>
-                        {% if manager.isPublicIpLive %}
-							<div class="magento_status">
-	                            <span class="glyphicon glyphicon-ok"></span>
-	                            <span>Le site web répond au ping</span>
-	                        </div>
-                        {% else %}
-	                        <div class="magento_status not">
-	                            <span class="glyphicon glyphicon-remove"></span>
-	                            <span>Le site web ne répond pas au ping</span>
-	                        </div>
-                        {% endif %}
-                    </div>
-               	</div>
-            	<div class="col-sm-6">
-            		<table>
-                        <thead>
-                        	<tr>
-                        		<th>Serveur 1</th>
-	                            <th>Serveur 2</th>
-	                     	</tr>
-	                 	</thead>
-                    	<tbody>
-                    		<tr>
-                    			<td>11
-                    			<td>
-                    		</tr>
-                    		<tr>
-                    			<td>22
-                    			</td>
-                    		</tr>
-                    	</tbody>
-                    </table>
-                </div>
-          	</div>
-          	<div class="row main">
-                <div class="col-sm-12">   
-                    <div id="mha_state">
-                        <h2>État du Manager MHA</h2>
-						<div class="mha_main_ip">
-	                        IP du Master : <b>{{ manager.mha.main_bdd_ip }}</b>
-                        </div>
-						{% if manager.mha.isrunning %}
-							<div class="mha_status">
-	                            <span class="glyphicon glyphicon-ok"></span>
-	                            <span>Le manager MHA est en cours d'éxecution</span>
-	                        </div>
-                        {% else %}
-	                        <div class="mha_status not">
-	                            <span class="glyphicon glyphicon-remove"></span>
-	                            <span>Le manager MHA n'est pas en cours d'éxecution</span>
-	                        </div>
-                        {% endif %}
-						<div class="log">
-                            En cours de chargement ...
-                        </div>
-                        <button id="start_mha" class="btn btn-primary">Démarrer MHA</button>
-                        
-                        <div class="time">Date du Log : <span id="refresh_time"></span></div>
-                    </div>
-              	</div>
-           	</div>
+											<td>
+												{% if not manager.getServersDown %}
+			                    					<button id="sync" class="btn btn-primary synchronisation" data-url="{{ path('manager_ha_sync',{'ip': server.ip } ) }}">Forcer en Master</button>
+			                    				{% endif %}
+			                    			</td>
+									    </tr>
+			                        	{% endfor %}
+		                    		</tbody>
+		                    	</table>
+		                    </div>
+		            	</div>
+		            </div>
+		           	<div class="row">
+		                <div class="col-sm-6">
+		                    <div id="magento_state">
+		                     	<h2>Clusters Magento</h2>
+		                    	<table>
+		                            <thead>
+		                            	<tr>
+		                            		<th colspan="2">Serveur</th>
+				                            <th colspan="1">Magento</th>
+				                     	</tr>
+		                            	<tr>
+		                            		<th>IP du serveur</th>
+		                            		<th>Status du serveur</th>
+				                            <th>Ip de la BDD</th>
+				                     	</tr>
+				                 	</thead>
+		                        	<tbody>
+			                        	{% for server in manager.magentoServers %}
+			                            <tr>
+			                                <td>{{ server.ip }}</td>
+			                                <td>
+			                                	{% if server.status == 1 %}
+				                                	<span class="ok">Up</span>
+				                                {% else %}
+				                                	<span class="nok">Down</span> 
+				                                {% endif %}
+				                            </td>
+			                                <td>{{ server.BddIp }}</td>
+									    </tr>
+			                        	{% endfor %}
+		                    		</tbody>
+		                    	</table>
+		                    	<div class="magento_main_ip">
+			                        IP public de Magento : <b>{{ manager.getConfiguration.public_ip }}</b>
+		                        </div>
+		                        {% if manager.isPublicIpLive %}
+									<div class="magento_status">
+			                            <span class="glyphicon glyphicon-ok"></span>
+			                            <span>Le site web répond au ping</span>
+			                        </div>
+		                        {% else %}
+			                        <div class="magento_status not">
+			                            <span class="glyphicon glyphicon-remove"></span>
+			                            <span>Le site web ne répond pas au ping</span>
+			                        </div>
+		                        {% endif %}
+		                    </div>
+		               	</div>
+		            	<div class="col-sm-6">
+		            		<table>
+		                        <thead>
+		                        	<tr>
+		                        		<th>Serveur 1</th>
+			                            <th>Serveur 2</th>
+			                     	</tr>
+			                 	</thead>
+		                    	<tbody>
+		                    		<tr>
+		                    			<td>11
+		                    			<td>
+		                    		</tr>
+		                    		<tr>
+		                    			<td>22
+		                    			</td>
+		                    		</tr>
+		                    	</tbody>
+		                    </table>
+		                </div>
+		          	</div>
+		          	<div class="row">
+		                <div class="col-sm-12">   
+		                    <div id="mha_state">
+		                        <h2>État du Manager MHA</h2>
+								<div class="mha_main_ip">
+			                        IP du Master : <b>{{ manager.mha.main_bdd_ip }}</b>
+		                        </div>
+								{% if manager.mha.isrunning %}
+									<div class="mha_status">
+			                            <span class="glyphicon glyphicon-ok"></span>
+			                            <span>Le manager MHA est en cours d'éxecution</span>
+			                        </div>
+		                        {% else %}
+			                        <div class="mha_status not">
+			                            <span class="glyphicon glyphicon-remove"></span>
+			                            <span>Le manager MHA n'est pas en cours d'éxecution</span>
+			                        </div>
+		                        {% endif %}
+								<div class="log">
+		                            En cours de chargement ...
+		                        </div>
+		                        <button id="start_mha" class="btn btn-primary">Démarrer MHA</button>
+		                        
+		                        <div class="time">Date du Log : <span id="refresh_time"></span></div>
+		                    </div>
+		              	</div>
+		           	</div>
+		    	</div>
+		    </div>
             <div id="global_state">
                 <div id="feu_tricolore" class="
                     {% if (manager.isMainBddServerOperational == 1) and (manager.mha.isOperational == 1) and (manager.isPublicIpLive == 1) %}
