@@ -88,6 +88,35 @@ if [ $command == 'stopssh' ] || [ $command == 'stop' ]; then
 EOF
 	done
 
+	
+########################################## GESTION DE MAGENTO ###########################################
+ping $ip_magento_public -c2 -q
+if [ $? == 1 ]; then
+#       config_parser $mha_conf;
+#       config.section.server1;
+
+        # $hostname vient de hostname dans mha_conf
+
+        for (( i = 0; i < ${#ip_magento[@]}; i++ )); do
+                echo -e "\033[32m $printer[info] Connexion en ssh a ${ip_magento[$i]} \033[0m"
+                ping ${ip_magento[$i]} -c2 -q
+                if [ $? != 1 ]; then
+                echo -e "\033[32m $printer[info] La VM est operationnel, elle prend l'ip publique \033[0m"
+                        ssh root@${ip_magento[$i]} <<EOF
+                                cd /etc/network
+                                mv interfaces interfaces.tmp
+                                mv interfaces2 interfaces
+                                mv interfaces.tmp interfaces2
+                                shutdown -r now
+EOF
+                else
+                        echo -e "\033[32m $printer[info] La VM n'est pas operationnel \033[0m"
+                fi
+        done
+
+fi
+
+
 fi
 
 

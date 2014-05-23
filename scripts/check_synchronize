@@ -67,8 +67,6 @@ config.section.server1;
 ip=$hostname;
 flag=error.flag
 flagpath=$script_path$flag
-echo -e "\033[32m $printer[info] Connexion en ssh a $ip_magento \033[0m"
-echo -e "\033[32m $printer[info] lecture de l'adresse ip dans le fichier mha.conf \033[0m"
 
 for (( i = 0; i < ${#ip_bdd[@]}; i++ )); do
     if [ ${ip_bdd[$i]} != $ip ]; then
