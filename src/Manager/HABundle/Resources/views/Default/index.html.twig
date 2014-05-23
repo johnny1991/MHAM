@@ -156,7 +156,7 @@
                     </div>
                     <div id="global_state">
 	                    <div id="feu_tricolore" class="
-		                    {% if (manager.isMainBddServerOperational == 1) and (manager.mha.isOperational == 1) %}
+		                    {% if (manager.isMainBddServerOperational == 1) and (manager.mha.isOperational == 1) and (manager.isPublicIpLive == 1) %}
 		                    	green
 		                    {% elseif (manager.isMainBddServerOperational == 1) or (manager.mha.isOperational == 1) %}
 		                    	orange
@@ -198,7 +198,7 @@
             </div>
             <div class="row footer">
                 <div class="col-sm-12">
-                    Developped by Johnny Cottereau
+                    Developped by Johnny Cottereau - Auguria
                 </div>
             </div>
         </div>
