@@ -117,7 +117,7 @@
                     		</tbody>
                     	</table>
                     	<div class="magento_main_ip">
-	                        IP public de Magento : <b>{{ manager.mha.public_ip }}</b>
+	                        IP public de Magento : <b>{{ manager.getConfiguration.public_ip }}</b>
                         </div>
                         {% if manager.isPublicIpLive %}
 							<div class="magento_status">
