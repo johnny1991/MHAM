@@ -116,6 +116,20 @@
 	                        	{% endfor %}
                     		</tbody>
                     	</table>
+                    	<div class="magento_main_ip">
+	                        IP public de Magento : <b>{{ manager.mha.public_ip }}</b>
+                        </div>
+                        {% if manager.isPublicIpLive %}
+							<div class="magento_status">
+	                            <span class="glyphicon glyphicon-ok"></span>
+	                            <span>Le site web répond au ping</span>
+	                        </div>
+                        {% else %}
+	                        <div class="magento_status not">
+	                            <span class="glyphicon glyphicon-remove"></span>
+	                            <span>Le site web ne répond pas au ping</span>
+	                        </div>
+                        {% endif %}
                     </div>
                     <div id="mha_state">
                         <h2>État du Manager MHA</h2>

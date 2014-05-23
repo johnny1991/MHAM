@@ -81,6 +81,12 @@ class ManagerMHA {
 	public function getServersDown(){
 		return $this->serversDown;
 	}
+	
+	public function isPublicIpLive(){
+		$number_of_request = 2;
+		$time_between_request = 0.25;
+		$this->status = exec("ping -c$number_of_request -i$time_between_request " . $this->getConfiguration()->getPublicIp()) ? true : false;
+	}
 
 	public function addBddServer(BddServer $bddServer){
 		$this->bddServers[] = $bddServer;

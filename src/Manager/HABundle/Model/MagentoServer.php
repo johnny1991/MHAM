@@ -36,5 +36,5 @@ class MagentoServer extends Server {
 	public function getBddIp(){
 		return $this->bdd_ip;
 	}
-
+	
 }

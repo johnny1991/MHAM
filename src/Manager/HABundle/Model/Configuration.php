@@ -25,6 +25,8 @@ class Configuration {
 	public $ip_master_initial;
 
 	public $magento_ips;
+	public $public_ip;
+	
 	public $local_xml_path;
 
 	protected function __construct(){
@@ -44,6 +46,8 @@ class Configuration {
 
 		$this->initial_slave_ip = $this->configuration['ip_slave'];
 		$this->initial_master_ip = $this->configuration['ip_master'];
+		
+		$this->public_ip = $this->configuration['ip_magento_public'];
 		
 		$this->magento_ips = $this->configuration['ip_magento'];
 		$this->magento_ips = str_replace("(", "", $this->magento_ips);
@@ -114,6 +118,10 @@ class Configuration {
 
 	public function getMagentoIps(){
 		return $this->magento_ips;
+	}
+	
+	public function getPublicIp(){
+		return $this->public_ip;
 	}
 
 	public function getBddIps(){

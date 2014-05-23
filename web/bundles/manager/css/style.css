@@ -100,15 +100,15 @@ table {
 	background-position: -150px -17px
 }
 
-.mha_main_ip {
+.mha_main_ip, .magento_main_ip {
 	padding: 12px
 }
 
-.mha_status {
+.mha_status, .magento_status {
 	padding: 12px
 }
 
-.mha_status.not {
+.mha_status.not,.magento_status.not {
 	background: none repeat scroll 0 0 #FFD2D2;
 }
 
