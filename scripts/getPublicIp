@@ -11,11 +11,10 @@ for i in $*; do
 	tmp=$(echo $i | cut -d = -f2)
 	[[ $i == --ip=* ]] && ip=$tmp
 	[[ $i == --user=* ]] && user=$tmp
-	[[ $i == --path=* ]] && path=$tmp
 	tmp=''
 done
 
-if [[ ! -z "$ip" ]] &&  [[ ! -z "$user" ]] && [[ ! -z "$path" ]]; 
+if [[ ! -z "$ip" ]] &&  [[ ! -z "$user" ]]; 
 then 
 	sudo ssh $user@$ip ifconfig  | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'
 fi
