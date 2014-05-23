@@ -86,6 +86,10 @@
                     		</tbody>
                     	</table>
                     </div>
+            	</div>
+            </div>
+           	<div class="row main">
+                <div class="col-sm-6">
                     <div id="magento_state">
                      	<h2>Clusters Magento</h2>
                     	<table>
@@ -131,6 +135,30 @@
 	                        </div>
                         {% endif %}
                     </div>
+               	</div>
+            	<div class="col-sm-6">
+            		<table>
+                        <thead>
+                        	<tr>
+                        		<th>Serveur 1</th>
+	                            <th>Serveur 2</th>
+	                     	</tr>
+	                 	</thead>
+                    	<tbody>
+                    		<tr>
+                    			<td>11
+                    			<td>
+                    		</tr>
+                    		<tr>
+                    			<td>22
+                    			</td>
+                    		</tr>
+                    	</tbody>
+                    </table>
+                </div>
+          	</div>
+          	<div class="row main">
+                <div class="col-sm-12">   
                     <div id="mha_state">
                         <h2>État du Manager MHA</h2>
 						<div class="mha_main_ip">
@@ -154,48 +182,48 @@
                         
                         <div class="time">Date du Log : <span id="refresh_time"></span></div>
                     </div>
-                    <div id="global_state">
-	                    <div id="feu_tricolore" class="
-		                    {% if (manager.isMainBddServerOperational == 1) and (manager.mha.isOperational == 1) and (manager.isPublicIpLive == 1) %}
-		                    	green
-		                    {% elseif (manager.isMainBddServerOperational == 1) or (manager.mha.isOperational == 1) %}
-		                    	orange
-		                    {% else %}
-		                    	red
-		                    {% endif %}
-		                    ">
-	                    </div>
-	               	</div>
+              	</div>
+           	</div>
+            <div id="global_state">
+                <div id="feu_tricolore" class="
+                    {% if (manager.isMainBddServerOperational == 1) and (manager.mha.isOperational == 1) and (manager.isPublicIpLive == 1) %}
+                    	green
+                    {% elseif (manager.isMainBddServerOperational == 1) or (manager.mha.isOperational == 1) %}
+                    	orange
+                    {% else %}
+                    	red
+                    {% endif %}
+                    ">
                 </div>
-                <script>
-                    setInterval(function (){
-                        $('#mha_state .log').load("{{ path('manager_ha_log')}}").fadeIn("slow");
-                        $('#mha_state #refresh_time').html(new Date($.now()));
-                    }, 500);
-                    $('#start_mha').click(function(){
-                    	jQuery.ajax({
-                    		url: '{{ path('manager_ha_start_mha') }}',
-                    		success: function(s,x){
-                    			setTimeout(function(){ 
-                    				location.reload();
-                    			 }, 4000);
-                    		} 
-                    	});
-                    });
-                    $('.synchronisation').click(function(){
-                    	$('.load').show();
-                    	jQuery.ajax({
-                    		url: $(this).attr('data-url'),
-                    		success: function(data,x){
-                    			alert(data);
-                    			location.reload();
-                    			$('.load').hide();
-                    		} 
-                    	});
-                    });
-                
-                </script>
-            </div>
+           	</div>
+            <script>
+                setInterval(function (){
+                    $('#mha_state .log').load("{{ path('manager_ha_log')}}").fadeIn("slow");
+                    $('#mha_state #refresh_time').html(new Date($.now()));
+                }, 500);
+                $('#start_mha').click(function(){
+                	jQuery.ajax({
+                		url: '{{ path('manager_ha_start_mha') }}',
+                		success: function(s,x){
+                			setTimeout(function(){ 
+                				location.reload();
+                			 }, 4000);
+                		} 
+                	});
+                });
+                $('.synchronisation').click(function(){
+                	$('.load').show();
+                	jQuery.ajax({
+                		url: $(this).attr('data-url'),
+                		success: function(data,x){
+                			alert(data);
+                			location.reload();
+                			$('.load').hide();
+                		} 
+                	});
+                });
+            
+            </script>
             <div class="row footer">
                 <div class="col-sm-12">
                     Developped by Johnny Cottereau - Auguria
