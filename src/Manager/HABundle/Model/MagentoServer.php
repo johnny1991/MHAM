@@ -39,6 +39,7 @@ class MagentoServer extends Server {
 	
 	public function isPublicIp(){
 		$ip = shell_exec($scripts_path . "getPublicIp --user=root --ip={$this->getIp()} --path=$local_xml_path");
+		var_dump($ip);
 		return ($ip == Configuration::getInstance()->getPublicIp()) ? true : false;
 	}
 	

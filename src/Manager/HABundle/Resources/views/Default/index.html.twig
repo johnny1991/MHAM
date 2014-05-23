@@ -97,12 +97,13 @@
 		                    	<table>
 		                            <thead>
 		                            	<tr>
-		                            		<th colspan="2">Serveur</th>
+		                            		<th colspan="3">Serveur</th>
 				                            <th colspan="1">Magento</th>
 				                     	</tr>
 		                            	<tr>
 		                            		<th>IP du serveur</th>
 		                            		<th>Status du serveur</th>
+		                            		<th>Serveur actif</th>
 				                            <th>Ip de la BDD</th>
 				                     	</tr>
 				                 	</thead>
@@ -117,14 +118,14 @@
 				                                	<span class="nok">Down</span> 
 				                                {% endif %}
 				                            </td>
-			                                <td>{{ server.BddIp }}</td>
-			                                <td>
+				                            <td>
 			                                {% if server.isPublicIp == 1 %}
 				                                	<span class="ok">Actif</span>
 				                                {% else %}
 				                                	<span class="nok">En Attente</span> 
 				                                {% endif %}
 			                                </td>
+			                                <td>{{ server.BddIp }}</td>
 									    </tr>
 			                        	{% endfor %}
 		                    		</tbody>
