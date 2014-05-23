@@ -10,6 +10,7 @@ body {
 
 .main {
 	padding: 10px;
+	position: relative;
 }
 
 .header {
@@ -114,7 +115,7 @@ table {
 
 #global_state {
 	position: absolute;
-	right: -75px;
+	right: -65px;
 	height: 160px;
 	width: 65px; top : 0px;
 	background: white;

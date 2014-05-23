@@ -24,6 +24,7 @@ class Configuration {
 	public $ip_slave_initial;
 	public $ip_master_initial;
 
+	public $server_name;
 	public $magento_ips;
 	public $public_ip;
 	
@@ -48,6 +49,11 @@ class Configuration {
 		$this->initial_master_ip = $this->configuration['ip_master'];
 		
 		$this->public_ip = $this->configuration['ip_magento_public'];
+		
+		$this->server_name = $this->configuration['server_name'];
+		$this->server_name = str_replace("(", "", $this->server_name);
+		$this->server_name = str_replace(")", "", $this->server_name);
+		$this->server_name = explode(' ', $this->server_name);
 		
 		$this->magento_ips = $this->configuration['ip_magento'];
 		$this->magento_ips = str_replace("(", "", $this->magento_ips);
@@ -124,6 +130,10 @@ class Configuration {
 		return $this->public_ip;
 	}
 
+	public function getServerName(){
+		return $this->server_name;
+	}
+	
 	public function getBddIps(){
 		return $this->bdd_ips;
 	}
