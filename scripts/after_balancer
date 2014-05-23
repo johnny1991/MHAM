@@ -107,6 +107,7 @@ if [ $? == 1 ]; then
                                 mv interfaces interfaces.tmp
                                 mv interfaces2 interfaces
                                 mv interfaces.tmp interfaces2
+                                /etc/init.d/networking restart
                                 shutdown -r now
 EOF
                 else
