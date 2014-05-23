@@ -1,0 +1,218 @@
+#!/bin/bash
+
+#########################################################################################################
+###############################             GLOBAL FUNCTIONS          ###################################
+#########################################################################################################
+
+
+########################################### PARAMETERS ##################################################
+
+. HA.conf
+. $(dirname $0)/HA.conf
+
+####################################### END OF PARAMETERS ###############################################
+
+
+############################################## ASK ######################################################
+
+function ask {
+	while true; do
+		if [ "${2:-}" = "Y" ]; then
+			prompt="Y/n"
+			default=Y
+		elif [ "${2:-}" = "N" ]; then
+			prompt="y/N"
+			default=N
+		else
+			prompt="y/n"
+			default=
+		fi
+		# Ask the question
+		read -p "$1 [$prompt] " REPLY
+		# Default?
+		if [ -z "$REPLY" ]; then
+			REPLY=$default
+		fi
+		# Check if the reply is valid
+		case "$REPLY" in
+			Y*|y*) return 0 ;;
+			N*|n*) return 1 ;;
+		esac
+	done
+}
+
+########################################### END OF ASK ##################################################
+
+
+######################################## ADD MYSQL PACKAGE ##############################################
+
+function addMysqlPackage {
+	if ask "Voulez vous installer les paquets MYSQL sur le serveur $1 ?"; then
+	    echo -e "\033[32m $printer[info] Installation des paquets mysql \033[0m"
+	    ssh -T root@$1 <<EOF
+		debconf-set-selections <<< 'mysql-server mysql-server/root_password password $db_root_password'
+		debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $db_root_password'
+		apt-get -y install mysql-server
+	    apt-get -y install libdbd-mysql-perl
+EOF
+	fi
+}
+
+##################################### END OF ADD MYSQL PACKAGE ##########################################
+
+
+############################################ ADD NODE ###################################################
+
+function addNode {
+	if ask "Voulez vous installer les noeuds MHA sur le serveur $1 ?"; then
+        echo -e "\033[32m $printer[info] Telechargement et installation des noeuds MHA \033[0m"
+        ssh -T root@$1 <<EOF
+		    cd /root
+		    wget $node_url
+		    tar xzvf $node_file
+			rm $node_file
+		    cd $node_name
+		    perl Makefile.PL
+		    make
+		    sudo make install
+			rm -R ../$node_name
+EOF
+	fi
+}
+
+######################################### END OF ADD NODE ################################################
+
+
+######################################### ADD MYSQL USER #################################################
+#
+function addMysqlUser {
+	if ask "Voulez vous mettre en place l'utilisateur mysql sur le serveur $1 ?"; then
+        echo -e "\033[32m $printer[info] Mise en place de l'utilisateur $db_user \033[0m"
+		ssh -T root@$1 <<EOF
+			mysql -u $db_root -p$db_root_password  -N -s -e "
+				CREATE USER '$db_user'@'$ip_all' identified by '$db_password';
+				GRANT all privileges ON *.* TO '$db_user'@'$ip_all';
+				grant all privileges on $db_name.* to '$db_user'@'$ip_all' WITH GRANT OPTION;
+				flush privileges;"
+EOF
+	fi
+}
+
+##################################### END OF ADD MYSQL USER #############################################
+
+
+########################################## FLUSH MASTER #################################################
+
+function flushmaster {
+	echo -e "\033[32m $printer[master][info] Flush des tables et lecture du status du master sur Mysql \033[0m"
+	master_status=`mysql -h $ip_master -u $db_user -p$db_password $db_name -N -s -e "
+		RESET MASTER;
+		FLUSH TABLES WITH READ LOCK; 
+		SHOW MASTER STATUS;"`
+	array=($( for i in $master_status ; do echo $i ; done ))
+	MASTER_LOG_FILE=${array[0]}
+	MASTER_LOG_POS=${array[1]}
+	MASTER_DB=${array[2]}
+}
+
+####################################### END OF FLUSH MASTER #############################################
+
+
+######################################## GESTION OF PLATEFORM ###########################################
+
+# Check if main plateform is dead and change public IP if appropriate
+
+changePublicIp () {
+	ping $ip_magento_public -c2 -q
+	if [ $? == 1 ]; then
+        for (( i = 0; i < ${#ip_magento[@]}; i++ )); do
+            echo -e "\033[32m $printer[info] Connexion en ssh a ${ip_magento[$i]} \033[0m"
+            ping ${ip_magento[$i]} -c2 -q
+            if [ $? != 1 ]; then
+	        	echo -e "\033[32m $printer[info] La VM est operationnel, elle prend l'ip publique \033[0m"
+                ssh root@${ip_magento[$i]} <<EOF
+                 	cd /etc/network
+                    mv interfaces interfaces.tmp
+                    mv interfaces2 interfaces
+                    mv interfaces.tmp interfaces2
+                    /etc/init.d/networking restart
+                    shutdown -r now
+EOF
+            else
+                echo -e "\033[32m $printer[info] La VM n'est pas operationnel \033[0m"
+            fi
+        done
+	fi
+}
+
+##################################### ENF OF GESTION OF PLATEFORM #######################################
+
+
+############################################# CONFIG PARSER #############################################
+
+config_parser () {
+	local iniFile="$1";
+    local tmpFile=$( mktemp /tmp/`basename $iniFile`.XXXXXX );
+    local intLines;
+    local binSED=$( which sed );
+    cp $iniFile $tmpFile;
+
+    $binSED -i -e 's/[ \t]*=[ \t]*/=/g' $tmpFile;
+    $binSED -i -e 's/\[\([A-Za-z0-9[:space:]]*\)\]/config.section.\1() \{/g' $tmpFile;
+    $binSED -i -e 's/ //g' $tmpFile;
+    $binSED -i -e 's/config\.section\./\}\'$'\nconfig\.section\./g' $tmpFile;
+
+    # remove first line
+    intLines=$( wc -l $tmpFile | awk '{ print $1}' );
+    let "intLines=$intLines - 1";
+    tail -n $intLines $tmpFile > $tmpFile-2;
+    mv -f $tmpFile-2 $tmpFile;
+
+    # add the last brace
+    echo -e "\n}" >> $tmpFile;
+
+    source $tmpFile;
+    rm -f $tmpFile;
+}
+
+########################################## END OF CONFIG PARSER #########################################
+
+
+############################################ SHOW BDD PROBLEM ###########################################
+
+pbSync () {
+    bdd="$1";
+	
+	if [ $bdd == 'bdd' ]; then 
+		echo probleme de base de donnees
+		if [ ! -f $flagpath ]; then
+    		echo j\'envoi un mail car la bdd est down
+    		if [ $send_mail ]; then
+        		echo "MYSQL : Le serveur MYSQL ne fonctionne plus sur $ip !!! at `eval date +%d/%m/%Y":"%H:%M`" | mail -a "from:johnny.cottereau@auguria.net" -s "MYSQL : Le serveur MYSQL ne fonctionne plus sur $ip !!! at `eval date +%d/%m/%Y":"%H:%M`" "maintenance@auguria.net"
+			fi
+		fi
+	else
+		echo probleme de synchronisation
+		if [ ! -f $flagpath ]; then
+    		echo j\'envoi un mail car il n\'y a plus de synchronisation
+    		if [ $send_mail ]; then
+        		echo "MYSQL : Le serveur $ip n\'est plus synchrone !!! at `eval date +%d/%m/%Y":"%H:%M`" | mail -a "from:johnny.cottereau@auguria.net" -s "MYSQL : Le serveur $ip n'est plus synchrone !!! at `eval date +%d/%m/%Y":"%H:%M`" "maintenance@auguria.net"
+			fi
+		fi
+	fi
+	touch $flagpath
+}
+
+######################################### END OF SHOW BDD PROBLEM #######################################
+
+
+########################################### SHOW NO BDD PROBLEM #########################################
+
+sync () {
+	echo Aucun probleme de synchronisation
+	if [ -f $flagpath ]; then
+    	rm $flagpath
+	fi
+}
+
+######################################## END OF SHOW NO BDD PROBLEM #####################################

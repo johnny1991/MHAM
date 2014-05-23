@@ -125,7 +125,7 @@ EOF
 	done
 	
 	
-	if [[ $isBalancing == false ]];  then 
+	if [ $isBalancing == false ] && [$enable_vhost] ; then
 	
 		echo -e "\033[32m $printer[info] Activation des vhosts concernes \033[0m"
 		
