@@ -187,47 +187,47 @@
 		              	</div>
 		           	</div>
 		    	</div>
-		    </div>
-            <div id="global_state">
-                <div id="feu_tricolore" class="
-                    {% if (manager.isMainBddServerOperational == 1) and (manager.mha.isOperational == 1) and (manager.isPublicIpLive == 1) %}
-                    	green
-                    {% elseif (manager.isMainBddServerOperational == 1) or (manager.mha.isOperational == 1) %}
-                    	orange
-                    {% else %}
-                    	red
-                    {% endif %}
-                    ">
-                </div>
-           	</div>
-            <script>
-                setInterval(function (){
-                    $('#mha_state .log').load("{{ path('manager_ha_log')}}").fadeIn("slow");
-                    $('#mha_state #refresh_time').html(new Date($.now()));
-                }, 500);
-                $('#start_mha').click(function(){
-                	jQuery.ajax({
-                		url: '{{ path('manager_ha_start_mha') }}',
-                		success: function(s,x){
-                			setTimeout(function(){ 
-                				location.reload();
-                			 }, 4000);
-                		} 
-                	});
-                });
-                $('.synchronisation').click(function(){
-                	$('.load').show();
-                	jQuery.ajax({
-                		url: $(this).attr('data-url'),
-                		success: function(data,x){
-                			alert(data);
-                			location.reload();
-                			$('.load').hide();
-                		} 
-                	});
-                });
-            
-            </script>
+	            <div id="global_state">
+	                <div id="feu_tricolore" class="
+	                    {% if (manager.isMainBddServerOperational == 1) and (manager.mha.isOperational == 1) and (manager.isPublicIpLive == 1) %}
+	                    	green
+	                    {% elseif (manager.isMainBddServerOperational == 1) or (manager.mha.isOperational == 1) %}
+	                    	orange
+	                    {% else %}
+	                    	red
+	                    {% endif %}
+	                    ">
+	                </div>
+	           	</div>
+	            <script>
+	                setInterval(function (){
+	                    $('#mha_state .log').load("{{ path('manager_ha_log')}}").fadeIn("slow");
+	                    $('#mha_state #refresh_time').html(new Date($.now()));
+	                }, 500);
+	                $('#start_mha').click(function(){
+	                	jQuery.ajax({
+	                		url: '{{ path('manager_ha_start_mha') }}',
+	                		success: function(s,x){
+	                			setTimeout(function(){ 
+	                				location.reload();
+	                			 }, 4000);
+	                		} 
+	                	});
+	                });
+	                $('.synchronisation').click(function(){
+	                	$('.load').show();
+	                	jQuery.ajax({
+	                		url: $(this).attr('data-url'),
+	                		success: function(data,x){
+	                			alert(data);
+	                			location.reload();
+	                			$('.load').hide();
+	                		} 
+	                	});
+	                });
+	            
+	            </script>
+			</div>
             <div class="row footer">
                 <div class="col-sm-12">
                     Developped by Johnny Cottereau - Auguria
