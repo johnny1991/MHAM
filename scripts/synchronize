@@ -1,14 +1,23 @@
 #!/bin/bash
 
-# Ce script permet de switcher un serveur maitre down en serveur esclave
+#########################################################################################################
+#################################             SYNCHRONIZE          ######################################
+#########################################################################################################
 
-###################################### PARAMETERS ##############################################
+
+########################################### PARAMETERS ##################################################
 
 . HA.conf
 . $(dirname $0)/HA.conf
+ $(dirname $0)/functions
 
 printer='script_perso'
 change_mha_conf=true
+
+####################################### END OF PARAMETERS ###############################################
+
+
+############################################# PROGRAM ###################################################
 
 for i in $*; do 
 	tmp=$(echo $i | cut -d = -f2)
@@ -19,7 +28,7 @@ done
 
 if [[ ! -z "$ip_master" ]]; then 
 
-	############### MASTER ############################################################
+	######################################### MASTER #########################################
 	
 	echo -e "\033[32m $printer[slave to master][info] Initialisation du Slave \(futur Master\) : $ip_master \033[0m"
 	echo -e "\033[32m $printer[slave to master][info] Lecture du status du master SQL et modification de variables globales READ_ONLY et relay_log_purge \033[0m"
@@ -46,7 +55,10 @@ SET GLOBAL relay_log_purge = 1;
 	echo -e "\033[32m $printer[slave to master][info] Base de donnees : $MASTER_DB \033[0m"
 	echo -e "\033[32m $printer[slave to master][info] Fin du changement avec succes \033[0m"
 	
-	############### SLAVE ############################################################
+	##################################### END OF MASTER ######################################
+	
+	
+	####################################### SLAVE ############################################
 	
 	for ip in "${ip_bdd[@]}"
 	do :
@@ -134,5 +146,9 @@ EOF
 		
 		sudo /etc/init.d/apache2 reload
 	fi
+	
+	################################### END OF SLAVE #########################################
 
 fi
+
+########################################### END PROGRAM #################################################

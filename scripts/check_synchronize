@@ -1,75 +1,31 @@
 #!/bin/bash
 
-###################################### PARAMETERS ##############################################
+#########################################################################################################
+##############################             CHECK SYNCHRONIZE          ###################################
+#########################################################################################################
+
+
+########################################### PARAMETERS ##################################################
 
 . HA.conf
 . $(dirname $0)/HA.conf
+ $(dirname $0)/functions
 
 synchronize=false
-
 printer='script_perso'
 
-config_parser () {
-	local iniFile="$1";
-    local tmpFile=$( mktemp /tmp/`basename $iniFile`.XXXXXX );
-    local intLines;
-    local binSED=$( which sed );
-    cp $iniFile $tmpFile;
+####################################### END OF PARAMETERS ###############################################
 
-    $binSED -i -e 's/[ \t]*=[ \t]*/=/g' $tmpFile;
-    $binSED -i -e 's/\[\([A-Za-z0-9[:space:]]*\)\]/config.section.\1() \{/g' $tmpFile;
-    $binSED -i -e 's/ //g' $tmpFile;
-    $binSED -i -e 's/config\.section\./\}\'$'\nconfig\.section\./g' $tmpFile;
 
-    # remove first line
-    intLines=$( wc -l $tmpFile | awk '{ print $1}' );
-    let "intLines=$intLines - 1";
-    tail -n $intLines $tmpFile > $tmpFile-2;
-    mv -f $tmpFile-2 $tmpFile;
-
-    # add the last brace
-    echo -e "\n}" >> $tmpFile;
-
-    source $tmpFile;
-    rm -f $tmpFile;
-}
-
-pbSync () {
-    bdd="$1";
-	
-	if [ $bdd == 'bdd' ]; then 
-		echo probleme de base de donnees
-		if [ ! -f $flagpath ]; then
-    		echo j\'envoi un mail car la bdd est down
-        	#echo "MYSQL : Le serveur MYSQL ne fonctionne plus sur $ip !!! at `eval date +%d/%m/%Y":"%H:%M`" | mail -a "from:johnny.cottereau@auguria.net" -s "MYSQL : Le serveur MYSQL ne fonctionne plus sur $ip !!! at `eval date +%d/%m/%Y":"%H:%M`" "maintenance@auguria.net"
-		fi
-	else
-		echo probleme de synchronisation
-		if [ ! -f $flagpath ]; then
-    		echo j\'envoi un mail car il n\'y a plus de synchronisation
-        	#echo "MYSQL : Le serveur $ip n\'est plus synchrone !!! at `eval date +%d/%m/%Y":"%H:%M`" | mail -a "from:johnny.cottereau@auguria.net" -s "MYSQL : Le serveur $ip n'est plus synchrone !!! at `eval date +%d/%m/%Y":"%H:%M`" "maintenance@auguria.net"
-		fi
-	fi
-	touch $flagpath
-}
-
-sync () {
-	echo Aucun probleme de synchronisation
-	if [ -f $flagpath ]; then
-    	rm $flagpath
-	fi
-}
-
-############################################### PROGRAMME ################################"
+############################################# PROGRAM ###################################################
 
 config_parser $mha_conf;
 config.section.server1;
-ip=$hostname;
 flag=error.flag
 flagpath=$script_path$flag
 
 for (( i = 0; i < ${#ip_bdd[@]}; i++ )); do
-    if [ ${ip_bdd[$i]} != $ip ]; then
+    if [ ${ip_bdd[$i]} != $hostname ]; then
         Slave_IO_Running=`mysql -h ${ip_bdd[$i]} -u $db_user -p$db_password $db_name -e 'SHOW SLAVE STATUS\G' | grep 'Slave_IO_Running' | awk -F': ' {'print $2'}`
         Slave_SQL_Running=`mysql -h ${ip_bdd[$i]} -u $db_user -p$db_password $db_name -e 'SHOW SLAVE STATUS\G' | grep 'Slave_SQL_Running'| awk -F': ' {'print $2'}`
         if [ -n "$Slave_IO_Running" ] && [ -n "$Slave_SQL_Running" ]; then
@@ -85,5 +41,7 @@ for (( i = 0; i < ${#ip_bdd[@]}; i++ )); do
 done
 
 if [ $synchronize = true ]; then
-        /bin/bash $script_path"synchronize --master=$ip --change_mha_conf=false"
+        /bin/bash $script_path"synchronize --master=$hostname --change_mha_conf=false"
 fi
+
+########################################### END PROGRAM #################################################

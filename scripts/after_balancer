@@ -1,16 +1,24 @@
 #!/bin/bash
 
-###################################### PARAMETERS ##############################################
+#########################################################################################################
+################################             AFTER BALANCER          ####################################
+#########################################################################################################
+
+
+########################################### PARAMETERS ##################################################
 
 . HA.conf
 . $(dirname $0)/HA.conf
+ $(dirname $0)/functions
 
-#################################################################################################
+####################################### END OF PARAMETERS ###############################################
+
+
+############################################# PROGRAM ###################################################
 
 echo -e "\033[32m $printer[info] Lecture des arguments \033[0m"
 
-for i in $*; 
-do 
+for i in $*;  do 
 	tmp=$(echo $i | cut -d = -f2)
 	[[ $i == --command=* ]] && command=$tmp
 	[[ $i == --ssh_user=* ]] && ssh_user=$tmp
@@ -29,16 +37,17 @@ echo -e "\033[32m $printer[info] Lecture des arguments termine\033[0m"
 
 if [ $command == 'stopssh' ] || [ $command == 'stop' ]; then
 
-	#echo "MHA : The server $orig_master_ip is down !!! at `eval date +%d/%m/%Y":"%H:%M`" | mail -a "from:johnny.cottereau@auguria.net" -s "The server $orig_master_ip is down !!!" "maintenance@auguria.net"
+    if [ $send_mail ]; then
+		echo "MHA : The server $orig_master_ip is down !!! at `eval date +%d/%m/%Y":"%H:%M`" | mail -a "from:johnny.cottereau@auguria.net" -s "The server $orig_master_ip is down !!!" "maintenance@auguria.net"
+	fi
 	
-	for ip in "${ip_bdd[@]}"
-	do :
+	for ip in "${ip_bdd[@]}"; do :
         if [ $ip != $orig_master_ip ]; then
             new_master_ip=$ip
         fi
 	done
 	
-	if [ $isBalancing == false ]; then
+	if [ $isBalancing == false ] && [$enable_vhost] ; then
 	
 		echo -e "\033[32m $printer[info] Activation des vhosts concernes \033[0m"
 		echo -e "\033[32m $printer[info] New master ip : $new_master_ip \033[0m"
@@ -48,8 +57,7 @@ if [ $command == 'stopssh' ] || [ $command == 'stop' ]; then
 				
 				echo -e "\033[32m $printer[info] $i -> ${ip_bdd[$i]} \033[0m"
 		     	
-		     	for file in /etc/apache2/sites-available/$i*
-		        do
+		     	for file in /etc/apache2/sites-available/$i*; do
 	                if [[ -f $file ]]; then
                         if [ ${ip_bdd[$i]} == $new_master_ip ]; then
                             echo -e "\033[32m $printer[info] a2ensite ${file##*/} \033[0m"
@@ -64,8 +72,8 @@ if [ $command == 'stopssh' ] || [ $command == 'stop' ]; then
 		fi
 	fi
 	
-	for ip in "${ip_magento[@]}"
-	do :
+	for ip in "${ip_magento[@]}"; do :
+	
 		echo -e "\033[32m $printer[info] Connexion en ssh a $ip \033[0m"
 		
 		ssh -T $ssh_user@$ip <<EOF
@@ -88,36 +96,8 @@ if [ $command == 'stopssh' ] || [ $command == 'stop' ]; then
 EOF
 	done
 
-	
-########################################## GESTION DE MAGENTO ###########################################
-ping $ip_magento_public -c2 -q
-if [ $? == 1 ]; then
-#       config_parser $mha_conf;
-#       config.section.server1;
-
-        # $hostname vient de hostname dans mha_conf
-
-        for (( i = 0; i < ${#ip_magento[@]}; i++ )); do
-                echo -e "\033[32m $printer[info] Connexion en ssh a ${ip_magento[$i]} \033[0m"
-                ping ${ip_magento[$i]} -c2 -q
-                if [ $? != 1 ]; then
-                echo -e "\033[32m $printer[info] La VM est operationnel, elle prend l'ip publique \033[0m"
-                        ssh root@${ip_magento[$i]} <<EOF
-                                cd /etc/network
-                                mv interfaces interfaces.tmp
-                                mv interfaces2 interfaces
-                                mv interfaces.tmp interfaces2
-                                /etc/init.d/networking restart
-                                shutdown -r now
-EOF
-                else
-                        echo -e "\033[32m $printer[info] La VM n'est pas operationnel \033[0m"
-                fi
-        done
-
+	# In functions file
+	changePublicIp
 fi
 
-
-fi
-
-
+######################################### END OF PROGRAM ################################################

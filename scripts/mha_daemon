@@ -1,24 +1,39 @@
 #! /bin/sh
+
+#########################################################################################################
+##################################             MHA DAEMON          ######################################
+#########################################################################################################
+
+
+########################################### PARAMETERS ##################################################
+
 . /lib/lsb/init-functions
 name="mhamanager"
 mhamanager_conf=/var/www/projetha/scripts/mha.conf
 mhamanager_log=/var/log/masterha/MHA.log
 pid_file="/var/run/$name.pid"
 
-start () {
-command_ls=`nohup masterha_manager --conf=$mhamanager_conf  --ignore_last_failover < /dev/null >> $mhamanager_log 2>&1 &`
-ps -ef | grep -i "masterha_manager" | grep -v grep | awk '{print $2}' > $pid_file
+####################################### END OF PARAMETERS ###############################################
 
-log_daemon_msg "Starting $name"
+
+############################################# PROGRAM ###################################################
+
+start () {
+	command_ls=`nohup masterha_manager --conf=$mhamanager_conf  --ignore_last_failover < /dev/null >> $mhamanager_log 2>&1 &`
+	ps -ef | grep -i "masterha_manager" | grep -v grep | awk '{print $2}' > $pid_file
+	log_daemon_msg "Starting $name"
 }
+
 stop () {
-log_daemon_msg "Stopping $name"
-start-stop-daemon --stop --quiet --oknodo --pidfile "$pid_file"
+	log_daemon_msg "Stopping $name"
+	start-stop-daemon --stop --quiet --oknodo --pidfile "$pid_file"
 }
+
 status () {
-log_daemon_msg "Status of $name"
-status_of_proc -p $pid_file "$name"
+	log_daemon_msg "Status of $name"
+	status_of_proc -p $pid_file "$name"
 }
+
 case $1 in
 start)
 if status; then exit 0; fi
@@ -46,3 +61,4 @@ exit 1
 esac
 exit 0
 
+########################################### END OF PROGRAM ##############################################

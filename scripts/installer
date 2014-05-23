@@ -1,98 +1,28 @@
 #!/bin/bash
 
-echo -e "\033[32m Ce script permet d'installer automatiquement un système dereplication de base de donnees avec MHA (Master Hight Availability).
-Veuillez verifier que chaque cluster et le manager aient un acces a chacun via ssh \033[0m"
+#########################################################################################################
+##################################             INSTALLER          #######################################
+#########################################################################################################
 
-############## PARAMETERS ##########################################################
+
+########################################### PARAMETERS ##################################################
 
 source HA.conf
+ $(dirname $0)/functions
 
 printer='initialisation'
 
-################## FUNCTIONS ##########################################################
+####################################### END OF PARAMETERS ###############################################
 
-function ask {
-	while true; do
-		if [ "${2:-}" = "Y" ]; then
-			prompt="Y/n"
-			default=Y
-		elif [ "${2:-}" = "N" ]; then
-			prompt="y/N"
-			default=N
-		else
-			prompt="y/n"
-			default=
-		fi
-		# Ask the question
-		read -p "$1 [$prompt] " REPLY
-		# Default?
-		if [ -z "$REPLY" ]; then
-			REPLY=$default
-		fi
-		# Check if the reply is valid
-		case "$REPLY" in
-			Y*|y*) return 0 ;;
-			N*|n*) return 1 ;;
-		esac
-	done
-}
+############################################# PROGRAM ###################################################
 
-function addMysqlPackage {
-	if ask "Voulez vous installer les paquets MYSQL sur le serveur $1 ?"; then
-	    echo -e "\033[32m $printer[info] Installation des paquets mysql \033[0m"
-	    ssh -T root@$1 <<EOF
-		debconf-set-selections <<< 'mysql-server mysql-server/root_password password $db_root_password'
-		debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $db_root_password'
-		apt-get -y install mysql-server
-	    apt-get -y install libdbd-mysql-perl
-EOF
-	fi
-}
+echo -e "\033[32m Ce script permet d'installer automatiquement un système dereplication de base de donnees avec MHA (Master Hight Availability).
+Veuillez verifier que chaque cluster et le manager aient un acces a chacun via ssh \033[0m"
 
-function addNode {
-	if ask "Voulez vous installer les noeuds MHA sur le serveur $1 ?"; then
-        echo -e "\033[32m $printer[info] Telechargement et installation des noeuds MHA \033[0m"
-        ssh -T root@$1 <<EOF
-		    cd /root
-		    wget $node_url
-		    tar xzvf $node_file
-			rm $node_file
-		    cd $node_name
-		    perl Makefile.PL
-		    make
-		    sudo make install
-			rm -R ../$node_name
-EOF
-	fi
-}
-
-function addMysqlUser {
-	if ask "Voulez vous mettre en place l'utilisateur mysql sur le serveur $1 ?"; then
-        echo -e "\033[32m $printer[info] Mise en place de l'utilisateur $db_user \033[0m"
-		ssh -T root@$1 <<EOF
-			mysql -u $db_root -p$db_root_password  -N -s -e "
-				CREATE USER '$db_user'@'$ip_all' identified by '$db_password';
-				GRANT all privileges ON *.* TO '$db_user'@'$ip_all';
-				grant all privileges on $db_name.* to '$db_user'@'$ip_all' WITH GRANT OPTION;
-				flush privileges;"
-EOF
-	fi
-}
-
-function flushmaster {
-	echo -e "\033[32m $printer[master][info] Flush des tables et lecture du status du master sur Mysql \033[0m"
-	master_status=`mysql -h $ip_master -u $db_user -p$db_password $db_name -N -s -e "
-		RESET MASTER;
-		FLUSH TABLES WITH READ LOCK; 
-		SHOW MASTER STATUS;"`
-	array=($( for i in $master_status ; do echo $i ; done ))
-	MASTER_LOG_FILE=${array[0]}
-	MASTER_LOG_POS=${array[1]}
-	MASTER_DB=${array[2]}
-}
+############################################# PROGRAM ###################################################
 
 
-############### MASTER #################################################################
+##################################### MASTER #################################################
 if ask "Voulez vous configurer le serveur maitre ?"; then
 	
 	echo -e "\033[32m $printer[master][info] Initialisation du Master $ip_master \033[0m"
@@ -147,7 +77,10 @@ mysql -h $ip_master -u $db_user -p$db_password $db_name -N -s -e "UNLOCK TABLES;
 
 echo -e "\033[32m $printer[master][info] Unlock des tables terminee \033[0m"
 
-############### SLAVE #################################################################
+################################## END OF MASTER #############################################
+
+
+####################################### SLAVE ################################################
 
 if ask "Voulez vous configurer le serveur slave ?"; then
 	
@@ -195,7 +128,10 @@ EOF
 
 fi
 
-############### MANAGER ###############################################################
+#################################### END OF SLAVE ############################################
+
+
+##################################### MANAGER ################################################
 
 if ask "Voulez vous configurer le manager ?"; then
 	echo -e "\033[32m $printer[manager][info] Initialisation du manager\033[0m"
@@ -257,5 +193,10 @@ EOF
         fi
 
 fi
+
+################################## END OF MANAGER ############################################
+
+
 echo -e "\033[32m $printer[info] Et voila :)\033[0m"
 
+########################################### END PROGRAM #################################################
