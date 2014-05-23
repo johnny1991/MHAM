@@ -118,6 +118,13 @@
 				                                {% endif %}
 				                            </td>
 			                                <td>{{ server.BddIp }}</td>
+			                                <td>
+			                                {% if server.isPublicIp == 1 %}
+				                                	<span class="ok">Actif</span>
+				                                {% else %}
+				                                	<span class="nok">En Attente</span> 
+				                                {% endif %}
+			                                </td>
 									    </tr>
 			                        	{% endfor %}
 		                    		</tbody>
@@ -144,17 +151,17 @@
 			            		<table>
 			                        <thead>
 			                        	<tr>
-			                        		<th>{{ manager.getConfiguration.server_name[1] }}</th>
+			                        		<th>{{ manager.getConfiguration.server_name[0] }}</th>
 				                            <th>{{ manager.getConfiguration.server_name[1] }}</th>
 				                     	</tr>
 				                 	</thead>
 			                    	<tbody>
 			                    		<tr>
-			                    			<th>{{ manager.getConfiguration.magento_ips[1] }}</th>
+			                    			<th>{{ manager.getConfiguration.magento_ips[0] }}</th>
 				                            <th>{{ manager.getConfiguration.bdd_ips[1] }}</th>
 			                    		</tr>
 			                    		<tr>
-			                    			<th>{{ manager.getConfiguration.magento_ips[1] }}</th>
+			                    			<th>{{ manager.getConfiguration.magento_ips[0] }}</th>
 				                            <th>{{ manager.getConfiguration.bdd_ips[1] }}</th>
 			                    		</tr>
 			                    	</tbody>
