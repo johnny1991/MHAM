@@ -9,7 +9,7 @@
 
 . HA.conf
 . $(dirname $0)/HA.conf
- $(dirname $0)/functions
+. $(dirname $0)/functions
 
 printer='script_perso'
 change_mha_conf=true
