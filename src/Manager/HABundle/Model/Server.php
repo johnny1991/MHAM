@@ -2,7 +2,7 @@
 
 namespace Manager\HABundle\Model;
 
-class Server {
+ abstract class Server {
 
 	public $ip;
 	public $status;
