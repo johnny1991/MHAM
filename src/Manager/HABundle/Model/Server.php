@@ -21,6 +21,8 @@ class Server {
 		return $this;
 	}
 
+	public abstract function isMaster();
+	
 	public function getStatus(){
 		return $this->status;
 	}

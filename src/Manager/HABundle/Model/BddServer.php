@@ -36,4 +36,8 @@ class BddServer extends Server {
 		$this->mysql = new Mysql($this->getIp(), $this->getBddUser(), $this->getBddPassword());
 	}
 	
+	public function isMaster(){
+		return $this->getMysql()->isMaster();
+	}
+	
 }

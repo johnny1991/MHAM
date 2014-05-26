@@ -119,7 +119,7 @@
 				                                {% endif %}
 				                            </td>
 				                            <td>
-			                                {% if server.isPublicIp == 1 %}
+			                                {% if server.isMaster == 1 %}
 				                                	<span class="ok">Actif</span>
 				                                {% else %}
 				                                	<span class="nok">En Attente</span> 
@@ -158,7 +158,7 @@
 				                 	</thead>
 			                    	<tbody>
 			                    		<tr>
-			                    			<td>{{ manager.getConfiguration.magento_ips[0] }}</td>
+			                    			<td>{{ if manager.getConfiguration.magento_ips[0] ==  }}</td>
 				                            <td>{{ manager.getConfiguration.magento_ips[1] }}</td>
 			                    		</tr>
 			                    		<tr>

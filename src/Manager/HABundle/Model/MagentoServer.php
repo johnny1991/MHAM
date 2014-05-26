@@ -34,6 +34,10 @@ class MagentoServer extends Server {
 		return $this->local_xml;
 	}
 	
+	public function isMaster(){
+		return $this->isPublicIp();
+	}
+	
 	public function getBddIp(){
 		return $this->bdd_ip;
 	}
