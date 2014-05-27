@@ -21,7 +21,7 @@ class ManagerMHA {
 		$this->mha = new MHA();
 		
 		$this->initBddServers();
-		$this->initMagentoServers();
+		//$this->initMagentoServers();
 
 	}
 
@@ -33,7 +33,7 @@ class ManagerMHA {
 	
 	public function initBddServers(){
 		$countMaster = 0;
-		/*foreach ($this->getConfiguration()->getBddIps() as $ip){
+		foreach ($this->getConfiguration()->getBddIps() as $ip){
 			$server = new BddServer($ip);
 			$this->addBddServer($server);
 			if($server->getMysql()->isMaster()){
@@ -44,7 +44,7 @@ class ManagerMHA {
 				$this->serversDown[] = $server;
 			}
 			unset($server);
-		}*/
+		}
 	}
 	
 	public static function getConfiguration(){
