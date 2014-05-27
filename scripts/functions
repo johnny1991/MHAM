@@ -145,10 +145,8 @@ function checkPublicIp () {
 }
 
 function changePublicIp () {
-		echo -e "\033[32m mouahaha $1 \033[0m"
-
-	if [[ ! -z "$1" ]]; then
-		echo -e "\033[32m $printer[info] Connexion en ssh a ${ip_magento[$i]} \033[0m"
+	if [[ ! -z $1 ]]; then
+		echo -e "\033[32m $printer[info] Connexion en ssh a $1 \033[0m"
 		sudo ssh root@$1 <<EOF
 		   	cd /etc/network
 	        #mv interfaces interfaces.tmp

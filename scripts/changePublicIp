@@ -23,10 +23,8 @@ for i in $*; do
 	tmp=''
 done
 
-echo "passe"
 if [[ ! -z "$ip" ]]; then
 echo "passe encore" 
-	changePublicIp $ip
 fi
 
 ########################################### END PROGRAM #################################################
