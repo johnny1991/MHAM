@@ -7,10 +7,10 @@
 
 ########################################### PARAMETERS ##################################################
 
-. HA.conf
+#. HA.conf
 . $(dirname $0)/HA.conf
 . $(dirname $0)/functions
-. functions
+#. functions
 
 ####################################### END OF PARAMETERS ###############################################
 
@@ -48,7 +48,7 @@ if [ $command == 'stopssh' ] || [ $command == 'stop' ]; then
         fi
 	done
 	
-	if [ $isBalancing == false ] && [$enable_vhost] ; then
+	if [ $isBalancing == false ] && [$enable_vhost == true] ; then
 	
 		echo -e "\033[32m $printer[info] Activation des vhosts concernes \033[0m"
 		echo -e "\033[32m $printer[info] New master ip : $new_master_ip \033[0m"
