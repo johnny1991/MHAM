@@ -125,11 +125,11 @@ function flushmaster {
 function checkPublicIp () {
 	ping $ip_magento_public -c2 -q
 	if [ $? == 1 ]; then
+		echo -e "\033[32m $printer[master][info] L'IP public n'est pas pingable \033[0m"
 		if [ $send_mail == true ]; then
 			echo "MHA : The plateform is down at $ip_magento_public `eval date +%d/%m/%Y":"%H:%M`" | mail -a "from:johnny.cottereau@auguria.net" -s "The plateform is down at $ip_magento_public" "maintenance@auguria.net"
 		fi
         for (( i = 0; i < ${#ip_magento[@]}; i++ )); do
-            echo -e "\033[32m $printer[info] Connexion en ssh a ${ip_magento[$i]} \033[0m"
             #ping ${ip_magento[$i]} -c2 -q
             #if [ $? != 1 ]; then
 	        	#echo -e "\033[32m $printer[info] La VM est operationnel, elle prend l'ip publique \033[0m"
@@ -145,14 +145,15 @@ function checkPublicIp () {
 }
 
 function changePublicIp () {
-	if [[ ! -z "$1" ]]; then 
-	ssh root@$1 <<EOF
-	   	cd /etc/network
-        #mv interfaces interfaces.tmp
-        #mv interfaces2 interfaces
-        #mv interfaces.tmp interfaces2
-        #/etc/init.d/networking restart
-        #shutdown -r now
+	if [[ ! -z "$1" ]]; then
+		echo -e "\033[32m $printer[info] Connexion en ssh a ${ip_magento[$i]} \033[0m"
+		sudo ssh root@$1 <<EOF
+		   	cd /etc/network
+	        #mv interfaces interfaces.tmp
+	        #mv interfaces2 interfaces
+	        #mv interfaces.tmp interfaces2
+	        #/etc/init.d/networking restart
+	        #shutdown -r now
 EOF
 	fi
 }
