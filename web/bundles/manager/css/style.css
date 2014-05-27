@@ -14,7 +14,12 @@ body {
 }
 
 #magento_state{
-	border-right: 4px solid #D5D5D5;
+	border-right: 2px solid #D5D5D5;
+	padding-right: 30px;
+}
+
+.row{
+	margin-bottom:20px;
 }
 
 .header {
