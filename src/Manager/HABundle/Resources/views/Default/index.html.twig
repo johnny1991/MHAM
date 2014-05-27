@@ -129,7 +129,9 @@
 			                                </td>
 			                                <td>
 			                                	{% if server.isMaster != 1 %}
-			                    					<button id="change_public_ip" class="btn btn-primary change_public_ip" data-url="{{ path('manager_ha_change_public_ip',{'ip': server.ip } ) }}">Passer en Actif</button>
+			                    					<button id="change_public_ip" class="btn btn-primary public_ip" data-url="{{ path('manager_ha_change_public_ip',{'ip': server.ip } ) }}">Passer en Actif</button>
+			                    				{% else %}
+			                    					<button id="remove_public_ip" class="btn btn-danger public_ip" data-url="{{ path('manager_ha_remove_public_ip',{'ip': server.ip } ) }}">Retirer l'IP public</button>
 			                    				{% endif %}
 			                    			</td>
 									    </tr>
@@ -243,7 +245,7 @@
 	                	});
 	                });
 	                
-	                $('.change_public_ip').click(function(){
+	                $('.public_ip').click(function(){
 	                	$('.load').show();
 	                	jQuery.ajax({
 	                		url: $(this).attr('data-url'),

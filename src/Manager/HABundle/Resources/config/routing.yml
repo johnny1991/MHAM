@@ -19,3 +19,6 @@ manager_ha_change_public_ip:
     pattern:  /change_public_ip/ip/{ip}
     defaults: { _controller: ManagerHABundle:Default:change_public_ip }
 
+manager_ha_remove_public_ip:
+    pattern:  /remove_public_ip/ip/{ip}
+    defaults: { _controller: ManagerHABundle:Default:remove_public_ip }

@@ -27,8 +27,14 @@ class DefaultController extends Controller{
 		return new response($response);
 	}
 	
-	public function change_public_ipAction($ip){
-		$command = "/bin/bash " . Configuration::getInstance()->getScriptsPath(). "changePublicIp --ip=" . $ip;
+	public function change_public_ipAction(){
+		$command = "/bin/bash " . Configuration::getInstance()->getScriptsPath(). "changePublicIp";
+		$response = shell_exec($command);
+		return new response(shell_exec($command));
+	}
+	
+	public function remove_public_ipAction($ip){
+		$command = "/bin/bash " . Configuration::getInstance()->getScriptsPath(). "removePublicIp --ip=" . $ip;
 		$response = shell_exec($command);
 		return new response(shell_exec($command));
 	}
