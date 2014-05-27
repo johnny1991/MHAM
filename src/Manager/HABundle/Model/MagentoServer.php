@@ -17,7 +17,7 @@ class MagentoServer extends Server {
 
 	public function update(){
 		parent::update();
-		echo "passe avant $this->getStatus()";
+		echo "passe avant / ".$this->getStatus(). " /";
 		
 		if (!$this->getStatus()){
 			return false;
