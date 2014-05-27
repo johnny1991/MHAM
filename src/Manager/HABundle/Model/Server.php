@@ -32,6 +32,8 @@ namespace Manager\HABundle\Model;
 			$number_of_request = 2;
 			$time_between_request = 0.2;
 			$this->status = exec("ping -c$number_of_request -i$time_between_request " . $this->getIp()) ? true : false;
+			echo $this->getIp() . " / ".$this->status. " /<br>";
+				
 		}
 	}
 	

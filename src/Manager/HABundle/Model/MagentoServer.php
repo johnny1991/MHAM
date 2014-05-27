@@ -17,8 +17,7 @@ class MagentoServer extends Server {
 
 	public function update(){
 		parent::update();
-		echo $this->getIp() . " / ".$this->getStatus(). " /<br>";
-		
+
 		if (!$this->getStatus()){
 			return false;
 		}
