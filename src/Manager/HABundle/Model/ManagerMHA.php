@@ -86,14 +86,13 @@ class ManagerMHA {
 			$time_between_request = 0.2;
 			ob_start();
 			$this->isPublicLive = (bool) strpos(passthru("ping -c$number_of_request -i$time_between_request " . $this->getConfiguration()->getPublicIp()), "0% packet loss");
+			$test = passthru("ping -c$number_of_request -i$time_between_request " . $this->getConfiguration()->getPublicIp());
 			ob_end_clean();			
 		}
-		ob_start();
-		var_dump(strpos(passthru("ping -c$number_of_request -i$time_between_request " . $this->getConfiguration()->getPublicIp()), "0% packet loss"));
+		var_dump($test);
 		
 		echo "<br>";
-		var_dump(passthru("ping -c$number_of_request -i$time_between_request " . $this->getConfiguration()->getPublicIp()));
-		ob_end_clean();
+		var_dump(strpos($test, "0% packet loss"));
 		
 		echo "<br><br><br>";
 		var_dump("ping -c$number_of_request -i$time_between_request " . $this->getConfiguration()->getPublicIp());
