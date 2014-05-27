@@ -17,15 +17,15 @@ class MagentoServer extends Server {
 
 	public function update(){
 		parent::update();
+		if (!$this->getStatus()){
+			echo "passe";
+			return false;
+		}
 		$this->scripts_path = Configuration::getInstance()->getScriptsPath();
 		$this->initLocalxml();
 	}
 
 	public function initLocalxml(){
-		if (!$this->getStatus()){
-			return false;
-		}
-		
 		$local_xml_path = Configuration::getInstance()->getLocalXmlPath();
 		$content = shell_exec($this->scripts_path . "getFile --user=root --ip={$this->getIp()} --path=$local_xml_path");
 		if($content){
