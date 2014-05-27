@@ -90,10 +90,10 @@ class ManagerMHA {
 		}
 		ob_start();
 		var_dump(strpos(passthru("ping -c$number_of_request -i$time_between_request " . $this->getConfiguration()->getPublicIp()), "0% packet loss"));
-		ob_end_clean();
 		
 		echo "<br>";
 		var_dump(passthru("ping -c$number_of_request -i$time_between_request " . $this->getConfiguration()->getPublicIp()));
+		ob_end_clean();
 		
 		echo "<br><br><br>";
 		var_dump("ping -c$number_of_request -i$time_between_request " . $this->getConfiguration()->getPublicIp());
