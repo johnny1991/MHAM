@@ -33,8 +33,8 @@ namespace Manager\HABundle\Model;
 			$time_between_request = 0.2;
 			ob_start();
 			$this->status = (bool) strpos(passthru("ping -c$number_of_request -i$time_between_request " . $this->getIp()), "0% packet loss");
-			echo $this->ip . ' : ' . $this->status . "<br>";
 			ob_end_clean();
+			echo $this->ip . ' : ' . $this->status . "<br>";
 		}
 	}
 	
