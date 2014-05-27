@@ -24,7 +24,6 @@ body {
 }
 
 .footer {
-	margin-top: 45px;
 	border-top: 2px solid #D5D5D5;
 	padding: 30px 10px;
 	text-align: right
@@ -33,6 +32,10 @@ body {
 .main .row {
 	border-bottom: 2px solid #D5D5D5;
 	padding-bottom: 20px;
+}
+
+.main .row.last{
+	border-bottom: none;
 }
 
 #bdd_state .head {
@@ -50,8 +53,10 @@ table {
 }
 */
 #mha_state .log {
+	border-radius:10px;
 	margin: 5px 0px;
 	border: 1px solid #D5D5D5;
+	background: #F5F5F5;
 	padding: 10px;
 	height: 400px;
 	overflow: auto;
