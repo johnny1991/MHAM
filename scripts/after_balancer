@@ -38,7 +38,7 @@ echo -e "\033[32m $printer[info] Lecture des arguments termine\033[0m"
 
 if [ $command == 'stopssh' ] || [ $command == 'stop' ]; then
 
-    if [ $send_mail ]; then
+    if [ $send_mail == true ]; then
 		echo "MHA : The server $orig_master_ip is down !!! at `eval date +%d/%m/%Y":"%H:%M`" | mail -a "from:johnny.cottereau@auguria.net" -s "The server $orig_master_ip is down !!!" "maintenance@auguria.net"
 	fi
 	
