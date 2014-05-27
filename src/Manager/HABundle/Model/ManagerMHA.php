@@ -95,11 +95,11 @@ class ManagerMHA {
 		echo "<br>";
 		var_dump(passthru("ping -c$number_of_request -i$time_between_request " . $this->getConfiguration()->getPublicIp()));
 		
-		echo "<br>";
+		echo "<br><br><br>";
 		var_dump("ping -c$number_of_request -i$time_between_request " . $this->getConfiguration()->getPublicIp());
-		echo "<br>";
+		echo "<br><br><br><br><br>";
 		var_dump($this->isPublicLive);
-		echo "<br>";
+		echo "<br><br><br><br>";
 		return $this->isPublicLive;
 	}
 
