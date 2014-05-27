@@ -5,7 +5,7 @@ namespace Manager\HABundle\Model;
  abstract class Server {
 
 	public $ip;
-	public $status;
+	public $status = null;
 
 	public function __construct($ip){
 		$this->ip = $ip;
@@ -28,9 +28,11 @@ namespace Manager\HABundle\Model;
 	}
 
 	public function update(){
-		$number_of_request = 2;
-		$time_between_request = 0.15;
-		$this->status = exec("ping -c$number_of_request -i$time_between_request " . $this->getIp()) ? true : false;
+		if($this->getStatus() == null){
+			$number_of_request = 2;
+			$time_between_request = 0.15;
+			$this->status = exec("ping -c$number_of_request -i$time_between_request " . $this->getIp()) ? true : false;
+		}
 	}
 	
 }

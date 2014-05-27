@@ -10,6 +10,7 @@ class ManagerMHA {
 	
 	public $mainBddServer = false;
 	public $serversDown = false;
+	public $isPublicLive = null;
 	
 	public $bddServers;
 	public $magentoServers;
@@ -83,9 +84,12 @@ class ManagerMHA {
 	}
 	
 	public function isPublicIpLive(){
-		$number_of_request = 2;
-		$time_between_request = 0.15;
-		return exec("ping -c$number_of_request -i$time_between_request " . $this->getConfiguration()->getPublicIp()) ? true : false;
+		if($this->isPublicLive == null){
+			$number_of_request = 2;
+			$time_between_request = 0.15;
+			$this->isPublicLive = exec("ping -c$number_of_request -i$time_between_request " . $this->getConfiguration()->getPublicIp()) ? true : false;
+		}
+		return $this->isPublicLive;
 	}
 
 	public function addBddServer(BddServer $bddServer){
