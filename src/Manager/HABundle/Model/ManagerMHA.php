@@ -90,8 +90,11 @@ class ManagerMHA {
 		}
 		
 		var_dump(strpos(passthru("ping -c$number_of_request -i$time_between_request " . $this->getConfiguration()->getPublicIp()), "0% packet loss"));
+		echo "<br>";
 		var_dump("ping -c$number_of_request -i$time_between_request " . $this->getConfiguration()->getPublicIp());
+		echo "<br>";
 		var_dump($this->isPublicLive);
+		echo "<br>";
 		return $this->isPublicLive;
 	}
 
