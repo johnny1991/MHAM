@@ -217,10 +217,10 @@
 	                </div>
 	           	</div>
 	            <script>
-	                /*setInterval(function (){
+	                setInterval(function (){
 	                    $('#mha_state .log').load("{{ path('manager_ha_log')}}").fadeIn("slow");
 	                    $('#mha_state #refresh_time').html(new Date($.now()));
-	                }, 500);*/
+	                }, 500);
 	                $('#start_mha').click(function(){
 	                	jQuery.ajax({
 	                		url: '{{ path('manager_ha_start_mha') }}',
@@ -249,7 +249,9 @@
 	                		url: $(this).attr('data-url'),
 	                		success: function(data,x){
 	                			alert(data);
-	                			location.reload();
+	                			setTimeout(function(){ 
+	                				location.reload();
+	                			 }, 8000);
 	                			$('.load').hide();
 	                		} 
 	                	});
