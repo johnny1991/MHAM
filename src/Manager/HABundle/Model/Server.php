@@ -1,7 +1,6 @@
 <?php
 
 namespace Manager\HABundle\Model;
-use Psr\Log\LoggerInterface;
 
  abstract class Server {
 
@@ -30,8 +29,7 @@ use Psr\Log\LoggerInterface;
 
 	public function update(){
 		if($this->getStatus() == null){
-			$logger = $this->get('logger');
-			$logger->info($this->ip);
+			log($this->ip);
 			$number_of_request = 2;
 			$time_between_request = 0.05;
 			$this->status = exec("ping -c$number_of_request -i$time_between_request " . $this->getIp()) ? true : false;
