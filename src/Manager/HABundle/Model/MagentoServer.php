@@ -22,6 +22,10 @@ class MagentoServer extends Server {
 	}
 
 	public function initLocalxml(){
+		if (!$this->getStatus()){
+			return false;
+		}
+		
 		$local_xml_path = Configuration::getInstance()->getLocalXmlPath();
 		$content = shell_exec($this->scripts_path . "getFile --user=root --ip={$this->getIp()} --path=$local_xml_path");
 		if($content){
@@ -43,6 +47,9 @@ class MagentoServer extends Server {
 	}
 	
 	public function isPublicIp(){
+		if (!$this->getStatus()){
+			return false;
+		}
 		$ip = trim(shell_exec($this->scripts_path . "getPublicIp --user=root --ip={$this->getIp()}"));
 		return ($ip == Configuration::getInstance()->getPublicIp()) ? true : false;
 	}
