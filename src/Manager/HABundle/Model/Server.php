@@ -31,8 +31,8 @@ namespace Manager\HABundle\Model;
 		if($this->getStatus() == null){
 			$number_of_request = 2;
 			$time_between_request = 0.2;
-			exec("ping -c$number_of_request -i$time_between_request " . $this->getIp(), $output, ! $this->status);
-			//$this->status = ! $result;
+			exec("ping -c$number_of_request -i$time_between_request " . $this->getIp(), $output, $result);
+			$this->status = ! $result;
 		}
 	}
 	
