@@ -26,6 +26,14 @@ class DefaultController extends Controller
 		echo "\n";
 		return new response($response);
 	}
+	
+	public function change_public_ipAction($ip){
+		$command = "/bin/bash " . Configuration::getInstance()->getScriptsPath(). "changePublicIp --ip=" . $ip;
+		$response = shell_exec($command);
+		echo $command;
+		echo "\n";
+		return new response($response);
+	}
 
 	public function start_mhaAction(){
 		exec('sudo /etc/init.d/mha_daemon restart');

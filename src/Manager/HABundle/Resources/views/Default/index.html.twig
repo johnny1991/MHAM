@@ -126,6 +126,9 @@
 				                                {% endif %}
 			                                </td>
 			                                <td>{{ server.BddIp }}</td>
+			                                <td>
+			                    				<button id="" class="btn btn-primary changepublicip" data-url="{{ path('manager_ha_change_public_ip',{'ip': server.ip } ) }}">Passer en Actif</button>
+			                    			</td>
 									    </tr>
 			                        	{% endfor %}
 		                    		</tbody>
