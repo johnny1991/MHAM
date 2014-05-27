@@ -23,8 +23,9 @@ for i in $*; do
 	[[ $i == --ip=* ]] && ip=$tmp
 	tmp=''
 done
-
+echo "passe"
 if [[ ! -z "$ip" ]]; then 
+echo "passe aussi"
 	removePublicIp $ip
 fi
 
