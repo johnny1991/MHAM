@@ -88,6 +88,7 @@ class ManagerMHA {
 			$this->isPublicLive = (bool) passthru("ping -c$number_of_request -i$time_between_request " . $this->getConfiguration()->getPublicIp());
 			ob_end_clean();			
 		}
+		var_dump($this->isPublicLive);
 		return $this->isPublicLive;
 	}
 
