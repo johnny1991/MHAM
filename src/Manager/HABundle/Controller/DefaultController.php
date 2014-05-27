@@ -15,7 +15,7 @@ class DefaultController extends Controller
 	}
 
 	public function logAction(){
-		return new Response(nl2br(shell_exec('tail -n 15 ' . ManagerMHA::getInstance()->getMha()->getLogPath())));
+		return new Response('coucou');//nl2br(shell_exec('tail -n 15 ' . ManagerMHA::getInstance()->getMha()->getLogPath())));
 	}
 
 	public function syncAction($ip){
