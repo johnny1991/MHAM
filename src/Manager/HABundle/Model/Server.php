@@ -31,8 +31,9 @@ namespace Manager\HABundle\Model;
 		if($this->getStatus() == null){
 			$number_of_request = 2;
 			$time_between_request = 0.2;
-			passthru("ping -c$number_of_request -i$time_between_request " . $this->getIp(), $ping);
+			exec("ping -c$number_of_request -i$time_between_request " . $this->getIp(), $ping, $test);
 			var_dump($ping);
+			var_dump($test);
 			$this->status = (bool) strpos($ping , "0% packet loss");
 			echo $this->ip . ' : ' . $this->status . "<br>";
 		}
