@@ -150,6 +150,21 @@ EOF
     done
 }
 
+function removePublicIp () {
+	if [[ ! -z $1 ]]; then 
+	    	echo -e "\033[32m $printer[info] Connexion en ssh a $1 \033[0m"
+			sudo ssh root@$1 <<EOF
+			   	cd /etc/network
+		        mv interfaces interfaces.tmp
+		        mv interfaces2 interfaces
+		        mv interfaces.tmp interfaces2
+		        /etc/init.d/networking restart
+		        shutdown -r now
+	EOF
+	    done
+    fi
+}
+
 ##################################### ENF OF GESTION OF PLATEFORM #######################################
 
 
