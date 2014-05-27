@@ -20,13 +20,15 @@
                 		<div class="col-sm-12">
 		                    <div id="bdd_state">
 		                        <h2>État des Bases de données</h2>
-		                        <table class="table table-striped">
+		                        <table class="table table-striped table-hover">
 		                            <thead>
 		                            	<tr>
+		                            		<th></th>
 		                            		<th colspan="2">Serveur</th>
 				                            <th colspan="8">BDD</th>
 				                     	</tr>
 		                            	<tr>
+		                            		<th>#</th>
 		                            		<th>IP du serveur</th>
 		                            		<th>Status de Mysql</th>
 				                            <th>Status de réplication</th>
@@ -42,6 +44,7 @@
 		                        	<tbody>
 			                        	{% for server in manager.bddServers %}
 			                            <tr>
+			                              	<td>{{ loop.index }}</td>
 			                                <td>{{ server.ip }}</td>
 			                                <td>
 				                                {% if server.mysql.status == 1 %}
@@ -94,13 +97,15 @@
 		                <div class="col-sm-9">
 		                    <div id="magento_state">
 		                     	<h2>Clusters Magento</h2>
-		                    	<table class="table table-striped">
+		                    	<table class="table table-striped table-hover">
 		                            <thead>
 		                            	<tr>
+		                            		<th></th>
 		                            		<th colspan="1">Magento</th>
 		                            		<th colspan="4">Serveur</th>
 				                     	</tr>
 		                            	<tr>
+		                            		<th>#</th>
 		                            	    <th>Ip de la BDD</th>
 		                            		<th>IP du serveur</th>
 		                            		<th>Status du serveur</th>
@@ -111,6 +116,7 @@
 		                        	<tbody>
 			                        	{% for server in manager.magentoServers %}
 			                            <tr>
+			                            	<td>{{ loop.index }}</td>
 			               					<td>{{ server.BddIp }}</td>
 			                                <td>{{ server.ip }}</td>
 			                                <td>
