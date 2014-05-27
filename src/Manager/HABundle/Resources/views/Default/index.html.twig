@@ -36,7 +36,7 @@
 				                            <th>Slave SQL Running</th>
 							    			<th>Read Only</th>
 				                            <th>Relay Purge</th>
-				                            <th>Synchronisation</th>
+				                            <th>Action</th>
 				                     	</tr>
 				                 	</thead>
 		                        	<tbody>
@@ -105,6 +105,7 @@
 		                            		<th>IP du serveur</th>
 		                            		<th>Status du serveur</th>
 		                            		<th>Serveur actif</th>
+		                            		<th>Action</th>
 				                     	</tr>
 				                 	</thead>
 		                        	<tbody>
@@ -127,7 +128,9 @@
 				                                {% endif %}
 			                                </td>
 			                                <td>
-			                    				<button id="" class="btn btn-primary changepublicip" data-url="{{ path('manager_ha_change_public_ip',{'ip': server.ip } ) }}">Passer en Actif</button>
+			                                	{% if server.isMaster != 1 %}
+			                    					<button id="change_public_ip" class="btn btn-primary change_public_ip" data-url="{{ path('manager_ha_change_public_ip',{'ip': server.ip } ) }}">Passer en Actif</button>
+			                    				{% endif %}
 			                    			</td>
 									    </tr>
 			                        	{% endfor %}
@@ -229,6 +232,18 @@
 	                	});
 	                });
 	                $('.synchronisation').click(function(){
+	                	$('.load').show();
+	                	jQuery.ajax({
+	                		url: $(this).attr('data-url'),
+	                		success: function(data,x){
+	                			alert(data);
+	                			location.reload();
+	                			$('.load').hide();
+	                		} 
+	                	});
+	                });
+	                
+	                $('.change_public_ip').click(function(){
 	                	$('.load').show();
 	                	jQuery.ajax({
 	                		url: $(this).attr('data-url'),
