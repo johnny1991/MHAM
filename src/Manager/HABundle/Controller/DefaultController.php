@@ -8,31 +8,28 @@ use Symfony\Component\HttpFoundation\Response;
 use Manager\HABundle\Model\ManagerMHA;
 use Manager\HABundle\Model\Configuration;
 
-class DefaultController extends Controller
-{
+class DefaultController extends Controller{
+	
 	public function indexAction(){
 		return $this->render('ManagerHABundle:Default:index.html.twig', array('manager' => ManagerMHA::getInstance()));
 	}
 
 	public function logAction(){
-		return new Response(nl2br(shell_exec('tail -n 15 ' . ManagerMHA::getInstance()->getMha()->getLogPath())));
+		$command = nl2br(shell_exec('tail -n 15 ' . ManagerMHA::getInstance()->getMha()->getLogPath()));
+		return new Response($command);
 	}
 
 	public function syncAction($ip){
 		$change_mha_conf = ($ip == ManagerMHA::getInstance()->getMha()->getMainBddIp()) ? "false" : "true";
 		$command = "/bin/bash " . Configuration::getInstance()->getScriptsPath(). "synchronize --master=" . $ip . " --change_mha_conf=" . $change_mha_conf;
 		$response = shell_exec($command);
-		echo $command;
-		echo "\n";
 		return new response($response);
 	}
 	
 	public function change_public_ipAction($ip){
 		$command = "/bin/bash " . Configuration::getInstance()->getScriptsPath(). "changePublicIp --ip=" . $ip;
 		$response = shell_exec($command);
-		echo $command;
-		echo "\n";
-		return new response($response);
+		return new response(shell_exec($command));
 	}
 
 	public function start_mhaAction(){
