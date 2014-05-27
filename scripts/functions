@@ -148,11 +148,11 @@ function changePublicIp () {
 	if [[ ! -z "$1" ]]; then 
 	ssh root@$1 <<EOF
 	   	cd /etc/network
-        mv interfaces interfaces.tmp
-        mv interfaces2 interfaces
-        mv interfaces.tmp interfaces2
-        /etc/init.d/networking restart
-        shutdown -r now
+        #mv interfaces interfaces.tmp
+        #mv interfaces2 interfaces
+        #mv interfaces.tmp interfaces2
+        #/etc/init.d/networking restart
+        #shutdown -r now
 EOF
 	fi
 }
