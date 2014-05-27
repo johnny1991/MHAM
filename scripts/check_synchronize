@@ -12,7 +12,6 @@
 . $(dirname $0)/functions
 
 synchronize=false
-printer='script_perso'
 
 ####################################### END OF PARAMETERS ###############################################
 

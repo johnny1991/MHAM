@@ -122,26 +122,38 @@ function flushmaster {
 
 # Check if main plateform is dead and change public IP if appropriate
 
-function changePublicIp () {
+function checkPublicIp () {
 	ping $ip_magento_public -c2 -q
 	if [ $? == 1 ]; then
+		if [ $send_mail ]; then
+			echo "MHA : The plateform is down at $ip_magento_public `eval date +%d/%m/%Y":"%H:%M`" | mail -a "from:johnny.cottereau@auguria.net" -s "The plateform is down at $ip_magento_public" "maintenance@auguria.net"
+		fi
         for (( i = 0; i < ${#ip_magento[@]}; i++ )); do
             echo -e "\033[32m $printer[info] Connexion en ssh a ${ip_magento[$i]} \033[0m"
             ping ${ip_magento[$i]} -c2 -q
             if [ $? != 1 ]; then
 	        	echo -e "\033[32m $printer[info] La VM est operationnel, elle prend l'ip publique \033[0m"
-                ssh root@${ip_magento[$i]} <<EOF
-                 	cd /etc/network
-                    mv interfaces interfaces.tmp
-                    mv interfaces2 interfaces
-                    mv interfaces.tmp interfaces2
-                    /etc/init.d/networking restart
-                    shutdown -r now
-EOF
+                changePublicIp ${ip_magento[$i]}
+                if [ $send_mail ]; then
+					echo "MHA : The plateform is alive at $ip_magento_public `eval date +%d/%m/%Y":"%H:%M`" | mail -a "from:johnny.cottereau@auguria.net" -s "The plateform is alive at $ip_magento_public" "maintenance@auguria.net"
+				fi
             else
                 echo -e "\033[32m $printer[info] La VM n'est pas operationnel \033[0m"
             fi
         done
+	fi
+}
+
+function changePublicIp () {
+	if [[ ! -z "$1" ]]; then 
+	ssh root@$1 <<EOF
+	   	cd /etc/network
+        mv interfaces interfaces.tmp
+        mv interfaces2 interfaces
+        mv interfaces.tmp interfaces2
+        /etc/init.d/networking restart
+        shutdown -r now
+EOF
 	fi
 }
 
