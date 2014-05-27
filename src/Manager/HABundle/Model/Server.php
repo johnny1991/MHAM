@@ -30,7 +30,7 @@ namespace Manager\HABundle\Model;
 	public function update(){
 		if($this->getStatus() == null){
 			$number_of_request = 2;
-			$time_between_request = 0.15;
+			$time_between_request = 0.05;
 			$this->status = exec("ping -c$number_of_request -i$time_between_request " . $this->getIp()) ? true : false;
 		}
 	}

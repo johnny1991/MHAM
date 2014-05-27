@@ -45,9 +45,6 @@ class ManagerMHA {
 			}
 			unset($server);
 		}
-		#if($countMaster > 1){
-		#	$this->mainBddServer = false;
-		#}
 	}
 	
 	public static function getConfiguration(){
@@ -86,7 +83,7 @@ class ManagerMHA {
 	public function isPublicIpLive(){
 		if($this->isPublicLive == null){
 			$number_of_request = 2;
-			$time_between_request = 0.15;
+			$time_between_request = 0.05;
 			$this->isPublicLive = exec("ping -c$number_of_request -i$time_between_request " . $this->getConfiguration()->getPublicIp()) ? true : false;
 		}
 		return $this->isPublicLive;
