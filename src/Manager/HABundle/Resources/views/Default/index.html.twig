@@ -91,25 +91,26 @@
 		            	</div>
 		            </div>
 		           	<div class="row">
-		                <div class="col-sm-6">
+		                <div class="col-sm-9">
 		                    <div id="magento_state">
 		                     	<h2>Clusters Magento</h2>
 		                    	<table>
 		                            <thead>
 		                            	<tr>
-		                            		<th colspan="3">Serveur</th>
-				                            <th colspan="1">Magento</th>
+		                            		<th colspan="1">Magento</th>
+		                            		<th colspan="4">Serveur</th>
 				                     	</tr>
 		                            	<tr>
+		                            	    <th>Ip de la BDD</th>
 		                            		<th>IP du serveur</th>
 		                            		<th>Status du serveur</th>
 		                            		<th>Serveur actif</th>
-				                            <th>Ip de la BDD</th>
 				                     	</tr>
 				                 	</thead>
 		                        	<tbody>
 			                        	{% for server in manager.magentoServers %}
 			                            <tr>
+			               					<td>{{ server.BddIp }}</td>
 			                                <td>{{ server.ip }}</td>
 			                                <td>
 			                                	{% if server.status == 1 %}
@@ -125,7 +126,6 @@
 				                                	<span class="nok">En Attente</span> 
 				                                {% endif %}
 			                                </td>
-			                                <td>{{ server.BddIp }}</td>
 			                                <td>
 			                    				<button id="" class="btn btn-primary changepublicip" data-url="{{ path('manager_ha_change_public_ip',{'ip': server.ip } ) }}">Passer en Actif</button>
 			                    			</td>
@@ -149,7 +149,7 @@
 		                        {% endif %}
 		                    </div>
 		               	</div>
-		            	<div class="col-sm-6">
+		            	<div class="col-sm-3">
 		            		<div class="server_state">
 		            			<h2>Serveurs</h2>
 			            		<table>
