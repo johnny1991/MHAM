@@ -1,6 +1,7 @@
 <?php
 
 namespace Manager\HABundle\Model;
+use Psr\Log\LoggerInterface;
 
  abstract class Server {
 
