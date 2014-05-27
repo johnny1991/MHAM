@@ -17,8 +17,9 @@ class MagentoServer extends Server {
 
 	public function update(){
 		parent::update();
+		echo "passe avant $this->getStatus()";
+		
 		if (!$this->getStatus()){
-			echo "passe";
 			return false;
 		}
 		$this->scripts_path = Configuration::getInstance()->getScriptsPath();
