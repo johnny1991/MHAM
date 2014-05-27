@@ -109,7 +109,7 @@
 		                            	    <th>Ip de la BDD</th>
 		                            		<th>IP du serveur</th>
 		                            		<th>Status du serveur</th>
-		                            		<th>Serveur actif</th>
+		                            		<th>IP public</th>
 		                            		<th>Action</th>
 				                     	</tr>
 				                 	</thead>
@@ -128,9 +128,9 @@
 				                            </td>
 				                            <td>
 			                                {% if server.isMaster == 1 %}
-				                                	<span class="ok">Actif</span>
+				                                	{{ manager.getConfiguration.public_ip }}
 				                                {% else %}
-				                                	<span class="nok">En Attente</span> 
+				                                	&nbsp; 
 				                                {% endif %}
 			                                </td>
 			                                <td>
