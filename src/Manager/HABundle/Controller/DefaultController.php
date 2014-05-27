@@ -15,7 +15,7 @@ class DefaultController extends Controller{
 	}
 
 	public function logAction(){
-		$command = nl2br(shell_exec('tail -n 15 ' . ManagerMHA::getInstance()->getMha()->getLogPath()));
+		$command = nl2br(shell_exec('tail -n 7 ' . ManagerMHA::getInstance()->getMha()->getLogPath()));
 		return new Response($command);
 	}
 
