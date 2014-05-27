@@ -84,6 +84,8 @@ class ManagerMHA {
 		if($this->isPublicLive == null){
 			$number_of_request = 2;
 			$time_between_request = 0.05;
+			$logger = $this->get('logger');
+			$logger->info("Public IP : " . $this->getConfiguration()->getPublicIp());
 			$this->isPublicLive = exec("ping -c$number_of_request -i$time_between_request " . $this->getConfiguration()->getPublicIp()) ? true : false;
 		}
 		return $this->isPublicLive;
