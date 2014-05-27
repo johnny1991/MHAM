@@ -21,7 +21,7 @@ class ManagerMHA {
 		$this->mha = new MHA();
 		
 		$this->initBddServers();
-		//$this->initMagentoServers();
+		$this->initMagentoServers();
 
 	}
 

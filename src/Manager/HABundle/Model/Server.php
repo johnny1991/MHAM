@@ -8,8 +8,9 @@ namespace Manager\HABundle\Model;
 	public $status = null;
 
 	public function __construct($ip){
+		
 		$this->ip = $ip;
-		$this->update();
+		//$this->update();
 	}
 
 	public function getIp(){
