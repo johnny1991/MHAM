@@ -13,6 +13,10 @@ body {
 	position: relative;
 }
 
+#magento_state{
+	border-right: 4px solid #D5D5D5;
+}
+
 .header {
 	border-bottom: 4px solid #D5D5D5;
 	padding: 10px;
