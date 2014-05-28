@@ -144,7 +144,7 @@ function changePublicIp () {
 	        /etc/init.d/networking restart
 EOF	  
 		if [ $shutdownAfterChangeIp == true ]; then
-			sudo ssh root@${ip_magento[$i]} 'shutdown -r now'
+			sudo ssh root@${ip_magento[$i]} "shutdown -r now"
 		fi
 
         if [ $send_mail == true ]; then
@@ -164,7 +164,7 @@ function removePublicIp () {
 	        /etc/init.d/networking restart
 EOF
 		if [ $shutdownAfterChangeIp == true ]; then
-			sudo ssh root@${ip_magento[$i]} 'shutdown -r now'
+			sudo ssh root@$1 "shutdown -r now"
 		fi
     fi
 }
