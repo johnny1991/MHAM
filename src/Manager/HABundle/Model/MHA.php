@@ -2,6 +2,8 @@
 
 namespace Manager\HABundle\Model;
 
+use Symfony\Component\HttpFoundation\Session\Session;
+
 class MHA {
 
 	public $configuration_path;
@@ -29,6 +31,10 @@ class MHA {
 		$this->main_bdd_ip = $this->configuration['server1']['hostname'];
 		$this->slave_bdd_ip = $this->configuration['server2']['hostname'];
 
+		$session = new Session();
+		$session->start();
+		$session->set('log_path', $this->getLogPath());
+		
 		foreach($this->configuration as $item){
 			if (!empty($item['hostname'])){
 				$this->bdd_ips[] = $item['hostname'];

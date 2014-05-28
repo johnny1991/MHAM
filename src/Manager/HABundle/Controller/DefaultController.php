@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Manager\HABundle\Model\ManagerMHA;
 use Manager\HABundle\Model\Configuration;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class DefaultController extends Controller{
 	
@@ -16,11 +17,15 @@ class DefaultController extends Controller{
 
 	public function logAction(){
 		$start = microtime(true);
+		
+		$session = new Session();
+		$session->start();
+		
 		//$command = nl2br(shell_exec('tail -n 7 ' . ManagerMHA::getInstance()->getMha()->getLogPath()));
 		//echo 'tail -n 7 ' . ManagerMHA::getInstance()->getMha()->getLogPath();
 		//echo "<br>";
 		//$command = shell_exec('tail -n 7 ' . ManagerMHA::getInstance()->getMha()->getLogPath());
-		$command = nl2br(shell_exec('tail -n 7 /var/log/masterha/MHA.log'));
+		$command = nl2br(shell_exec($session->get('log_path')));
 		
 		$time_taken = microtime(true) - $start;
 		echo "dddddddddddddddddddd ". $time_taken . " zzzzzzzzzzzzzzzzzzzzzzz";
