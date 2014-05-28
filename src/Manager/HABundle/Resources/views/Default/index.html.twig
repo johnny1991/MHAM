@@ -46,7 +46,7 @@
 			                        	{% for server in manager.bddServers %}
 			                            <tr>
 			                              	<td>{{ loop.index }}</td>
-			                                <td>{{ server.ip }}</td>
+			                                <td><b>{{ server.ip }}</b></td>
 			                                <td>
 				                                {% if server.mysql.status == 1 %}
 				                                	<span class="ok">Up</span>
@@ -119,7 +119,7 @@
 			                            <tr>
 			                            	<td>{{ loop.index }}</td>
 			               					<td>{{ server.BddIp }}</td>
-			                                <td>{{ server.ip }}</td>
+			                                <td><b>{{ server.ip }}</b></td>
 			                                <td>
 			                                	{% if server.status == 1 %}
 				                                	<span class="ok">Up</span>
