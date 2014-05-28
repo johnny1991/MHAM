@@ -11,7 +11,7 @@ namespace Manager\HABundle\Model;
 		$start = microtime(true);
 		$this->ip = $ip;
 		$this->update();
-		echo 'server ' . $ip.' : ' . (microtime(true) - $start);
+		echo 'server ' . $ip.' : ' . (microtime(true) - $start)."<br>";
 		
 	}
 
