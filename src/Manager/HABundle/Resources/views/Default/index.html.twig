@@ -315,7 +315,7 @@
 	                	jQuery.ajax({
 	                		url: $(this).attr('data-url'),
 	                		success: function(data,x){
-	                			alert(data);
+	                			//alert(data);
 	                			location.reload();
 	                			$('.load').hide();
 	                		} 
@@ -327,7 +327,7 @@
 	                	jQuery.ajax({
 	                		url: $(this).attr('data-url'),
 	                		success: function(data,x){
-	                			alert(data);
+	                			//alert(data);
 	                			setTimeout(function(){ 
 	                				location.reload();
 	                				$('.load').hide();
@@ -337,7 +337,6 @@
 	                });
 		            $('.bs-callout-info h4').on('click', function(e) {
 					    e.preventDefault();
-					    console.log($(this).parent());
 					    $(this).parent().find('.text').toggle('750');
 					});
 	            </script>
