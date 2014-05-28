@@ -80,7 +80,7 @@ if [ $command == 'stopssh' ] || [ $command == 'stop' ]; then
 	
 		echo -e "\033[32m $printer[info] Connexion en ssh pour modification du local.xml a $ip \033[0m"
 		
-		ssh -T $ssh_user@$ip <<EOF
+		ssh -T $ssh_user@${ip_magento[@]} <<EOF
 			if apt-get -qq install xmlstarlet; then
 				echo -e "\033[32m $printer[info] Xmlstarlet est installe \033[0m"
 			else
