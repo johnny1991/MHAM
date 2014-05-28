@@ -151,8 +151,8 @@ EOF
 }
 
 function removePublicIp () {
-echo ici $1 MARCHE PAS !!!!!!!!!!!!
-	if [[ ! -z $1 ]]; then 
+	echo ici $1 MARCHE PAS !!!!!!!!!!!!
+	if [[ ! -z "$1" ]]; then 
 	    	echo -e "\033[32m $printer[info] Connexion en ssh a $1 \033[0m"
 			sudo ssh root@$1 <<EOF
 			   	cd /etc/network
