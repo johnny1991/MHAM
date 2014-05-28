@@ -38,6 +38,7 @@ h1 {
 
 .footer #developped_by{
 	padding:30px;
+	display:block;
 	text-align: right;
 }
 
