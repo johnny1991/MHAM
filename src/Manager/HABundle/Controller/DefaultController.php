@@ -30,6 +30,7 @@ class DefaultController extends Controller{
 	public function change_public_ipAction(){
 		$command = "/bin/bash " . Configuration::getInstance()->getScriptsPath(). "changePublicIp";
 		$response = shell_exec($command);
+		echo $command;
 		return new response(shell_exec($command));
 	}
 	
