@@ -61,6 +61,9 @@
 			                                	<td>{{ server.mysql.replicationStatus['Position'] }}</td>
 			                                	<td></td>
 			                                	<td></td>
+			                                	<td></td>
+			                                	<td></td>
+			                                	<td></td>
 											{% elseif(server.mysql.state == 'Slave') %}
 												<td>{{ server.mysql.replicationStatus['Master_Log_File'] }}</td>
 		                                        <td>{{ server.mysql.replicationStatus['Read_Master_Log_Pos'] }}</td>
@@ -206,8 +209,9 @@
 								<div class="log">
 		                            En cours de chargement ...
 		                        </div>
-		                        <button id="start_mha" class="btn btn-primary">Démarrer MHA</button>
-		                        
+		                        <button id="restart_mha" class="btn btn-primary">Restart MHA</button>
+		                        <button class="btn btn-default" id="start_mha">Start MHA</button>
+		                        <button class="btn btn-default" id="stop_mha">Stop MHA</button>
 		                        <div class="time">Date du Log : <span id="refresh_time"></span></div>
 		                    </div>
 		              	</div>
@@ -230,9 +234,29 @@
 	                    $('#mha_state .log').load("{{ path('manager_ha_log')}}").fadeIn("slow");
 	                    $('#mha_state #refresh_time').html(new Date($.now()));
 	                }, 1000);
+	                $('#restart_mha').click(function(){
+	                	jQuery.ajax({
+	                		url: '{{ path('manager_ha_restart_mha') }}',
+	                		success: function(s,x){
+	                			setTimeout(function(){ 
+	                				location.reload();
+	                			 }, 4000);
+	                		} 
+	                	});
+	                });
 	                $('#start_mha').click(function(){
 	                	jQuery.ajax({
 	                		url: '{{ path('manager_ha_start_mha') }}',
+	                		success: function(s,x){
+	                			setTimeout(function(){ 
+	                				location.reload();
+	                			 }, 4000);
+	                		} 
+	                	});
+	                });
+	                $('#stop_mha').click(function(){
+	                	jQuery.ajax({
+	                		url: '{{ path('manager_ha_stop_mha') }}',
 	                		success: function(s,x){
 	                			setTimeout(function(){ 
 	                				location.reload();

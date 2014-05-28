@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 use Manager\HABundle\Model\ManagerMHA;
+use Manager\HABundle\Model\MHA;
 use Manager\HABundle\Model\Configuration;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -43,8 +44,18 @@ class DefaultController extends Controller{
 		return new response(shell_exec($command));
 	}
 
+	public function restart_mhaAction(){
+		MHA::restart();
+		return new response();
+	}
+	
 	public function start_mhaAction(){
-		exec('sudo /etc/init.d/mha_daemon restart');
+		MHA::start();
+		return new response();
+	}
+	
+	public function stop_mhaAction(){
+		MHA::stop();
 		return new response();
 	}
 }

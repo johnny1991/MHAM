@@ -98,19 +98,19 @@ class MHA {
 		return $this->slave_bdd_ip;
 	}
 	
-	public function stop(){
+	public static function stop(){
 		exec('sudo /etc/init.d/mha_daemon stop');
 	}
 	
-	public function start(){
+	public static function start(){
 		exec('sudo /etc/init.d/mha_daemon start');
 	}
 	
-	public function restart(){
+	public static function restart(){
 		exec('sudo /etc/init.d/mha_daemon restart');
 	}
 	
-	public function status(){
+	public static function status(){
 		return exec('sudo /etc/init.d/mha_daemon status');
 	}
 

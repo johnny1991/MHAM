@@ -10,9 +10,17 @@ manager_ha_sync:
     pattern:  /sync/ip/{ip}
     defaults: { _controller: ManagerHABundle:Default:sync }
 
+manager_ha_restart_mha:
+    pattern:  /restart_mha
+    defaults: { _controller: ManagerHABundle:Default:restart_mha }
+
 manager_ha_start_mha:
     pattern:  /start_mha
     defaults: { _controller: ManagerHABundle:Default:start_mha }
+
+manager_ha_stop_mha:
+    pattern:  /stop_mha
+    defaults: { _controller: ManagerHABundle:Default:stop_mha }
 
 
 manager_ha_change_public_ip:
