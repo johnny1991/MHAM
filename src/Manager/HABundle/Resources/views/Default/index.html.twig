@@ -111,7 +111,7 @@
 		                    		Dans un idéal, le serveur SQL Esclave doit être en lecture seul (<em>Read Only</em> à <em>ON</em>) et le serveur SQL Maître doit avoir le <em>Relay purge</em> à <em>ON</em>.
 		                    		</p>
 		                    		<p>
-		                    		<strong>Le bouton <em>Forcer en Master</em> permet de passer une base de données en master et l'autre en esclave. Attention avec cette commande !!!</strong>
+		                    		<strong>Le bouton <em>Forcer en Master</em> permet de passer une base de données en master et l'autre base de données en esclave. Attention avec cette commande !!!</strong>
 		                    		</p>
 		                    	</div>
 		                    </div>
@@ -216,6 +216,15 @@
 			                    		</tr>
 			                    	</tbody>
 			                    </table>
+			                    <div class="bs-callout bs-callout-info">
+		                    		<h4>Quel est ce tableau ?</h4>
+		                    		<p>Nos clusters (SQL et Magento) sont des machines virtuelles. 
+		                    		Pour une Haute disponibilité, nous devons mettre chaque clusters sur des serveurs réels différents 
+		                    		(un cluster SQL et un cluster Magento sur un serveur x et l'autre cluster SQL et l'autre cluster Magento sur un autre serveur y).<br>
+		                    		Ainsi, avec ce principe, si le serveur x tombe, on a tout ce qu'il faut pour relancer le site web sur le serveur y.<br>
+		                    		<strong>Pour un bon fonctionnement, il faut donc s'assurer que le cluster SQL Maître et le cluster Magento Principal soit sur le même serveur réel.</strong>
+		                    		</p>
+		                    	</div>
 			               	</div>
 		                </div>
 		          	</div>
