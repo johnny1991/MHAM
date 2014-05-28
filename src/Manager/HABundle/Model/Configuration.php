@@ -31,6 +31,8 @@ class Configuration {
 	public $local_xml_path;
 
 	protected function __construct(){
+		echo "configuration construct";
+		
 		$this->scripts_path = __DIR__ . '/../../../../scripts/';
 		$this->configuration_path = $this->scripts_path . 'HA.conf';
 		$this->configuration = parse_ini_file($this->configuration_path, 1, INI_SCANNER_RAW);
