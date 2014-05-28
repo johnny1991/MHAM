@@ -330,10 +330,8 @@
 	                	});
 	                });
 		            $('.bs-callout-info h4').on('click', function(e) {
-					    e.preventDefault();
-					    var $this = $(this);
-					    var $collapse = $this.closest('.bs-callout-info').find('p');
-					    $collapse.collapse('toggle');
+					    //e.preventDefault();
+					    $($this).find('p').toggle();
 					});
 	            </script>
 			</div>
