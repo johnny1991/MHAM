@@ -138,14 +138,14 @@ function changePublicIp () {
     	echo -e "\033[32m $printer[info] Connexion en ssh a ${ip_magento[$i]} \033[0m"
 		sudo ssh root@${ip_magento[$i]} "
 			cd /etc/network
- 		#   mv interfaces interfaces.tmp
- 		#   mv interfaces2 interfaces
- 		#   mv interfaces.tmp interfaces2
- 		#   /etc/init.d/networking restart
-"
-	#	if [ $shutdownAfterChangeIp == true ]; then
-	#		sudo ssh root@${ip_magento[$i]} "shutdown -r now"
-	#	fi
+ 		   	mv interfaces interfaces.tmp
+ 		   	mv interfaces2 interfaces
+ 		   	mv interfaces.tmp interfaces2
+ 		   	/etc/init.d/networking restart
+		"
+		if [ $shutdownAfterChangeIp == true ]; then
+			sudo ssh root@${ip_magento[$i]} "shutdown -r now"
+		fi
 
         if [ $send_mail == true ]; then
 			echo "MHA : The plateform is alive at $ip_magento_public `eval date +%d/%m/%Y":"%H:%M`" | mail -a "from:johnny.cottereau@auguria.net" -s "The plateform is alive at $ip_magento_public" "maintenance@auguria.net"
@@ -153,24 +153,22 @@ function changePublicIp () {
     done
 }
 
-#function removePublicIp () {
-#	if [[ ! -z "$1" ]]; then 
-#    	echo -e "\033[32m $printer[info] Connexion en ssh a $1 \033[0m"
-#		sudo ssh root@$1 <<EOF
-#		   	cd /etc/network
-#	        mv interfaces interfaces.tmp
-#	        mv interfaces2 interfaces
-#	        mv interfaces.tmp interfaces2
-#	        /etc/init.d/networking restart
-#EOF
+function removePublicIp () {
+	if [[ ! -z "$1" ]]; then 
+    	echo -e "\033[32m $printer[info] Connexion en ssh a $1 \033[0m"
+		sudo ssh root@$1 "
+		   	cd /etc/network
+	        mv interfaces interfaces.tmp
+	        mv interfaces2 interfaces
+	        mv interfaces.tmp interfaces2
+	        /etc/init.d/networking restart
+		"
 
-	#	if [ $shutdownAfterChangeIp == true ]; then
-	#		sudo ssh root@$1 "shutdown -r now"
-	#	fi
-	
-#    fi
-    
-#}
+		if [ $shutdownAfterChangeIp == true ]; then
+			sudo ssh root@$1 "shutdown -r now"
+		fi
+    fi    
+}
 
 ##################################### ENF OF GESTION OF PLATEFORM #######################################
 
