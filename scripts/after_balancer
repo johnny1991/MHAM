@@ -104,6 +104,15 @@ EOF
 
 	checkPublicIp
 	
+	sudo ssh -T root@$ip <<EOF
+			echo -e "\033[32m $printer[info] Flush de Redis $db_number \033[0m"
+			
+			redis-cli
+			select 0
+			flushdb
+			exit
+EOF
+	
 	echo -e "\033[32m $printer[info] Fin de l'after balancer \033[0m"
 	
 fi
