@@ -101,18 +101,20 @@
 		                    	</table>
 		                    	<div class="bs-callout bs-callout-info">
 		                    		<h4>Comment ca marche ?</h4>
-		                    		<p>Il faut <strong>2 serveurs</strong> pour réaliser un cluster SQL. L'un doit être en Master et l'autre en Esclave.<br>
-		                    		Lorsque l'on écrit dans la base de données du serveur SQL Master, le serveur SQL Esclave reçoit l'information et écrit la même chose dans sa base de données. 
-		                    		Pour cela, Mysql utilise les Logs Binaires.<br>
-		                    		<strong>Pour avoir un bon fonctionnement, Les <em>Logs binaires</em> ainsi que la <em>Position binaire</em> doivent être les mêmes sur les 2 serveurs SQL.</strong><br>
-		                    		</p>
-		                    		<p><em>Slave IO Running</em> et <em>Slave SQL Running</em> indiquent que le serveur Esclave écoute bien le serveur SQL Master.<br>
-		                    		<strong>Pour un bon fonctionnement, <em>Slave IO Running</em> et <em>Slave SQL Running</em> doivent être uniquement à <em>Yes</em> sur le serveur SQL Esclave.</strong><br>
-		                    		Dans un idéal, le serveur SQL Esclave doit être en lecture seul (<em>Read Only</em> à <em>ON</em>) et le serveur SQL Maître doit avoir le <em>Relay purge</em> à <em>ON</em>.
-		                    		</p>
-		                    		<p>
-		                    		<strong>Le bouton <em>Forcer en Master</em> permet de passer une base de données en master et l'autre base de données en esclave. Attention avec cette commande !!!</strong>
-		                    		</p>
+		                    		<div class="text">
+			                    		<p>Il faut <strong>2 serveurs</strong> pour réaliser un cluster SQL. L'un doit être en Master et l'autre en Esclave.<br>
+			                    		Lorsque l'on écrit dans la base de données du serveur SQL Master, le serveur SQL Esclave reçoit l'information et écrit la même chose dans sa base de données. 
+			                    		Pour cela, Mysql utilise les Logs Binaires.<br>
+			                    		<strong>Pour avoir un bon fonctionnement, Les <em>Logs binaires</em> ainsi que la <em>Position binaire</em> doivent être les mêmes sur les 2 serveurs SQL.</strong><br>
+			                    		</p>
+			                    		<p><em>Slave IO Running</em> et <em>Slave SQL Running</em> indiquent que le serveur Esclave écoute bien le serveur SQL Master.<br>
+			                    		<strong>Pour un bon fonctionnement, <em>Slave IO Running</em> et <em>Slave SQL Running</em> doivent être uniquement à <em>Yes</em> sur le serveur SQL Esclave.</strong><br>
+			                    		Dans un idéal, le serveur SQL Esclave doit être en lecture seul (<em>Read Only</em> à <em>ON</em>) et le serveur SQL Maître doit avoir le <em>Relay purge</em> à <em>ON</em>.
+			                    		</p>
+			                    		<p>
+			                    		<strong>Le bouton <em>Forcer en Master</em> permet de passer une base de données en master et l'autre base de données en esclave. Attention avec cette commande !!!</strong>
+			                    		</p>
+			                    	</div>
 		                    	</div>
 		                    </div>
 		            	</div>
@@ -184,14 +186,16 @@
 		                        {% endif %}
 		                        <div class="bs-callout bs-callout-info">
 		                    		<h4>Comment ca marche ?</h4>
-		                    		<p>Les 2 clusters Magento (ou autre) sont reliés à une base de données via leurs fichiers de configuration.<br>
-		                    		<strong>Pour un bon fonctionnnement, Il doivent être reliés à la même base de données, et cette base de données doit être la base de données Master.</strong><br>
-		                    		</p>
-		                    		<p>
-		                    		<strong>Les 2 cluster doivent également être opérationnel (<em>Status</em> à <em>Up</em>).</strong><br>
-		                    		Le cluster principal est celui qui possède l'IP public. Vous pouvez changer l'IP public de serveur en cliquant sur <em>Ajouter l'IP public</em>. <br>
-		                    		Vous pouvez également retirer l'IP public du serveur.
-		                    		</p>
+		                    		<div class="text">
+			                    		<p>Les 2 clusters Magento (ou autre) sont reliés à une base de données via leurs fichiers de configuration.<br>
+			                    		<strong>Pour un bon fonctionnnement, Il doivent être reliés à la même base de données, et cette base de données doit être la base de données Master.</strong><br>
+			                    		</p>
+			                    		<p>
+			                    		<strong>Les 2 cluster doivent également être opérationnel (<em>Status</em> à <em>Up</em>).</strong><br>
+			                    		Le cluster principal est celui qui possède l'IP public. Vous pouvez changer l'IP public de serveur en cliquant sur <em>Ajouter l'IP public</em>. <br>
+			                    		Vous pouvez également retirer l'IP public du serveur.
+			                    		</p>
+			                    	</div>
 		                    	</div>
 		                    </div>
 		               	</div>
@@ -218,12 +222,14 @@
 			                    </table>
 			                    <div class="bs-callout bs-callout-info">
 		                    		<h4>Quel est ce tableau ?</h4>
-		                    		<p>Nos clusters (SQL et Magento) sont des machines virtuelles. 
-		                    		Pour une Haute disponibilité, nous devons mettre chaque clusters sur des serveurs réels différents 
-		                    		(un cluster SQL et un cluster Magento sur un serveur x et l'autre cluster SQL et l'autre cluster Magento sur un autre serveur y).<br>
-		                    		Ainsi, avec ce principe, si le serveur x tombe, on a tout ce qu'il faut pour relancer le site web sur le serveur y.<br>
-		                    		<strong>Pour un bon fonctionnement, il faut donc s'assurer que le cluster SQL Maître et le cluster Magento Principal soit sur le même serveur réel.</strong>
-		                    		</p>
+		                    		<div class="text">
+			                    		<p>Nos clusters (SQL et Magento) sont des machines virtuelles. 
+			                    		Pour une Haute disponibilité, nous devons mettre chaque clusters sur des serveurs réels différents 
+			                    		(un cluster SQL et un cluster Magento sur un serveur x et l'autre cluster SQL et l'autre cluster Magento sur un autre serveur y).<br>
+			                    		Ainsi, avec ce principe, si le serveur x tombe, on a tout ce qu'il faut pour relancer le site web sur le serveur y.<br>
+			                    		<strong>Pour un bon fonctionnement, il faut donc s'assurer que le cluster SQL Maître et le cluster Magento Principal soit sur le même serveur réel.</strong>
+			                    		</p>
+			                    	</div>
 		                    	</div>
 			               	</div>
 		                </div>
@@ -331,7 +337,7 @@
 	                });
 		            $('.bs-callout-info h4').on('click', function(e) {
 					    //e.preventDefault();
-					    $(this).find('p').show();
+					    $(this).find('.text').show();
 					});
 	            </script>
 			</div>

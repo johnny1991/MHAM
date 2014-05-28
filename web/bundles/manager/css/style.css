@@ -158,7 +158,7 @@ table {
     border-color: #5BC0DE;
 }
 
-.bs-callout-info p{
+.bs-callout-info .text{
 	display: none;
 }
 
