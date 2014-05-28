@@ -329,7 +329,12 @@
 	                		} 
 	                	});
 	                });
-	            
+		            $('.bs-callout-info h4').on('click', function(e) {
+					    e.preventDefault();
+					    var $this = $(this);
+					    var $collapse = $this.closest('.bs-callout-info').find('p');
+					    $collapse.collapse('toggle');
+					});
 	            </script>
 			</div>
             <div class="row footer">
