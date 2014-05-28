@@ -81,6 +81,13 @@
 												{% endif %}
 												<td>{{ server.mysql.global['read_only'] }}</td>
 												<td>{{ server.mysql.global['relay_log_purge'] }}</td>
+											{% else %}
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
 											{% endif %}
 											<td>
 												{% if not manager.getServersDown %}
