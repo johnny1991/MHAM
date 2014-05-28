@@ -158,11 +158,11 @@
 		                        </div>
 		                        {% if manager.isPublicIpLive %}
 									<div class="magento_status">
-			                            <span class="glyphicon glyphicon-ok"></span>
+			                            <span class="glyphicon glyphicon-ok bg-success"></span>
 			                            <span>Le site web répond au ping</span>
 			                        </div>
 		                        {% else %}
-			                        <div class="magento_status not">
+			                        <div class="magento_status bg-danger">
 			                            <span class="glyphicon glyphicon-remove"></span>
 			                            <span>Le site web ne répond pas au ping</span>
 			                        </div>
@@ -201,12 +201,12 @@
 			                        IP du Master : <b>{{ manager.mha.main_bdd_ip }}</b>
 		                        </div>
 								{% if manager.mha.isrunning %}
-									<div class="mha_status">
+									<div class="mha_status bg-success">
 			                            <span class="glyphicon glyphicon-ok"></span>
 			                            <span>Le manager MHA est en cours d'éxecution</span>
 			                        </div>
 		                        {% else %}
-			                        <div class="mha_status not">
+			                        <div class="mha_status bg-danger">
 			                            <span class="glyphicon glyphicon-remove"></span>
 			                            <span>Le manager MHA n'est pas en cours d'éxecution</span>
 			                        </div>
