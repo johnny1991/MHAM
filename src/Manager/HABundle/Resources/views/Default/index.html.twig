@@ -361,10 +361,19 @@
 						console.log(diff);
 						// Instantiate a coutdown FlipClock
 						clock = $('.clock').FlipClock(diff, {
-							//clockFace: 'DailyCounter',
-							//showSeconds: false
+							clockFace: 'DailyCounter',
+							showSeconds: false,
+							defaultLanguage: fr
 						});
+						
 					});
+					var clock1;
+			
+			$(document).ready(function() {
+				clock1 = $('.clock').FlipClock({
+					clockFace: 'TwelveHourClock'
+				});
+			});
 	            </script>
 			</div>
             <div class="row footer">
