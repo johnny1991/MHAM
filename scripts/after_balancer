@@ -82,7 +82,7 @@ if [ $command == 'stopssh' ] || [ $command == 'stop' ]; then
 		
 		echo "ssh -T root@$ip"
 		
-		ssh -T root@$ip "
+	 	sudo ssh -T root@$ip <<EOF
 			if apt-get -qq install xmlstarlet; then
 				echo -e "\033[32m $printer[info] Xmlstarlet est installe \033[0m"
 			else
@@ -99,7 +99,7 @@ if [ $command == 'stopssh' ] || [ $command == 'stop' ]; then
 			select 0
 			flushdb
 			exit
-"
+EOF
 	done
 
 	checkPublicIp
