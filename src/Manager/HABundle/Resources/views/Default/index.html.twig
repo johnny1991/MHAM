@@ -337,8 +337,8 @@
 	                });
 		            $('.bs-callout-info h4').on('click', function(e) {
 					    e.preventDefault();
-					    console.log(this);
-					    $(this).find('.text').show();
+					    console.log($(this).parent());
+					    $(this).parent().find('.text').show();
 					});
 	            </script>
 			</div>
