@@ -163,10 +163,13 @@ function removePublicIp () {
 	        mv interfaces.tmp interfaces2
 	        /etc/init.d/networking restart
 EOF
+
 	#	if [ $shutdownAfterChangeIp == true ]; then
 	#		sudo ssh root@$1 "shutdown -r now"
 	#	fi
+	
     fi
+    
 }
 
 ##################################### ENF OF GESTION OF PLATEFORM #######################################
