@@ -236,7 +236,7 @@
 			               	</div>
 		                </div>
 		          	</div>
-		          	<div class="row">
+		          	<div class="row last">
 		                <div class="col-sm-12">   
 		                    <div id="mha_state">
 		                        <h2>État du Manager MHA</h2>
@@ -264,11 +264,6 @@
 		                    </div>
 		              	</div>
 		           	</div>
-		           	<div class="row last">
-		           		<div class="col-sm-12">
-                			<div class="clock"></div>
-                		</div>
-                	</div>
 		    	</div>
 	            <div id="global_state">
 	                <div id="feu_tricolore" class="
@@ -346,33 +341,6 @@
 					    e.preventDefault();
 					    $(this).parent().find('.text').toggle('750');
 					});
-					
-					var clock;
-					$(document).ready(function() {
-		
-						// Grab the current date
-						var currentDate = new Date();
-						console.log(currentDate);
-						// Set some date in the past. In this case, it's always been since Jan 1
-						var pastDate  = new Date(currentDate.getFullYear(), 0, 1);
-		
-						// Calculate the difference in seconds between the future and current date
-						var diff = currentDate.getTime() / 1000 - pastDate.getTime() / 1000;
-						console.log(diff);
-						// Instantiate a coutdown FlipClock
-						clock = $('.clock').FlipClock(diff, {
-							clockFace: 'DailyCounter',
-							showSeconds: true,
-							autoStart: true
-						});
-						
-					});
-			
-			/*$(document).ready(function() {
-				clock = $('.clock').FlipClock({
-					clockFace: 'TwelveHourClock'
-				});
-			});*/
 	            </script>
 			</div>
             <div class="row footer">
