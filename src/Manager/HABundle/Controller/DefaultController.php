@@ -13,7 +13,10 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class DefaultController extends Controller{
 	
 	public function indexAction(){
-		return $this->render('ManagerHABundle:Default:index.html.twig', array('manager' => ManagerMHA::getInstance()));
+		$start = microtime(true);
+		$manager = ManagerMHA::getInstance();
+		echo 'manager : ' . (microtime(true) - $start);
+		return $this->render('ManagerHABundle:Default:index.html.twig', array('manager' => $manager));
 	}
 
 	public function logAction(){
