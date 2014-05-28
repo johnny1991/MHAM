@@ -21,7 +21,6 @@ class MagentoServer extends Server {
 		if (!$this->getStatus()){
 			return false;
 		}
-		echo "passe la {$this->ip}<br>";
 		$this->scripts_path = Configuration::getInstance()->getScriptsPath();
 		$this->initLocalxml();
 	}
