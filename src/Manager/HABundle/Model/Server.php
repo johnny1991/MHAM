@@ -8,11 +8,8 @@ namespace Manager\HABundle\Model;
 	public $status = null;
 
 	public function __construct($ip){
-		$start = microtime(true);
 		$this->ip = $ip;
 		$this->update();
-		echo 'server ' . $ip.' : ' . (microtime(true) - $start)."<br>";
-		
 	}
 
 	public function getIp(){
@@ -31,17 +28,12 @@ namespace Manager\HABundle\Model;
 	}
 
 	public function update(){
-		$start = microtime(true);
 		if($this->getStatus() == null){
-			$socket = @fsockopen($this->ip, '80', $errorNo, $errorStr, 3);
-			$this->status = (bool) $socket;
-			#$number_of_request = 2;
-			#$time_between_request = 0.2;
-			#exec("ping -c$number_of_request -i$time_between_request " . $this->getIp(), $output, $result);
-			#$this->status = ! $result;
+			$number_of_request = 2;
+			$time_between_request = 0.2;
+			exec("ping -c$number_of_request -i$time_between_request " . $this->getIp(), $output, $result);
+			$this->status = ! $result;
 		}
-		echo 'server ' . $ip.' -> update: ' . (microtime(true) - $start)."<br>";
-		
 	}
 	
 }
