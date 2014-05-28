@@ -18,10 +18,19 @@ class ManagerMHA {
 	public $mha;
 
 	protected function __construct(){
+		$start_1 = microtime(true);
 		$this->mha = new MHA();
+		echo 'mha : '.microtime(true) - $start_1.'<br>';
+		$start_2 = microtime(true);
 		
 		$this->initBddServers();
+		echo 'initBddServers : '.microtime(true) - $start_2.'<br>';
+		$start_3 = microtime(true);
+		
 		$this->initMagentoServers();
+		echo 'initMagentoServers : '.microtime(true) - $start_3.'<br>';
+		
+		
 	}
 
 	public function initMagentoServers(){
