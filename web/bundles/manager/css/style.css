@@ -1,7 +1,14 @@
 @CHARSET "UTF-8";
 
 body {
-	background: url('../images/gauze.png')
+	/*background: url('../images/gauze.png')*/
+	background: url("../images/bg-texture-00.svg") repeat scroll 0 0 #333333;
+    color: #CCCCCC;
+}
+
+h1 {
+	font-weight: bold;
+	margin-bottom:20px;
 }
 
 .container {
@@ -20,7 +27,7 @@ body {
 
 .header {
 	border-bottom: 2px solid #D5D5D5;
-	padding: 10px;
+	padding: 20px;
 }
 
 .footer {
@@ -34,7 +41,7 @@ body {
 	padding-bottom: 20px;
 }
 
-.main .row.last{
+.main .row.last {
 	border-bottom: none;
 }
 
@@ -53,7 +60,7 @@ table {
 }
 */
 #mha_state .log {
-	border-radius:10px;
+	border-radius: 10px;
 	margin: 5px 0px;
 	border: 1px solid #D5D5D5;
 	background: #F5F5F5;
