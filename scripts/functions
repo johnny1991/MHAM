@@ -136,9 +136,8 @@ function checkPublicIp () {
 function changePublicIp () {
 	for (( i = 0; i < ${#ip_magento[@]}; i++ )); do
     	echo -e "\033[32m $printer[info] Connexion en ssh a ${ip_magento[$i]} \033[0m"
-sudo ssh root@${ip_magento[$i]} <<EOF
-cd /etc/network
-EOF	  
+sudo ssh root@${ip_magento[$i]} "cd /etc/network"
+#EOF	  
 
  #   mv interfaces interfaces.tmp
  #   mv interfaces2 interfaces
