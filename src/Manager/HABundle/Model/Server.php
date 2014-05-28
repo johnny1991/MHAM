@@ -8,8 +8,11 @@ namespace Manager\HABundle\Model;
 	public $status = null;
 
 	public function __construct($ip){
+		$start = microtime(true);
 		$this->ip = $ip;
 		$this->update();
+		echo 'server ' . $ip.' : ' . (microtime(true) - $start);
+		
 	}
 
 	public function getIp(){
