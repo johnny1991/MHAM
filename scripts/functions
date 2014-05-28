@@ -142,8 +142,11 @@ function changePublicIp () {
 	        mv interfaces2 interfaces
 	        mv interfaces.tmp interfaces2
 	        /etc/init.d/networking restart
-	        shutdown -r now
-EOF
+EOF	  
+	    if [ $shutdownAfterChangeIp == true ]; then
+	    	sudo ssh root@${ip_magento[$i]} 'shutdown -r now'
+	    fi
+
         if [ $send_mail == true ]; then
 			echo "MHA : The plateform is alive at $ip_magento_public `eval date +%d/%m/%Y":"%H:%M`" | mail -a "from:johnny.cottereau@auguria.net" -s "The plateform is alive at $ip_magento_public" "maintenance@auguria.net"
 		fi
@@ -159,8 +162,10 @@ function removePublicIp () {
 	        mv interfaces2 interfaces
 	        mv interfaces.tmp interfaces2
 	        /etc/init.d/networking restart
-	        shutdown -r now
 EOF
+	    if [ $shutdownAfterChangeIp == true ]; then
+	    	sudo ssh root@${ip_magento[$i]} 'shutdown -r now'
+	    fi
     fi
 }
 
