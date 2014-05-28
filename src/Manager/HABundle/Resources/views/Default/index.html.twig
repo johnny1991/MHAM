@@ -99,6 +99,16 @@
 			                        	{% endfor %}
 		                    		</tbody>
 		                    	</table>
+		                    	<div class="bs-callout bs-callout-info">
+		                    		<h4>Comment ca marche ?</h4>
+		                    		<p>Il faut 2 serveurs pour réaliser un cluster SQL. L'un doit être en Master et l'autre en Esclave.<br>
+		                    		Lorsque l'on écrit dans la base de données du serveur SQL Master, le serveur SQL Esclave reçoit l'information et écrit la même chose dans sa base de données. pour cela, Mysql utilise les Logs Binaire.
+		                    		Pour avoir un bon fonctionnement, Les Logs binaires ainsi que la position binaire doivent être les mêmes sur les 2 serveurs SQL.<br>
+		                    		Slave IO Running et Slave SQL Running indiquent que le serveur Esclave écoute bien le serveur SQL Master.<br>
+		                    		Pour un bon fonctionnement, Slave IO Running et Slave SQL Running doivent être uniquement à Yes sur le serveur SQL Esclave.<br>
+		                    		Dans un idéal, le serveur SQL Esclave doit être en lecture seul (Read Only à ON) et le serveur SQL Maître doit avoir le Relay purge à ON.
+		                    		</p>
+		                    	</div>
 		                    </div>
 		            	</div>
 		            </div>
