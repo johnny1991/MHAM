@@ -336,7 +336,8 @@
 	                	});
 	                });
 		            $('.bs-callout-info h4').on('click', function(e) {
-					    //e.preventDefault();
+					    e.preventDefault();
+					    console.log(this);
 					    $(this).find('.text').show();
 					});
 	            </script>
