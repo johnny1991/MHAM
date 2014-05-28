@@ -97,7 +97,7 @@ if [ $command == 'stopssh' ] || [ $command == 'stop' ]; then
 EOF
 	done
 
-	. $(dirname $0)/checkPublicIp
+	checkPublicIp
 fi
 
 ######################################### END OF PROGRAM ################################################
