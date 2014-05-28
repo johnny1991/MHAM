@@ -130,6 +130,8 @@ function checkPublicIp () {
 			echo "MHA : The plateform is down at $ip_magento_public `eval date +%d/%m/%Y":"%H:%M`" | mail -a "from:johnny.cottereau@auguria.net" -s "The plateform is down at $ip_magento_public" "maintenance@auguria.net"
 		fi
 		changePublicIp
+	else
+		echo -e "\033[32m $printer[master][info] L'IP public est OK \033[0m"
 	fi
 }
 
