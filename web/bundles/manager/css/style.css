@@ -159,7 +159,7 @@ table {
 }
 
 .bs-callout-info p{
-	display: block;
+	display: none;
 }
 
 .bs-callout-info h4 {
