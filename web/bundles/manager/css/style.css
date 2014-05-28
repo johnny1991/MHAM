@@ -147,14 +147,15 @@ table {
 	border-radius: 0 10px 10px 0;
 }
 
-.bs-callout-info {
-    background-color: #F4F8FA;
-    border-color: #5BC0DE;
-}
 .bs-callout {
     border-left: 3px solid #EEEEEE;
     margin: 20px 0;
     padding: 20px;
+}
+
+.bs-callout-info {
+    background-color: #F4F8FA;
+    border-color: #5BC0DE;
 }
 
 .bs-callout-info h4 {
