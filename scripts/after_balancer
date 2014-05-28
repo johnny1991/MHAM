@@ -75,7 +75,7 @@ if [ $command == 'stopssh' ] || [ $command == 'stop' ]; then
 	
 	for ip in "${ip_magento[@]}"; do :
 	
-		echo -e "\033[32m $printer[info] Connexion en ssh a $ip \033[0m"
+		echo -e "\033[32m $printer[info] Connexion en ssh pour modification du local.xml a $ip \033[0m"
 		
 		ssh -T $ssh_user@$ip <<EOF
 			if apt-get -qq install xmlstarlet; then
