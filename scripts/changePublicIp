@@ -7,8 +7,8 @@
 
 ########################################### PARAMETERS ##################################################
 
-. HA.conf
-. functions
+#. HA.conf
+#. functions
 . $(dirname $0)/HA.conf
 . $(dirname $0)/functions
 
