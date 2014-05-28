@@ -4,15 +4,20 @@
     {% block stylesheets %}
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="{{ asset('bundles/manager/css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('bundles/manager/css/flipclock.css') }}">
     {% endblock %}
         <script src="{{ asset('bundles/manager/js/jquery-1.11.0.min.js') }}"></script>
+       	<script src="{{ asset('bundles/manager/js/flipclock.min.js') }}"></script>
         <title>Manager HA</title>
     </head>
     <body>
         <div class="container">
             <div class="row header">
-                <div class="col-sm-12">
+                <div class="col-sm-9">
                     <h1>Gestionnaire de Haute Disponibilité</h1>
+                </div>
+                <div class="col-sm-3">
+                	<div class="clock></div>
                 </div>
             </div>
             <div class="row main">
@@ -338,6 +343,25 @@
 		            $('.bs-callout-info h4').on('click', function(e) {
 					    e.preventDefault();
 					    $(this).parent().find('.text').toggle('750');
+					});
+					
+					var clock;
+					$(document).ready(function() {
+		
+						// Grab the current date
+						var currentDate = new Date();
+		
+						// Set some date in the past. In this case, it's always been since Jan 1
+						var pastDate  = new Date(currentDate.getFullYear(), 0, 1);
+		
+						// Calculate the difference in seconds between the future and current date
+						var diff = currentDate.getTime() / 1000 - pastDate.getTime() / 1000;
+		
+						// Instantiate a coutdown FlipClock
+						clock = $('.clock').FlipClock(diff, {
+							clockFace: 'DailyCounter',
+							showSeconds: false
+						});
 					});
 	            </script>
 			</div>
