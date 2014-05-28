@@ -16,7 +16,9 @@ class DefaultController extends Controller{
 
 	public function logAction(){
 		$start = microtime(true);
-		$command = nl2br(shell_exec('tail -n 7 ' . ManagerMHA::getInstance()->getMha()->getLogPath()));
+		//$command = nl2br(shell_exec('tail -n 7 ' . ManagerMHA::getInstance()->getMha()->getLogPath()));
+		$command = shell_exec('tail -n 7 ' . ManagerMHA::getInstance()->getMha()->getLogPath());
+		
 		$time_taken = microtime(true) - $start;
 		echo "dddddddddddddddddddd ". $time_taken . " zzzzzzzzzzzzzzzzzzzzzzz";
 		return new Response($command);
