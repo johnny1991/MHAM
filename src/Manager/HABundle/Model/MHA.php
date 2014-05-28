@@ -21,8 +21,6 @@ class MHA {
 	public $isOperational = false;
 
 	public function __construct(){
-		echo "MHA construct";
-		
 		$this->configuration_path = Configuration::getInstance()->getMhaConfPath();
 		$this->configuration = parse_ini_file($this->configuration_path, 1, INI_SCANNER_RAW);
 		$this->log_path = $this->configuration['server default']['manager_log'];
