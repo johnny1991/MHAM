@@ -22,7 +22,7 @@ class ManagerMHA {
 		
 		$this->initBddServers();
 		$this->initMagentoServers();
-
+		echo "manager construct";
 	}
 
 	public function initMagentoServers(){
