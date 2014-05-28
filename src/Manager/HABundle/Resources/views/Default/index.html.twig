@@ -229,7 +229,7 @@
 	                setInterval(function (){
 	                    $('#mha_state .log').load("{{ path('manager_ha_log')}}").fadeIn("slow");
 	                    $('#mha_state #refresh_time').html(new Date($.now()));
-	                }, 5000);
+	                }, 500);
 	                $('#start_mha').click(function(){
 	                	jQuery.ajax({
 	                		url: '{{ path('manager_ha_start_mha') }}',
