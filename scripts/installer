@@ -8,7 +8,7 @@
 ########################################### PARAMETERS ##################################################
 
 source HA.conf
-. $(dirname $0)/functions
+. functions
 
 printer='initialisation'
 
