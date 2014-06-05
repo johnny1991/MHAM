@@ -30,7 +30,7 @@ if ask "Voulez vous configurer le serveur maitre ?"; then
 	addMysqlPackage $ip_master
 	addNode $ip_master
 	addMysqlUser $ip_master
-	addXmlStarlet $ip_master
+	addXmlstarlet $ip_master
 	
 	if ask "N'oublier pas de creer la base de donnees $db_name et de l'importer sur le master !!!, appuyer sur y ensuite."; then
 		echo -e "\033[32m $printer[master][info] BDD OK \033[0m"
@@ -90,7 +90,7 @@ if ask "Voulez vous configurer le serveur slave ?"; then
 	addMysqlPackage $ip_slave
 	addNode $ip_slave
 	addMysqlUser $ip_slave
-	addXmlStarlet $ip_slave
+	addXmlstarlet $ip_slave
 	
 	ssh -T root@$ip_slave <<EOF
 	    echo -e "\033[32m $printer[slave][info] Modification du fichier my.cnf ... \033[0m"

@@ -247,7 +247,7 @@ sync () {
 
 ##################################### ADD XMLSTARLET PACKAGE ############################################
 
-function addXmlStarlet {
+function addXmlstarlet {
 	if ask "Voulez vous installer XmlStarlet sur le serveur $1 ?"; then
 	    echo -e "\033[32m $printer[info] Installation de XmlStarlet \033[0m"
 	    ssh -T root@$1 <<EOF
