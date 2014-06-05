@@ -16,7 +16,7 @@ done
 
 if [[ ! -z "$ip" ]] &&  [[ ! -z "$user" ]]; 
 then 
-	sudo ssh $user@$ip ifconfig  | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'
+	sudo ssh $user@$ip ifconfig  | grep 'inet addr:\|inet adr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'
 fi
 
 ########################################### END PROGRAM #################################################
