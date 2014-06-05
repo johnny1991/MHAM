@@ -61,20 +61,6 @@ EOF
 ##################################### END OF ADD MYSQL PACKAGE ##########################################
 
 
-##################################### ADD XMLSTARLET PACKAGE ############################################
-
-function addXmlStarlet {
-	if ask "Voulez vous installer XmlStarlet sur le serveur $1 ?"; then
-	    echo -e "\033[32m $printer[info] Installation de XmlStarlet \033[0m"
-	    ssh -T root@$1 <<EOF
-			apt-get -qq install xmlstarlet
-EOF
-	fi
-}
-
-################################## END OF ADD XMLSTARLET PACKAGE ########################################
-
-
 ############################################ ADD NODE ###################################################
 
 function addNode {
@@ -257,3 +243,18 @@ sync () {
 }
 
 ######################################## END OF SHOW NO BDD PROBLEM #####################################
+
+
+##################################### ADD XMLSTARLET PACKAGE ############################################
+
+function addXmlStarlet {
+	if ask "Voulez vous installer XmlStarlet sur le serveur $1 ?"; then
+	    echo -e "\033[32m $printer[info] Installation de XmlStarlet \033[0m"
+	    ssh -T root@$1 <<EOF
+			apt-get -qq install xmlstarlet
+EOF
+	fi
+}
+
+################################## END OF ADD XMLSTARLET PACKAGE ########################################
+
