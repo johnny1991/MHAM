@@ -83,11 +83,6 @@ if [ $command == 'stopssh' ] || [ $command == 'stop' ]; then
 		echo "ssh -T root@$ip"
 		
 	 	sudo ssh -T root@$ip <<EOF
-			if apt-get -qq install xmlstarlet; then
-				echo -e "\033[32m $printer[info] Xmlstarlet est installe \033[0m"
-			else
-				echo -e "\033[32m $printer[info] Erreur lors de l'installation de Xmlstarlet \033[0m"
-			fi
 			
 			echo -e "\033[32m $printer[info] Modification de l'adresse ip dans le local.xml \033[0m"
 			
